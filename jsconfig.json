@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./*"],
+            "@res/*": ["./resources/*"],
+            "ziggy/*": ["vendor/tightenco/ziggy/dist/*"]
+        }
+    },
+    "include": ["./resources/js/**/*.js", "./resources/vue/**/*.vue"],
+    "exclude": ["node_modules", ".vscode", "public"]
+}

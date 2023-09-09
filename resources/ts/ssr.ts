@@ -1,0 +1,1 @@
+import '@res/js/ssr'

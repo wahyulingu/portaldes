@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Actions\Sid\Keluarga;
+
+use App\Abstractions\Action\Action;
+use App\Actions\Sid\Penduduk\PendudukStoreAction;
+use App\Actions\Sid\Penduduk\PendudukUpdateAction;
+use App\Contracts\Action\RuledActionContract;
+use App\Enumerations\Penduduk\HubunganKeluarga;
+use App\Enumerations\Penduduk\Status\Sosial;
+use App\Models\Sid\SidKeluarga;
+use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
+use App\Repositories\Sid\SidKeluargaRepository;
+use App\Repositories\Sid\SidPendudukRepository;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+
+/**
+ * @extends Action<SidKeluarga>
+ */
+class KeluargaStoreAction extends Action implements RuledActionContract
+{
+    public function __construct(
+        readonly protected SidKeluargaRepository $sidKeluargaRepository,
+        readonly protected SidPendudukRepository $sidPendudukRepository,
+        readonly protected PendudukStoreAction $pendudukStoreAction,
+        readonly protected PendudukUpdateAction $pendudukUpdateAction
+    ) {
+    }
+
+    public function rules(array $payload): array
+    {
+        return [
+            'rukun_tetangga_id' => ['required', 'integer', Rule::exists(SidWilayahRukunTetangga::class, 'id')],
+            'nik' => ['required', 'string', 'regex:/^[0-9]{16}$/'],
+            'no_kk' => ['required', 'string', 'regex:/^[0-9]{16}$/'],
+            'alamat' => 'required|string',
+            'sosial' => ['required', Rule::enum(Sosial::class)],
+        ];
+    }
+
+    protected function handler(array $validatedPayload = [], array $payload = [])
+    {
+        return DB::transaction(function () use ($validatedPayload, $payload) {
+            if ($kepalaKeluarga = $this->sidPendudukRepository->findByNik($validatedPayload['nik'])) {
+                $this->pendudukUpdateAction->prepare($kepalaKeluarga)->execute([
+                    'no_kk' => $validatedPayload['no_kk'],
+                    'hubungan_keluarga' => HubunganKeluarga::kepala->value,
+                ]);
+            } else {
+                $this->pendudukStoreAction->execute([
+                    ...$payload, 'hubungan_keluarga' => HubunganKeluarga::kepala->value,
+                ]);
+            }
+
+            unset($validatedPayload['nik']);
+
+            return $this->sidKeluargaRepository->store($validatedPayload);
+        });
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "target": "esnext",
+        "useDefineForClassFields": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "strict": true,
+        "jsx": "preserve",
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "lib": ["esnext", "dom"],
+        "types": ["vite/client", "node"],
+        "isolatedModules": true,
+        "skipLibCheck": true,
+        "outDir": "dist",
+        "declaration": true,
+        "declarationMap": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./*"],
+            "@res/*": ["./resources/*"]
+        }
+    },
+    "include": [
+        "./resources/ts/**/*.ts",
+        "./resources/ts/**/*.d.ts",
+        "./resources/ts/**/*.interface.ts",
+        "./resources/ts/**/*.tsx",
+        "./resources/vue/**/*.vue",
+        "./node_modules/**/*.d.ts",
+        "*.ts"
+    ],
+    "exclude": ["./node_modules", "./.vscode", "./public", "./*.js"]
+}
