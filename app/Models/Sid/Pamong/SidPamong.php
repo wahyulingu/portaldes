@@ -10,18 +10,18 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class SidPamong extends Model
 {
-    use HasFactory, HasRepository;
+    use HasFactory;
+    use HasRepository;
 
-    protected $guarded = ["id"];
+    protected $guarded = ['id'];
 
     protected $table = 'sid_pamong';
 
     public function profile(): MorphTo
     {
-        if ($this->profile_type == SidPenduduk::class) {
+        if (SidPenduduk::class == $this->profile_type) {
             return $this->morphTo(id: 'nik');
         }
-
 
         return $this->morphTo(id: 'nipd');
     }

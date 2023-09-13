@@ -25,14 +25,14 @@ class SidPamongFactory extends Factory
             'golongan' => $this->faker->word,
             'tupoksi' => $this->faker->word,
             'tgl_pengangkatan' => $this->faker->date,
-            'profile_type' => SidPamongProfile::class
+            'profile_type' => SidPamongProfile::class,
         ];
     }
 
     public function fromPenduduk()
     {
-        return $this->state(fn () =>  [
-            'profile_type' => SidPenduduk::class
+        return $this->state(fn () => [
+            'profile_type' => SidPenduduk::class,
         ]);
     }
 }
