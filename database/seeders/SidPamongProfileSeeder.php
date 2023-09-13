@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class SidWilayahRukunWargaSeeder extends Seeder
+class SidPamongProfileSeeder extends Seeder
 {
     /**
      * Run the database seeds.

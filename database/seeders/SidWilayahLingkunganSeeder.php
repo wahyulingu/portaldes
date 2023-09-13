@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class SidWilayahLingkunganSeeder extends Seeder
@@ -12,6 +11,5 @@ class SidWilayahLingkunganSeeder extends Seeder
      */
     public function run(): void
     {
-        //
     }
 }
