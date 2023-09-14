@@ -31,22 +31,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
     Route::name('dashboard.')->prefix('dashboard')->group(function () {
         Route::name('content.')->prefix('content')->group(function () {
-            Route::name('article.')->prefix('article')->group(function () {
-            });
-
             Route::resource('article', Dashboard\Content\ArticleController::class);
-            // Route::resources(
-            //     [
-            //         'article.comment' => Dashboard\Content\Article\ArticleController::class,
-            // 'article.reaction' => Dashboard\Content\Article\ArticleController::class,
-            // 'article.star' => Dashboard\Content\Article\ArticleController::class,
-            //     ],
-
-            //     [
-            //         'except' => ['create', 'store', 'edit'],
-            //     ]
-            // );
-
             Route::resource('category', Dashboard\Content\CategoryController::class);
             Route::resource('comment', Dashboard\Content\CommentController::class);
             Route::resource('page', Dashboard\Content\PageController::class);

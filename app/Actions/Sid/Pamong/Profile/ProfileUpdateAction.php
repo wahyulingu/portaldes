@@ -27,11 +27,18 @@ class ProfileUpdateAction extends Action implements RuledActionContract
     public function rules(array $payload): array
     {
         return [
-            'rukun_tetangga_id' => ['sometimes', 'integer', Rule::exists(SidWilayahRukunTetangga::class, 'id')],
             'nik' => ['sometimes', 'string', 'regex:/^[0-9]{16}$/'],
-            'no_kk' => ['sometimes', 'string', 'regex:/^[0-9]{16}$/'],
-            'alamat' => 'sometimes|string',
-            'sosial' => ['sometimes', Rule::enum(Sosial::class)],
+            'nipd' => ['sometimes', 'numeric'],
+            'foto' => 'sometimes|image',
+            'telepon' => 'sometimes|string',
+            'alamat_sekarang' => 'sometimes|string',
+            'nama' => 'sometimes|string',
+            'tempat_lahir' => 'sometimes|string',
+            'email' => 'sometimes|string|email',
+            'kelamin' => ['sometimes', Rule::enum(JenisKelamin::class)],
+            'agama' => ['sometimes', Rule::enum(Agama::class)],
+            'pendidikan_kk' => ['sometimes', Rule::enum(Pendidikan::class)],
+            'tgl_lahir' => 'sometimes|date',
         ];
     }
 

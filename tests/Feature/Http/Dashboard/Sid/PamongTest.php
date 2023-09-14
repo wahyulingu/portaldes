@@ -216,7 +216,11 @@ class PamongTest extends TestCase
 
         $pamong = SidPamong::factory()->create();
 
-        $newData = ['alamat' => $this->faker->address];
+        $newData = [
+            'alamat_sekarang' => $this->faker->address,
+            'nama' => $this->faker->name,
+            'jabatan' => $this->faker->word,
+        ];
 
         $this
 
@@ -224,7 +228,42 @@ class PamongTest extends TestCase
             ->patch(sprintf('/dashboard/sid/pamong/%s', $pamong->getKey()), $newData)
             ->assertRedirectToRoute('dashboard.sid.pamong.show', $pamong->getKey());
 
-        $this->assertDatabaseHas(SidPamong::class, [...$newData, $pamong->getKeyName() => $pamong->getKey()]);
+        $freshPamong = $pamong->fresh();
+        $freshProfile = $pamong->profile->fresh();
+
+        $this->assertInstanceOf(SidPamongProfile::class, $pamong->profile);
+        $this->assertEquals($newData['jabatan'], $freshPamong->jabatan);
+        $this->assertEquals($newData['nama'], $freshProfile->nama);
+        $this->assertEquals($newData['alamat_sekarang'], $freshProfile->alamat_sekarang);
+    }
+
+    public function testCanUpdatePamongFromPenduduk(): void
+    {
+        $user = User::factory()->create();
+
+        $user->givePermissionTo(Permission::findOrCreate('update.sid.pamong'));
+
+        $pamong = SidPamong::factory()->fromPenduduk()->create();
+
+        $newData = [
+            'alamat_sekarang' => $this->faker->address,
+            'nama' => $this->faker->name,
+            'jabatan' => $this->faker->word,
+        ];
+
+        $this
+
+            ->actingAs($user)
+            ->patch(sprintf('/dashboard/sid/pamong/%s', $pamong->getKey()), $newData)
+            ->assertRedirectToRoute('dashboard.sid.pamong.show', $pamong->getKey());
+
+        $freshPamong = $pamong->fresh();
+        $freshProfile = $pamong->profile->fresh();
+
+        $this->assertInstanceOf(SidPenduduk::class, $pamong->profile);
+        $this->assertEquals($newData['jabatan'], $freshPamong->jabatan);
+        $this->assertEquals($newData['nama'], $freshProfile->nama);
+        $this->assertEquals($newData['alamat_sekarang'], $freshProfile->alamat_sekarang);
     }
 
     public function testOnlyAuthorizedUserCanUpdateSelectedPamong(): void
