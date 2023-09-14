@@ -7,7 +7,7 @@ use App\Actions\Sid\Pamong\Profile\ProfileUpdateAction;
 use App\Actions\Sid\Penduduk\PendudukUpdateAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Pamong\SidPamong;
-use App\Models\Sid\Pamong\SidPamongProfile;
+use App\Models\Sid\SidPenduduk;
 use App\Repositories\Sid\Pamong\SidPamongRepository;
 use Illuminate\Support\Facades\DB;
 
@@ -45,13 +45,24 @@ class PamongUpdateAction extends Action implements RuledActionContract
     protected function handler(array $validatedPayload = [], array $payload = [])
     {
         return DB::transaction(function () use ($validatedPayload, $payload) {
-            if ($this->pamong->profile instanceof SidPamongProfile) {
-                $this->profileUpdateAction->prepare($this->pamong->profile)->execute($payload);
+            if ($this->pamong->profile instanceof SidPenduduk) {
+                $this
+
+                    ->pendudukUpdateAction
+                    ->prepare($this->pamong->profile)
+                    ->execute($payload);
             } else {
-                $this->pendudukUpdateAction->prepare($this->pamong->profile)->execute($payload);
+                $this
+
+                ->profileUpdateAction
+                ->prepare($this->pamong->profile)
+                ->execute($payload);
             }
 
-            return $this->sidPamongRepository->update($this->pamong->getKey(), $validatedPayload);
+            return $this
+
+                ->sidPamongRepository
+                ->update($this->pamong->getKey(), $validatedPayload);
         });
     }
 }
