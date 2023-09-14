@@ -18,9 +18,10 @@ return new class() extends Migration {
 
             $table->unsignedBigInteger('nipd');
 
-            $table->foreignId('foto')->nullable();
+            $table->foreignId('foto_id')->nullable();
 
             $table->string('telepon');
+            $table->string('alamat_sekarang');
             $table->string('nama');
             $table->string('tempat_lahir');
             $table->string('email')->nullable();

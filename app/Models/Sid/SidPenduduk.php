@@ -35,6 +35,7 @@ class SidPenduduk extends Model
     ];
 
     protected $guarded = ['id'];
+
     protected $table = 'sid_penduduk';
 
     public function keluarga()

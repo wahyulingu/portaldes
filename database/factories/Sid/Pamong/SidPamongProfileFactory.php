@@ -22,6 +22,7 @@ class SidPamongProfileFactory extends Factory
         return [
             'nipd' => mt_rand(1000000, 9999999),
             'telepon' => $this->faker->phoneNumber,
+            'alamat_sekarang' => $this->faker->address,
             'nama' => $this->faker->name,
             'tempat_lahir' => $this->faker->city,
             'email' => $this->faker->email,

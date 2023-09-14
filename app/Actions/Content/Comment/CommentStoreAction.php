@@ -18,6 +18,7 @@ use Illuminate\Validation\Rule;
 class CommentStoreAction extends Action implements RuledActionContract
 {
     protected ContentModel $content;
+
     protected User $user;
 
     public function __construct(

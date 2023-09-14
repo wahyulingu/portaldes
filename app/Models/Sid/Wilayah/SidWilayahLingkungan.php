@@ -16,6 +16,7 @@ class SidWilayahLingkungan extends Model
     use HasRelationships;
 
     protected $guarded = ['id'];
+
     protected $table = 'sid_wilayah_lingkungan';
 
     public function rukunWarga(): HasMany

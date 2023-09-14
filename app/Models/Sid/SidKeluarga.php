@@ -15,7 +15,9 @@ class SidKeluarga extends Model
     use HasFactory;
 
     protected $casts = ['sosial' => Sosial::class];
+
     protected $guarded = ['id'];
+
     protected $table = 'sid_keluarga';
 
     public function anggota(): HasMany
