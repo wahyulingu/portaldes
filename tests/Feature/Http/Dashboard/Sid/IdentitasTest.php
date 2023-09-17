@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Dashboard\Sid;
 
 use App\Models\User;
+use App\Repositories\MetaRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Inertia\Testing\AssertableInertia;
@@ -46,13 +47,33 @@ class IdentitasTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('update.sid.identitas'));
 
-        $newData = ['alamat' => $this->faker->address];
+        $data = [
+            'nama_desa' => $this->faker->city,
+            'alamat' => $this->faker->address,
+            'telepon' => $this->faker->phoneNumber,
+            'email' => $this->faker->email,
+            'website' => $this->faker->domainName,
+            'kode_desa' => $this->faker->randomDigitNotNull,
+            'nama_kepala_desa' => $this->faker->name,
+            'kodepos' => $this->faker->randomDigitNotNull,
+            'nama_kecamatan' => $this->faker->city,
+            'kode_kecamatan' => $this->faker->randomDigitNotNull,
+            'nama_kepala_camat' => $this->faker->name,
+            'nama_kabupaten' => $this->faker->city,
+            'kode_kabupaten' => $this->faker->randomDigitNotNull,
+            'provinsi' => $this->faker->randomDigitNotNull,
+        ];
 
         $this
 
             ->actingAs($user)
-            ->patch(sprintf('/dashboard/sid/identitas'), $newData)
+            ->patch(sprintf('/dashboard/sid/identitas'), $data)
             ->assertRedirectToRoute('dashboard.sid.identitas.show');
+
+        $actualIdentitas = app(MetaRepository::class)->findBySlug('sid-identitas');
+
+        $this->assertNotNull($actualIdentitas);
+        $this->assertEquals($data, $actualIdentitas->value);
     }
 
     public function testOnlyAuthorizedUserCanUpdateIdentitas(): void
