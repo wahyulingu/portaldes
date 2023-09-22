@@ -16,7 +16,7 @@ class ProfileIndexAction extends IndexAction
         $filters = [];
 
         if (!empty($validatedPayload['keyword'])) {
-            $filters['anggota.nama:|anggota.nik:|no_kk:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
+            $filters['anggota.nama:|anggota.nik:|nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
         }
 
         return $this->repository->index(

@@ -22,7 +22,7 @@ class SidKeluarga extends Model
 
     public function anggota(): HasMany
     {
-        return $this->hasMany(SidPenduduk::class, 'no_kk', 'no_kk');
+        return $this->hasMany(SidPenduduk::class, 'nomor_kartu_keluarga', 'nomor_kartu_keluarga');
     }
 
     public function rukunTetangga()
@@ -34,7 +34,7 @@ class SidKeluarga extends Model
     {
         return $this
 
-            ->hasOne(SidPenduduk::class, 'no_kk', 'no_kk')
+            ->hasOne(SidPenduduk::class, 'nomor_kartu_keluarga', 'nomor_kartu_keluarga')
             ->whereHubunganKeluarga(HubunganKeluarga::kepala);
     }
 }

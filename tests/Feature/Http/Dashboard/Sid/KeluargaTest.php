@@ -63,7 +63,7 @@ class KeluargaTest extends TestCase
             'rukun_tetangga_id' => $rukunTetangga->getKey(),
             'alamat' => $this->faker->address,
             'sosial' => Sosial::random()->value,
-            'no_kk' => strval(mt_rand(1000000000000000, 9999999999999999)),
+            'nomor_kartu_keluarga' => strval(mt_rand(1000000000000000, 9999999999999999)),
         ];
 
         $kepalaKeluarga = [
@@ -92,7 +92,7 @@ class KeluargaTest extends TestCase
         $this->assertDatabaseHas(SidKeluarga::class, $keluarga);
         $this->assertDatabaseHas(SidPenduduk::class, [
             'nik' => $kepalaKeluarga['nik'],
-            'no_kk' => $keluarga['no_kk'],
+            'nomor_kartu_keluarga' => $keluarga['nomor_kartu_keluarga'],
         ]);
     }
 
@@ -108,7 +108,7 @@ class KeluargaTest extends TestCase
             'rukun_tetangga_id' => $rukunTetangga->getKey(),
             'alamat' => $this->faker->address,
             'sosial' => Sosial::random()->value,
-            'no_kk' => strval(mt_rand(1000000000000000, 9999999999999999)),
+            'nomor_kartu_keluarga' => strval(mt_rand(1000000000000000, 9999999999999999)),
             'nik' => strval($penduduk->nik),
         ];
 
@@ -122,7 +122,7 @@ class KeluargaTest extends TestCase
         $this->assertDatabaseHas(SidKeluarga::class, $keluarga);
         $this->assertDatabaseHas(SidPenduduk::class, [
             'nik' => strval($penduduk->nik),
-            'no_kk' => $keluarga['no_kk'],
+            'nomor_kartu_keluarga' => $keluarga['nomor_kartu_keluarga'],
             'hubungan_keluarga' => HubunganKeluarga::kepala->value]
         );
     }

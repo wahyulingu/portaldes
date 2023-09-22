@@ -57,7 +57,7 @@ class PendudukTest extends TestCase
 
         $penduduk = [
             'nik' => strval(mt_rand(1000000000000000, 9999999999999999)),
-            'no_kk' => strval(mt_rand(1000000000000000, 9999999999999999)),
+            'nomor_kartu_keluarga' => strval(mt_rand(1000000000000000, 9999999999999999)),
             'nama' => $this->faker->name,
             'ktp' => Ktp::random()->value,
             'hubungan_keluarga' => HubunganKeluarga::random()->value,
