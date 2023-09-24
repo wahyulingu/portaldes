@@ -22,6 +22,7 @@ return new class() extends Migration {
             $table->enum('sosial', Sosial::values(asArray: true));
 
             $table->dateTime('tgl_cetak')->nullable();
+
             $table->timestamps();
         });
     }
