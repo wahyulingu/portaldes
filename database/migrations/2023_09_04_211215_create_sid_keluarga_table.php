@@ -15,13 +15,14 @@ return new class() extends Migration {
             $table->id();
             $table->foreignId('rukun_tetangga_id');
 
-            $table->decimal('no_kk', 16, 0)->unique();
+            $table->decimal('nomor_kartu_keluarga', 16, 0)->unique();
 
             $table->text('alamat');
 
             $table->enum('sosial', Sosial::values(asArray: true));
 
             $table->dateTime('tgl_cetak')->nullable();
+
             $table->timestamps();
         });
     }

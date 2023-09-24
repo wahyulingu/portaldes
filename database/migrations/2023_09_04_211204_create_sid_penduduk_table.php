@@ -40,8 +40,8 @@ return new class() extends Migration {
             $table->text('alamat_sekarang')->nullable();
 
             $table->decimal('nik', 16, 0)->unique();
-            $table->decimal('no_kk', 16, 0);
-            $table->decimal('no_kk_sebelumnya', 16, 0)->nullable();
+            $table->decimal('nomor_kartu_keluarga', 16, 0);
+            $table->decimal('nomor_kartu_keluarga_sebelumnya', 16, 0)->nullable();
             $table->decimal('nik_ayah', 16, 0)->nullable();
             $table->decimal('nik_ibu', 16, 0)->nullable();
 

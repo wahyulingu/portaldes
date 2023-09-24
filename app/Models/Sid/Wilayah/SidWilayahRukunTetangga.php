@@ -14,6 +14,7 @@ class SidWilayahRukunTetangga extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
     protected $table = 'sid_wilayah_rukun_tetangga';
 
     public function rukunWarga(): BelongsTo

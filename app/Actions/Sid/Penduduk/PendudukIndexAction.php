@@ -16,7 +16,7 @@ class PendudukIndexAction extends IndexAction
         $filters = [];
 
         if (!empty($validatedPayload['keyword'])) {
-            $filters['nama:|nik:|no_kk:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
+            $filters['nama:|nik:|nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
         }
 
         return $this->repository->index(

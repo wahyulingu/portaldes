@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Dashboard\Sid;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -21,8 +20,6 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
 });
 
@@ -31,29 +28,21 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
     Route::name('dashboard.')->prefix('dashboard')->group(function () {
         Route::name('content.')->prefix('content')->group(function () {
-            Route::name('article.')->prefix('article')->group(function () {
-            });
-
             Route::resource('article', Dashboard\Content\ArticleController::class);
-            // Route::resources(
-            //     [
-            //         'article.comment' => Dashboard\Content\Article\ArticleController::class,
-            // 'article.reaction' => Dashboard\Content\Article\ArticleController::class,
-            // 'article.star' => Dashboard\Content\Article\ArticleController::class,
-            //     ],
-
-            //     [
-            //         'except' => ['create', 'store', 'edit'],
-            //     ]
-            // );
-
             Route::resource('category', Dashboard\Content\CategoryController::class);
             Route::resource('comment', Dashboard\Content\CommentController::class);
             Route::resource('page', Dashboard\Content\PageController::class);
         });
 
         Route::name('sid.')->prefix('sid')->group(function () {
+            Route::name('identitas.')->prefix('identitas')->group(function () {
+                Route::get('/', [Sid\IdentitasController::class, 'show'])->name('show');
+                Route::patch('/', [Sid\IdentitasController::class, 'update'])->name('update');
+                Route::get('edit', [Sid\IdentitasController::class, 'edit'])->name('edit');
+            });
+
             Route::resource('keluarga', Sid\KeluargaController::class);
+            Route::resource('pamong', Sid\PamongController::class);
             Route::resource('penduduk', Sid\PendudukController::class);
 
             Route::name('wilayah.')->prefix('wilayah')->group(function () {

@@ -60,7 +60,7 @@ class KeluargaController extends Controller
 
         return Response::redirectTo(route('dashboard.sid.keluarga.show', $keluarga->getKey()), 201)
 
-            ->banner(sprintf('Keluarga Created', $keluarga->nama));
+            ->banner(sprintf('Keluarga Created', $keluarga->nomor_kartu_keluarga));
     }
 
     /**
@@ -88,7 +88,7 @@ class KeluargaController extends Controller
 
         return Response::see(route('dashboard.sid.keluarga.show', $keluarga->getKey()))
 
-            ->banner(sprintf('Updated keluarga "%s"', $keluarga->nama));
+            ->banner(sprintf('Updated keluarga "%s"', $keluarga->nomor_kartu_keluarga));
     }
 
     /**
@@ -101,6 +101,6 @@ class KeluargaController extends Controller
         return Response::see(route('dashboard.sid.keluarga.index'))
 
             ->with('flash', compact('keluarga'))
-            ->dangerBanner(sprintf('Destroyed keluarga "%s"', $keluarga->nama));
+            ->dangerBanner(sprintf('Destroyed keluarga "%s"', $keluarga->nomor_kartu_keluarga));
     }
 }

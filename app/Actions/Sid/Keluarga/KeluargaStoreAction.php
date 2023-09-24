@@ -33,7 +33,7 @@ class KeluargaStoreAction extends Action implements RuledActionContract
         return [
             'rukun_tetangga_id' => ['required', 'integer', Rule::exists(SidWilayahRukunTetangga::class, 'id')],
             'nik' => ['required', 'string', 'regex:/^[0-9]{16}$/'],
-            'no_kk' => ['required', 'string', 'regex:/^[0-9]{16}$/'],
+            'nomor_kartu_keluarga' => ['required', 'string', 'regex:/^[0-9]{16}$/'],
             'alamat' => 'required|string',
             'sosial' => ['required', Rule::enum(Sosial::class)],
         ];
@@ -44,7 +44,7 @@ class KeluargaStoreAction extends Action implements RuledActionContract
         return DB::transaction(function () use ($validatedPayload, $payload) {
             if ($kepalaKeluarga = $this->sidPendudukRepository->findByNik($validatedPayload['nik'])) {
                 $this->pendudukUpdateAction->prepare($kepalaKeluarga)->execute([
-                    'no_kk' => $validatedPayload['no_kk'],
+                    'nomor_kartu_keluarga' => $validatedPayload['nomor_kartu_keluarga'],
                     'hubungan_keluarga' => HubunganKeluarga::kepala->value,
                 ]);
             } else {

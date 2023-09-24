@@ -4,16 +4,16 @@ namespace App\Enumerations;
 
 use App\Traits\Enum\Finder;
 
-enum Moderation
+enum Moderation: string
 {
     use Finder;
 
-    case pending;
-    case draft;
-    case accepted;
-    case active;
-    case closed;
-    case rejected;
-    case suspended;
-    case blocked;
+    case pending = 'pending';
+    case draft = 'draft';
+    case accepted = 'accepted';
+    case active = 'active';
+    case closed = 'closed';
+    case rejected = 'rejected';
+    case suspended = 'suspended';
+    case blocked = 'blocked';
 }

@@ -20,7 +20,7 @@ class SidKeluargaFactory extends Factory
     {
         return [
             'rukun_tetangga_id' => SidWilayahRukunTetangga::factory(),
-            'no_kk' => mt_rand(1000000000000000, 9999999999999999),
+            'nomor_kartu_keluarga' => mt_rand(1000000000000000, 9999999999999999),
             'alamat' => $this->faker->address,
             'sosial' => Sosial::random(),
         ];

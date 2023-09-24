@@ -14,6 +14,7 @@ class SidWilayahRukunWarga extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
     protected $table = 'sid_wilayah_rukun_warga';
 
     public function lingkungan(): BelongsTo

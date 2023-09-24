@@ -26,7 +26,7 @@ class PendudukUpdateAction extends Action implements RuledActionContract
     {
         return [
             'nik' => ['sometimes', 'string', 'regex:/^[0-9]{16}$/', Rule::unique(SidPenduduk::class)],
-            'no_kk' => ['sometimes', 'string', 'regex:/^[0-9]{16}$/'],
+            'nomor_kartu_keluarga' => ['sometimes', 'string', 'regex:/^[0-9]{16}$/'],
             'nama' => 'sometimes|string|max:32',
             'ktp' => ['sometimes', Rule::enum(Penduduk\Status\Ktp::class)],
             'hubungan_keluarga' => ['sometimes', Rule::enum(Penduduk\HubunganKeluarga::class)],
@@ -39,8 +39,8 @@ class PendudukUpdateAction extends Action implements RuledActionContract
             'pekerjaan' => ['sometimes', Rule::enum(Penduduk\Pekerjaan::class)],
             'kewarganegaraan' => ['sometimes', Rule::enum(Penduduk\WargaNegara::class)],
             'status_kawin' => ['sometimes', Rule::enum(Penduduk\Status\Perkawinan::class)],
-            'no_kk' => 'sometimes|string|size:16',
-            'no_kk_sebelumnya' => 'sometimes|string|size:16',
+            'nomor_kartu_keluarga' => 'sometimes|string|size:16',
+            'nomor_kartu_keluarga_sebelumnya' => 'sometimes|string|size:16',
             'pendidikan_tempuh' => ['sometimes', Rule::enum(Pendidikan\Tempuh::class)],
             'dokumen_pasport' => 'sometimes',
             'tanggal_akhir_paspor' => 'sometimes',

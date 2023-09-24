@@ -24,7 +24,7 @@ class PendudukStoreAction extends Action implements RuledActionContract
     {
         return [
             'nik' => ['required', 'string', 'regex:/^[0-9]{16}$/', Rule::unique(SidPenduduk::class)],
-            'no_kk' => ['required', 'string', 'regex:/^[0-9]{16}$/'],
+            'nomor_kartu_keluarga' => ['required', 'string', 'regex:/^[0-9]{16}$/'],
             'nama' => 'required|string|max:32',
             'ktp' => ['required', Rule::enum(Penduduk\Status\Ktp::class)],
             'hubungan_keluarga' => ['required', Rule::enum(Penduduk\HubunganKeluarga::class)],
@@ -37,8 +37,8 @@ class PendudukStoreAction extends Action implements RuledActionContract
             'pekerjaan' => ['required', Rule::enum(Penduduk\Pekerjaan::class)],
             'kewarganegaraan' => ['required', Rule::enum(Penduduk\WargaNegara::class)],
             'status_kawin' => ['required', Rule::enum(Penduduk\Status\Perkawinan::class)],
-            'no_kk' => 'nullable|string|size:16',
-            'no_kk_sebelumnya' => 'nullable|string|size:16',
+            'nomor_kartu_keluarga' => 'nullable|string|size:16',
+            'nomor_kartu_keluarga_sebelumnya' => 'nullable|string|size:16',
             'pendidikan_tempuh' => ['nullable', Rule::enum(Pendidikan\Tempuh::class)],
             'dokumen_pasport' => 'nullable',
             'tanggal_akhir_paspor' => 'nullable',

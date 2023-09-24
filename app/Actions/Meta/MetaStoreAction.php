@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Actions\Meta;
+
+use App\Abstractions\Action\Action;
+use App\Contracts\Action\RuledActionContract;
+use App\Models\Meta;
+use App\Repositories\MetaRepository;
+
+/**
+ * @extends Action<Meta>
+ */
+class MetaStoreAction extends Action implements RuledActionContract
+{
+    public function __construct(readonly protected MetaRepository $metaRepository)
+    {
+    }
+
+    public function rules(array $payload): array
+    {
+        return [
+            'name' => ['required', 'string'],
+            'value' => ['required'],
+        ];
+    }
+
+    protected function handler(array $validatedPayload = [], array $payload = [])
+    {
+        return $this->metaRepository->store($validatedPayload);
+    }
+}

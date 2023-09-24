@@ -35,11 +35,12 @@ class SidPenduduk extends Model
     ];
 
     protected $guarded = ['id'];
+
     protected $table = 'sid_penduduk';
 
     public function keluarga()
     {
-        return $this->belongsTo(SidKeluarga::class, 'no_kk', 'no_kk');
+        return $this->belongsTo(SidKeluarga::class, 'nomor_kartu_keluarga', 'nomor_kartu_keluarga');
     }
 
     public function rukunTetangga()
