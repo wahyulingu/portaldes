@@ -22,7 +22,7 @@ return new class() extends Migration {
 
             $table->json('payload');
 
-            $table->enum('status', Moderation::values(asArray: true));
+            $table->enum('status', Moderation::values()->toArray());
 
             $table->timestamps();
         });

@@ -16,26 +16,14 @@ trait Finder
         return static::collect()->where('value', $value)->first();
     }
 
-    public static function names(bool $asArray = false): Collection|array
+    public static function names(): Collection
     {
-        $names = static::collect()->map(fn (self $enum) => $enum->name);
-
-        if ($asArray) {
-            return $names->toArray();
-        }
-
-        return $names;
+        return static::collect()->map(fn (self $enum) => $enum->name);
     }
 
-    public static function values(bool $asArray = false): Collection|array
+    public static function values(): Collection
     {
-        $values = static::collect()->map(fn (self $enum) => $enum->value);
-
-        if ($asArray) {
-            return $values->toArray();
-        }
-
-        return $values;
+        return static::collect()->map(fn (self $enum) => $enum->value);
     }
 
     public static function collect(): Collection
