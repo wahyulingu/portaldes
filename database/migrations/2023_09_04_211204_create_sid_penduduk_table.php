@@ -50,76 +50,76 @@ return new class() extends Migration {
             $table->date('tanggal_perkawinan')->nullable();
             $table->date('tanggal_perceraian')->nullable();
 
-            $table->enum('hubungan_keluarga', Penduduk\HubunganKeluarga::values(asArray: true));
-            $table->enum('kelamin', Medis\JenisKelamin::values(asArray: true));
-            $table->enum('agama', Penduduk\Agama::values(asArray: true));
-            $table->enum('pendidikan_kk', Pendidikan\Pendidikan::values(asArray: true));
+            $table->enum('hubungan_keluarga', Penduduk\HubunganKeluarga::values()->toArray());
+            $table->enum('kelamin', Medis\JenisKelamin::values()->toArray());
+            $table->enum('agama', Penduduk\Agama::values()->toArray());
+            $table->enum('pendidikan_kk', Pendidikan\Pendidikan::values()->toArray());
 
             $table
 
-                ->enum('status_penduduk', Penduduk\Status::values(asArray: true))
+                ->enum('status_penduduk', Penduduk\Status::values()->toArray())
                 ->nullable();
 
             $table
 
-                ->enum('pendidikan_tempuh', Pendidikan\Tempuh::values(asArray: true))
+                ->enum('pendidikan_tempuh', Pendidikan\Tempuh::values()->toArray())
                 ->nullable();
 
-            $table->enum('pekerjaan', Penduduk\Pekerjaan::values(asArray: true));
-            $table->enum('status_kawin', Penduduk\Status\Perkawinan::values(asArray: true));
+            $table->enum('pekerjaan', Penduduk\Pekerjaan::values()->toArray());
+            $table->enum('status_kawin', Penduduk\Status\Perkawinan::values()->toArray());
 
-            $table->enum('kewarganegaraan', Penduduk\WargaNegara::values(asArray: true));
+            $table->enum('kewarganegaraan', Penduduk\WargaNegara::values()->toArray());
 
             $table
 
-                ->enum('darah', Medis\GolonganDarah::values(asArray: true))
-                ->nullable();
-
-            $table
-
-                ->enum('kb', Medis\Kontrasepsi::values(asArray: true))
-                ->nullable();
-
-            $table->enum('ktp', Penduduk\Status\Ktp::values(asArray: true));
-
-            $table
-
-                ->enum('status_ktp', Penduduk\Status\Ktp::values(asArray: true))
+                ->enum('darah', Medis\GolonganDarah::values()->toArray())
                 ->nullable();
 
             $table
 
-                ->enum('tempat_dilahirkan', Medis\Kelahiran\Tempat::values(asArray: true))
+                ->enum('kb', Medis\Kontrasepsi::values()->toArray())
+                ->nullable();
+
+            $table->enum('ktp', Penduduk\Status\Ktp::values()->toArray());
+
+            $table
+
+                ->enum('status_ktp', Penduduk\Status\Ktp::values()->toArray())
                 ->nullable();
 
             $table
 
-                ->enum('jenis_kelahiran', Medis\Kelahiran\Jenis::values(asArray: true))
+                ->enum('tempat_dilahirkan', Medis\Kelahiran\Tempat::values()->toArray())
                 ->nullable();
 
             $table
 
-                ->enum('penolong_kelahiran', Medis\Kelahiran\Penolong::values(asArray: true))
+                ->enum('jenis_kelahiran', Medis\Kelahiran\Jenis::values()->toArray())
                 ->nullable();
 
             $table
 
-                ->enum('hamil', Medis\Kehamilan::values(asArray: true))
+                ->enum('penolong_kelahiran', Medis\Kelahiran\Penolong::values()->toArray())
                 ->nullable();
 
             $table
 
-                ->enum('cacat', Medis\Cacat::values(asArray: true))
+                ->enum('hamil', Medis\Kehamilan::values()->toArray())
                 ->nullable();
 
             $table
 
-                ->enum('sakit', Medis\Penyakit::values(asArray: true))
+                ->enum('cacat', Medis\Cacat::values()->toArray())
                 ->nullable();
 
             $table
 
-                ->enum('status_dasar', Penduduk\Status\Dasar::values(asArray: true))
+                ->enum('sakit', Medis\Penyakit::values()->toArray())
+                ->nullable();
+
+            $table
+
+                ->enum('status_dasar', Penduduk\Status\Dasar::values()->toArray())
                 ->default(Penduduk\Status\Dasar::hidup->value);
 
             $table->timestamps();

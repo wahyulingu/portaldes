@@ -11,11 +11,13 @@ abstract class Action
 
     final public function execute(array $payload = [])
     {
+        $validatedPayload = [];
+
         if ($this instanceof RuledActionContract) {
             $validatedPayload = Validator::make($payload, $this->rules($payload))->validate();
         }
 
-        return $this->handler(@$validatedPayload ?: [], $payload);
+        return $this->handler($validatedPayload, $payload);
     }
 
     final public static function handle(array $payload = [], callable $before = null)

@@ -19,7 +19,7 @@ return new class() extends Migration {
 
             $table->text('alamat');
 
-            $table->enum('sosial', Sosial::values(asArray: true));
+            $table->enum('sosial', Sosial::values()->toArray());
 
             $table->dateTime('tgl_cetak')->nullable();
 

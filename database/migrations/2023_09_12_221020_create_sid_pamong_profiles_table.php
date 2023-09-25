@@ -26,9 +26,9 @@ return new class() extends Migration {
             $table->string('tempat_lahir');
             $table->string('email')->nullable();
 
-            $table->enum('kelamin', JenisKelamin::values(asArray: true));
-            $table->enum('pendidikan_kk', Pendidikan::values(asArray: true));
-            $table->enum('agama', Agama::values(asArray: true));
+            $table->enum('kelamin', JenisKelamin::values()->toArray());
+            $table->enum('pendidikan_kk', Pendidikan::values()->toArray());
+            $table->enum('agama', Agama::values()->toArray());
 
             $table->date('tgl_lahir');
 
