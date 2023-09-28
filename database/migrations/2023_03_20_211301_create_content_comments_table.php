@@ -18,7 +18,7 @@ return new class() extends Migration {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('content_id');
             $table->string('content_type');
-            $table->enum('status', Moderation::names(asArray: true))->default(Moderation::draft->name);
+            $table->enum('status', Moderation::values()->toArray())->default(Moderation::draft->name);
             $table->text('body');
         });
     }

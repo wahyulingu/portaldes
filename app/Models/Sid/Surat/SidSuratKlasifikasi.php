@@ -10,4 +10,6 @@ class SidSuratKlasifikasi extends Model
     use HasFactory;
 
     protected $casts = ['enabled' => 'boolean'];
+
+    protected $table = 'sid_surat_klasifikasi';
 }

@@ -18,7 +18,7 @@ return new class() extends Migration {
             $table->string('slug')->unique();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->enum('status', Moderation::names(asArray: true))->default(Moderation::draft->name);
+            $table->enum('status', Moderation::values()->toArray())->default(Moderation::draft->name);
         });
     }
 

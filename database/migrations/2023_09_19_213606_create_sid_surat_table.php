@@ -12,8 +12,8 @@ return new class() extends Migration {
     {
         Schema::create('sid_surat', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sid_document_id');
             $table->foreignId('surat_id');
+            $table->foreignId('pamong_id');
 
             $table->string('surat_type');
             $table->string('nomor_urut')->nullable();

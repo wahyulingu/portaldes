@@ -12,7 +12,7 @@ return new class() extends Migration {
     {
         Schema::create('sid_surat_keluar', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sid_surat_klasifikasi_id');
+            $table->foreignId('klasifikasi_id');
 
             $table->string('tujuan');
             $table->string('short_desc');

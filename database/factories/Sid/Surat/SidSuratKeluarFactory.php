@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Sid\Surat;
 
+use App\Models\Sid\Surat\SidSuratKlasifikasi;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class SidSuratKeluarFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'klasifikasi_id' => SidSuratKlasifikasi::factory(),
+            'tujuan' => $this->faker->company,
+            'short_desc' => $this->faker->paragraph,
         ];
     }
 }

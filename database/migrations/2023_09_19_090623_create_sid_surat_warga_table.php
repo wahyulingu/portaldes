@@ -13,11 +13,8 @@ return new class() extends Migration {
     {
         Schema::create('sid_surat_warga', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('sid_document_id');
             $table->foreignId('penduduk_id');
 
-            $table->string('tujuan');
             $table->string('short_desc');
 
             $table->json('payload');

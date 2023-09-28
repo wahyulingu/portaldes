@@ -16,7 +16,7 @@ return new class() extends Migration {
             $table->timestamps();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id')->nullable();
-            $table->enum('status', Moderation::names(asArray: true))->default(Moderation::draft->name);
+            $table->enum('status', Moderation::names()->toArray())->default(Moderation::draft->name);
             $table->string('slug');
             $table->string('title');
             $table->text('body');
