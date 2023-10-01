@@ -3,14 +3,14 @@
 namespace App\Actions\Sid\Pamong;
 
 use App\Abstractions\Action\Action;
-use App\Actions\Sid\Pamong\Profile\ProfileStoreAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Pamong\SidPamong;
-use App\Models\Sid\Pamong\SidPamongProfile;
-use App\Models\Sid\SidPenduduk;
-use App\Repositories\Sid\Pamong\SidPamongRepository;
-use App\Repositories\Sid\SidPendudukRepository;
-use Illuminate\Support\Facades\DB;
+use App\Models\Sid\Surat\SidSurat;
+use App\Models\Sid\Surat\SidSuratKeluar;
+use App\Models\Sid\Surat\SidSuratMasuk;
+use App\Models\Sid\Surat\SidSuratWarga;
+use App\Repositories\Sid\Surat\SidSuratRepository;
+use Illuminate\Validation\Rule;
 
 /**
  * @extends Action<SidPamong>
@@ -18,47 +18,53 @@ use Illuminate\Support\Facades\DB;
 class PamongStoreAction extends Action implements RuledActionContract
 {
     public function __construct(
-        readonly protected ProfileStoreAction $profileStoreAction,
-        readonly protected SidPamongRepository $sidPamongRepository,
-        readonly protected SidPendudukRepository $sidPendudukRepository
+        readonly protected SidSuratRepository $sidSuratRepository
     ) {
     }
 
     public function rules(array $payload): array
     {
-        // $table->foreignId('pamong_id');
+        $suratTypes = [
+            SidSuratMasuk::class,
+            SidSuratWarga::class,
+            SidSuratKeluar::class,
+        ];
 
-        // $table->string('surat_type');
-        // $table->string('nomor_urut')->nullable();
-        // $table->string('nomor_surat');
-
-        // $table->date('tanggal_surat');
         return [
-            'pamong_id' => ['required', 'string', 'regex:/^[0-9]{16}$/'],
-            'nipd' => ['required', 'numeric'],
-            'jabatan' => 'required|string',
-            'golongan' => 'required|string',
-            'tupoksi' => 'required|string',
-            'tgl_pengangkatan' => 'required|date',
+            'pamong_id' => [
+                'required',
+                'integer',
+
+                Rule::exists(SidPamong::class, 'id'),
+            ],
+
+            'surat_type' => ['required', Rule::in($suratTypes)],
+
+            'surat_id' => [
+                'required',
+                'integer',
+
+                Rule::exists(@$payload['surat_type'], 'id')->when(
+                    fn () => in_array(@$payload['surat_type'], $suratTypes)
+                ),
+            ],
+
+            'nomor_surat' => [
+                'required',
+                'string',
+                'min:4',
+                'max8',
+
+                Rule::unique(SidSurat::class),
+            ],
+
+            'nomor_urut' => 'nullable|numeric',
+            'tanggal_surat' => 'rquired|date',
         ];
     }
 
     protected function handler(array $validatedPayload = [], array $payload = [])
     {
-        return DB::transaction(function () use ($validatedPayload, $payload) {
-            if (!$this->sidPendudukRepository->findByNik($validatedPayload['nik'])) {
-                $this->profileStoreAction->execute($payload);
-
-                return $this->sidPamongRepository->store([
-                    'profile_type' => SidPamongProfile::class,
-                    ...$validatedPayload,
-                ]);
-            }
-
-            return $this->sidPamongRepository->store([
-                'profile_type' => SidPenduduk::class,
-                ...$validatedPayload,
-            ]);
-        });
+        return $this->sidSuratRepository->store($validatedPayload);
     }
 }
