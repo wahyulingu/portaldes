@@ -19,7 +19,7 @@ return new class() extends Migration {
             $table->string('nomor_urut')->nullable();
             $table->string('nomor_surat');
 
-            $table->date('tanggal');
+            $table->timestamp('tanggal');
             $table->timestamps();
         });
     }

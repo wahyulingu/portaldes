@@ -15,6 +15,8 @@ class SidSurat extends Model implements BelongsToDocument
     use BelongsToSidDocument;
     use BelongsToSidPamong;
 
+    protected $guarded = ['id'];
+
     protected $table = 'sid_surat';
 
     public function surat(): MorphTo

@@ -43,10 +43,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             });
 
             Route::name('surat.')->prefix('surat')->group(function () {
-                Route::resource('surat-keluar', Surat\SuratController::class);
+                Route::resource('surat-keluar', Surat\SuratKeluarController::class);
             });
 
-            Route::resource('surat', Surat\SuratController::class)->only(['index', 'destroy']);
+            // Route::resource('surat', Surat\SuratController::class)->only(['index', 'destroy']);
 
             Route::resource('keluarga', Sid\KeluargaController::class);
             Route::resource('pamong', Sid\PamongController::class);

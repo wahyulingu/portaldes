@@ -58,7 +58,7 @@ class SuratKeluarController extends Controller
          */
         $suratKeluar = $suratKeluarStoreAction->execute($request->all());
 
-        return Response::redirectTo(route('dashboard.sid.wilayah.surat.keluar.show', $suratKeluar->getKey()), 201)
+        return Response::redirectTo(route('dashboard.sid.surat.surat-keluar.show', $suratKeluar->getKey()), 201)
 
             ->banner(sprintf('Surat Created', $suratKeluar->surat->nomor_surat));
     }
@@ -86,7 +86,7 @@ class SuratKeluarController extends Controller
     {
         $suratKeluarUpdateAction->prepare($surat_keluar)->execute($request->all());
 
-        return Response::see(route('dashboard.sid.wilayah.surat.show', $surat_keluar->getKey()))
+        return Response::see(route('dashboard.sid.surat.surat-keluar.show', $surat_keluar->getKey()))
 
             ->banner(sprintf('Updated Surat "%s"', $surat_keluar->nama));
     }

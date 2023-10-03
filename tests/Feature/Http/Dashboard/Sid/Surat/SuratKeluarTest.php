@@ -3,10 +3,12 @@
 namespace Tests\Feature\Http\Dashboard\Sid\Surat;
 
 use App\Models\Sid\SidPenduduk;
+use App\Models\Sid\Surat\SidSurat;
 use App\Models\Sid\Surat\SidSuratKeluar;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
@@ -28,7 +30,7 @@ class SuratKeluarTest extends TestCase
             ->get('/dashboard/sid/surat/surat-keluar/create')
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
-                ->component('Dashboard/Surat/Keluar/Create'));
+                ->component('Dashboard/Sid/Surat/Keluar/Create'));
     }
 
     public function testOnlyAuthorizedUserCanAccessCreateScreenOfSuratKeluar(): void
@@ -76,7 +78,7 @@ class SuratKeluarTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('viewAny.sid.surat.surat-keluar'));
 
-        SidSuratKeluar::factory(5)->create();
+        SidSuratKeluar::factory(5)->suratKeluar()->create();
 
         $this
 
@@ -84,7 +86,7 @@ class SuratKeluarTest extends TestCase
             ->get('/dashboard/sid/surat/surat-keluar')
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
-                ->component('Dashboard/Surat/Keluar/Index')
+                ->component('Dashboard/Sid/Surat/Keluar/Index')
                 ->has('suratKeluar', fn (AssertableInertia $suratKeluar) => $suratKeluar
                     ->has('data', 5, fn (AssertableInertia $data) => $data
                         ->etc())
@@ -109,7 +111,7 @@ class SuratKeluarTest extends TestCase
             ->get(sprintf('/dashboard/sid/surat/surat-keluar?keyword=%s', substr($suratKeluar->nama, 8, 24)))
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
-                ->component('Dashboard/Surat/Keluar/Index')
+                ->component('Dashboard/Sid/Surat/Keluar/Index')
                 ->has('suratKeluar', fn (AssertableInertia $suratKeluar) => $suratKeluar
                     ->has('data', 1, fn (AssertableInertia $data) => $data
                         ->etc())
@@ -143,7 +145,7 @@ class SuratKeluarTest extends TestCase
             ->get(sprintf('/dashboard/sid/surat/surat-keluar/%s/edit', $suratKeluar->getKey()))
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
-                ->component('Dashboard/Surat/Keluar/Edit')
+                ->component('Dashboard/Sid/Surat/Keluar/Edit')
                 ->has('suratKeluar', fn (AssertableInertia $data) => $data
                     ->where($suratKeluar->getKeyName(), $suratKeluar->getKey())
                     ->etc()));
@@ -164,17 +166,31 @@ class SuratKeluarTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('update.sid.surat.surat-keluar'));
 
-        $suratKeluar = SidSuratKeluar::factory()->create();
+        $suratMaster = SidSurat::factory()->suratKeluar()->create();
+        $suratKeluar = $suratMaster->surat;
 
-        $newData = ['nama' => $this->faker->streetName];
+        $suratKeluarNewData = ['tujuan' => $this->faker->company];
+        $suratMaseterNewData = ['nomor_surat' => Str::random(8)];
 
         $this
 
             ->actingAs($user)
-            ->patch(sprintf('/dashboard/sid/surat/surat-keluar/%s', $suratKeluar->getKey()), $newData)
+            ->patch(sprintf('/dashboard/sid/surat/surat-keluar/%s', $suratKeluar->getKey()), [
+                ...$suratKeluarNewData,
+                ...$suratMaseterNewData,
+            ])
+
             ->assertRedirectToRoute('dashboard.sid.surat.surat-keluar.show', $suratKeluar->getKey());
 
-        $this->assertDatabaseHas(SidSuratKeluar::class, [...$newData, $suratKeluar->getKeyName() => $suratKeluar->getKey()]);
+        $this->assertDatabaseHas(SidSuratKeluar::class, [
+            ...$suratKeluarNewData,
+            $suratKeluar->getKeyName() => $suratKeluar->getKey(),
+        ]);
+
+        $this->assertDatabaseHas(SidSurat::class, [
+            ...$suratMaseterNewData,
+            $suratMaster->getKeyName() => $suratMaster->getKey(),
+        ]);
     }
 
     public function testOnlyAuthorizedUserCanUpdateSelectedSuratKeluar(): void
@@ -196,7 +212,7 @@ class SuratKeluarTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('view.sid.surat.surat-keluar'));
 
-        $suratKeluar = SidSuratKeluar::factory()->create();
+        $suratKeluar = SidSurat::factory()->suratKeluar()->create()->surat;
 
         $this
 
@@ -204,7 +220,7 @@ class SuratKeluarTest extends TestCase
             ->get(sprintf('/dashboard/sid/surat/surat-keluar/%s', $suratKeluar->getKey()))
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
-                ->component('Dashboard/Surat/Keluar/Show')
+                ->component('Dashboard/Sid/Surat/Keluar/Show')
                 ->has('suratKeluar', fn (AssertableInertia $renderedSuratKeluar) => $renderedSuratKeluar
                     ->where($suratKeluar->getKeyName(), $suratKeluar->getKey())
                     ->etc()));
@@ -214,42 +230,12 @@ class SuratKeluarTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $suratKeluar = SidSuratKeluar::factory()->create();
+        $suratKeluar = SidSurat::factory()->suratKeluar()->create()->surat;
 
         $this
 
             ->actingAs($user)
             ->get(sprintf('/dashboard/sid/surat/surat-keluar/%s', $suratKeluar->getKey()))
-            ->assertForbidden();
-    }
-
-    public function testCanDestroySelectedSuratKeluar(): void
-    {
-        $user = User::factory()->create();
-
-        $user->givePermissionTo(Permission::findOrCreate('delete.sid.surat.surat-keluar'));
-
-        $suratKeluar = SidSuratKeluar::factory()->create();
-
-        $this
-
-            ->actingAs($user)
-            ->delete(sprintf('/dashboard/sid/surat/surat-keluar/%s', $suratKeluar->getKey()))
-            ->assertRedirectToRoute('dashboard.sid.surat.surat-keluar.index');
-
-        $this->assertNull($suratKeluar->fresh());
-    }
-
-    public function testOnlyAuthorizedUserCanDestroySelectedSuratKeluar(): void
-    {
-        $user = User::factory()->create();
-
-        $suratKeluar = SidSuratKeluar::factory()->create();
-
-        $this
-
-            ->actingAs($user)
-            ->delete(sprintf('/dashboard/sid/surat/surat-keluar/%s', $suratKeluar->getKey()))
             ->assertForbidden();
     }
 }

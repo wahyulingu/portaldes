@@ -32,7 +32,7 @@ class SuratUpdateAction extends Action implements RuledActionContract
                 'sometimes',
                 'string',
                 'min:4',
-                'max8',
+                'max:8',
 
                 Rule::unique(SidSurat::class),
             ],

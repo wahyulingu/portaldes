@@ -52,7 +52,7 @@ class SuratStoreAction extends Action implements RuledActionContract
                 'required',
                 'string',
                 'min:4',
-                'max8',
+                'max:8',
 
                 Rule::unique(SidSurat::class),
             ],
