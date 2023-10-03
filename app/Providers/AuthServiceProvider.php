@@ -10,6 +10,7 @@ use App\Models\Sid\Pamong\SidPamong;
 use App\Models\Sid\SidKeluarga;
 use App\Models\Sid\SidPenduduk;
 use App\Models\Sid\Surat\SidSurat;
+use App\Models\Sid\Surat\SidSuratKeluar;
 use App\Models\Sid\Wilayah\SidWilayahLingkungan;
 use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
 use App\Models\Sid\Wilayah\SidWilayahRukunWarga;
@@ -22,6 +23,7 @@ use App\Policies\Content\PagePolicy;
 use App\Policies\Sid\KeluargaPolicy;
 use App\Policies\Sid\PamongPolicy;
 use App\Policies\Sid\PendudukPolicy;
+use App\Policies\Sid\Surat\SuratKeluarPolicy;
 use App\Policies\Sid\Surat\SuratPolicy;
 use App\Policies\Sid\Wilayah\LingkunganPolicy;
 use App\Policies\Sid\Wilayah\RukunTetanggaPolicy;
@@ -49,6 +51,7 @@ class AuthServiceProvider extends ServiceProvider
         SidPamong::class => PamongPolicy::class,
         SidPenduduk::class => PendudukPolicy::class,
         SidSurat::class => SuratPolicy::class,
+        SidSuratKeluar::class => SuratKeluarPolicy::class,
 
         SidWilayahLingkungan::class => LingkunganPolicy::class,
         SidWilayahRukunWarga::class => RukunWargaPolicy::class,

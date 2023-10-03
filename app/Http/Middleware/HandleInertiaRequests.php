@@ -31,6 +31,13 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        if ($request->user()) {
+            $request
+
+                ->user()
+                ->load('permissions', 'roles', 'roles.permissions');
+        }
+
         return array_merge(parent::share($request), [
             'laravelVersion' => Application::VERSION,
             'phpVersion' => PHP_VERSION,

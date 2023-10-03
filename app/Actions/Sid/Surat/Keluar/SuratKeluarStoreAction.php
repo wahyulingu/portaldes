@@ -15,7 +15,7 @@ use Illuminate\Validation\Rule;
 /**
  * @extends Action<SidSurat>
  */
-class SuratKeluarUpdateAction extends Action implements RuledActionContract
+class SuratKeluarStoreAction extends Action implements RuledActionContract
 {
     public function __construct(
         readonly protected SidSuratKeluarRepository $sidSuratKeluarRepository,

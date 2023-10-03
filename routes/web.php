@@ -42,6 +42,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
                 Route::get('edit', [Sid\IdentitasController::class, 'edit'])->name('edit');
             });
 
+            Route::name('surat.')->prefix('surat')->group(function () {
+                Route::resource('surat-keluar', Surat\SuratController::class);
+            });
+
             Route::resource('surat', Surat\SuratController::class)->only(['index', 'destroy']);
 
             Route::resource('keluarga', Sid\KeluargaController::class);

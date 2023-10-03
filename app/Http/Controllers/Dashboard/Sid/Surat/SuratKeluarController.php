@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard\Sid\Wilayah;
+namespace App\Http\Controllers\Dashboard\Sid\Surat;
 
-use App\Actions\Sid\Wilayah\Lingkungan\LingkunganDeleteAction;
-use App\Actions\Sid\Wilayah\Lingkungan\LingkunganIndexAction;
-use App\Actions\Sid\Wilayah\Lingkungan\LingkunganStoreAction;
-use App\Actions\Sid\Wilayah\Lingkungan\LingkunganUpdateAction;
+use App\Actions\Sid\Surat\Keluar\SuratKeluarStoreAction;
+use App\Actions\Sid\Surat\Keluar\SuratKeluarUpdateAction;
+use App\Actions\Sid\Surat\SuratKeluarIndexAction;
 use App\Http\Controllers\Controller;
-use App\Models\Sid\Wilayah\SidWilayahLingkungan;
+use App\Models\Sid\Surat\SidSurat;
+use App\Models\Sid\Surat\SidSuratKeluar;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 
-class LingkunganController extends Controller
+class SuratKeluarController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(SidWilayahLingkungan::class, 'lingkungan');
+        $this->authorizeResource(SidSuratKeluar::class, 'surat_keluar');
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, LingkunganIndexAction $index)
+    public function index(Request $request, SuratKeluarIndexAction $suratKeluarIndexAction)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 
@@ -31,13 +31,13 @@ class LingkunganController extends Controller
             $payload['keyword'] = $keyword;
         }
 
-        $lingkungan = $index->execute($payload);
+        $surat = $suratKeluarIndexAction->execute($payload);
 
-        if ($lingkungan instanceof LengthAwarePaginator) {
-            $lingkungan->appends($request->query());
+        if ($surat instanceof LengthAwarePaginator) {
+            $surat->appends($request->query());
         }
 
-        return Inertia::render('Dashboard/Sid/Wilayah/Lingkungan/Index', compact('lingkungan'));
+        return Inertia::render('Dashboard/Sid/Surat/Keluar/Index', compact('surat'));
     }
 
     /**
@@ -45,62 +45,49 @@ class LingkunganController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Dashboard/Sid/Wilayah/Lingkungan/Create');
+        return Inertia::render('Dashboard/Sid/Surat/Keluar/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, LingkunganStoreAction $lingkunganStoreAction)
+    public function store(Request $request, SuratKeluarStoreAction $suratKeluarStoreAction)
     {
         /**
-         * @var SidWilayahLingkungan
+         * @var SidSurat
          */
-        $lingkungan = $lingkunganStoreAction->execute($request->all());
+        $suratKeluar = $suratKeluarStoreAction->execute($request->all());
 
-        return Response::redirectTo(route('dashboard.sid.wilayah.lingkungan.show', $lingkungan->getKey()), 201)
+        return Response::redirectTo(route('dashboard.sid.wilayah.surat.keluar.show', $suratKeluar->getKey()), 201)
 
-            ->banner(sprintf('Lingkungan Created', $lingkungan->nama));
+            ->banner(sprintf('Surat Created', $suratKeluar->surat->nomor_surat));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(SidWilayahLingkungan $lingkungan)
+    public function show(SidSuratKeluar $surat_keluar)
     {
-        return Inertia::render('Dashboard/Sid/Wilayah/Lingkungan/Show', compact('lingkungan'));
+        return Inertia::render('Dashboard/Sid/Surat/Keluar/Show', compact('surat_keluar'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SidWilayahLingkungan $lingkungan)
+    public function edit(SidSuratKeluar $surat_keluar)
     {
-        return Inertia::render('Dashboard/Sid/Wilayah/Lingkungan/Edit', compact('lingkungan'));
+        return Inertia::render('Dashboard/Sid/Surat/Edit', compact('surat_keluar'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SidWilayahLingkungan $lingkungan, LingkunganUpdateAction $lingkunganUpdateAction)
+    public function update(Request $request, SidSuratKeluar $surat_keluar, SuratKeluarUpdateAction $suratKeluarUpdateAction)
     {
-        $lingkunganUpdateAction->prepare($lingkungan)->execute($request->all());
+        $suratKeluarUpdateAction->prepare($surat_keluar)->execute($request->all());
 
-        return Response::see(route('dashboard.sid.wilayah.lingkungan.show', $lingkungan->getKey()))
+        return Response::see(route('dashboard.sid.wilayah.surat.show', $surat_keluar->getKey()))
 
-            ->banner(sprintf('Updated Lingkungan "%s"', $lingkungan->nama));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(SidWilayahLingkungan $lingkungan, LingkunganDeleteAction $lingkunganDeleteAction)
-    {
-        $lingkunganDeleteAction->prepare($lingkungan)->execute();
-
-        return Response::see(route('dashboard.sid.wilayah.lingkungan.index'))
-
-            ->with('flash', compact('lingkungan'))
-            ->dangerBanner(sprintf('Destroyed Lingkungan "%s"', $lingkungan->nama));
+            ->banner(sprintf('Updated Surat "%s"', $surat_keluar->nama));
     }
 }

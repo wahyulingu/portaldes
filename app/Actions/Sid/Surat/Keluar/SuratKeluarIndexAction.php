@@ -3,11 +3,11 @@
 namespace App\Actions\Sid\Surat;
 
 use App\Abstractions\Action\IndexAction;
-use App\Repositories\Sid\Surat\SidSuratRepository;
+use App\Repositories\Sid\Surat\SidSuratKeluarRepository;
 
-class SuratIndexAction extends IndexAction
+class SuratKeluarIndexAction extends IndexAction
 {
-    public function __construct(readonly protected SidSuratRepository $repository)
+    public function __construct(readonly protected SidSuratKeluarRepository $repository)
     {
     }
 
@@ -16,7 +16,7 @@ class SuratIndexAction extends IndexAction
         $filters = [];
 
         if (!empty($validatedPayload['keyword'])) {
-            $filters['pamong.nama:|pamong.nik:|pamong.nomor_kartu_keluarga:|surat.penduduk.nama:|surat.penduduk.nik:|surat.penduduk.nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
+            $filters['klasifikasi.nama|tujuan|short_desc|penduduk.nama:|penduduk.nik:|penduduk.nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
         }
 
         return $this->repository->index(

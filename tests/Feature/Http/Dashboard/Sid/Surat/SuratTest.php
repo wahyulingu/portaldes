@@ -77,7 +77,7 @@ class SuratTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('delete.sid.surat'));
 
-        $surat = SidSurat::factory()->create();
+        $surat = SidSurat::factory()->create()->load('surat');
 
         $this
 
@@ -85,6 +85,7 @@ class SuratTest extends TestCase
             ->delete(sprintf('/dashboard/sid/surat/%s', $surat->getKey()))
             ->assertRedirectToRoute('dashboard.sid.surat.index');
 
+        $this->assertNull($surat->surat->fresh()); // Surat Type (Surat Masuk, Keluar, Warga)
         $this->assertNull($surat->fresh());
     }
 
