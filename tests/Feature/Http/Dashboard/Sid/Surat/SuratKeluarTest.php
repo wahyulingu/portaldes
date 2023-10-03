@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Http\Dashboard\Sid\Surat;
 
-use App\Models\Sid\SidPenduduk;
 use App\Models\Sid\Surat\SidSurat;
 use App\Models\Sid\Surat\SidSuratKeluar;
+use App\Models\Sid\Surat\SidSuratKlasifikasi;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -45,13 +45,13 @@ class SuratKeluarTest extends TestCase
     public function testCanStoreNewSuratKeluar(): void
     {
         $user = User::factory()->create();
-        $penduduk = SidPenduduk::factory()->create();
 
         $user->givePermissionTo(Permission::findOrCreate('create.sid.surat.surat-keluar'));
 
         $suratKeluar = [
-            'ketua_id' => $penduduk->getKey(),
-            'nama' => $this->faker->streetName,
+            'klasifikasi_id' => SidSuratKlasifikasi::factory()->create()->getKey(),
+            'tujuan' => $this->faker->company,
+            'short_desc' => $this->faker->paragraph,
         ];
 
         $this

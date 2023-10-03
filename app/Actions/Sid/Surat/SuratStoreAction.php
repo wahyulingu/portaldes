@@ -29,7 +29,7 @@ class SuratStoreAction extends Action implements RuledActionContract
             SidSuratKeluar::class,
         ];
 
-        return [
+        $rules = [
             'pamong_id' => [
                 'required',
                 'integer',
@@ -38,15 +38,6 @@ class SuratStoreAction extends Action implements RuledActionContract
             ],
 
             'surat_type' => ['required', Rule::in($suratTypes)],
-
-            'surat_id' => [
-                'required',
-                'integer',
-
-                Rule::exists(@$payload['surat_type'], 'id')->when(
-                    fn () => in_array(@$payload['surat_type'], $suratTypes)
-                ),
-            ],
 
             'nomor_surat' => [
                 'required',
@@ -58,8 +49,23 @@ class SuratStoreAction extends Action implements RuledActionContract
             ],
 
             'nomor_urut' => 'nullable|numeric',
-            'tanggal_surat' => 'rquired|date',
+            'tanggal_surat' => 'required|date',
         ];
+
+        if (in_array(@$payload['surat_type'], $suratTypes)) {
+            return [
+                ...$rules,
+
+                'surat_id' => [
+                    'required',
+                    'integer',
+
+                    Rule::exists(@$payload['surat_type'], 'id'),
+                ],
+            ];
+        }
+
+        return $rules;
     }
 
     protected function handler(array $validatedPayload = [], array $payload = [])
