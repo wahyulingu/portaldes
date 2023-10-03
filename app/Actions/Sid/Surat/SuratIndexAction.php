@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Actions\Sid\Pamong;
+namespace App\Actions\Sid\Surat;
 
 use App\Abstractions\Action\IndexAction;
-use App\Repositories\Sid\Pamong\SidPamongRepository;
+use App\Repositories\Sid\Surat\SidSuratRepository;
 
-class PamongIndexAction extends IndexAction
+class SuratIndexAction extends IndexAction
 {
-    public function __construct(readonly protected SidPamongRepository $repository)
+    public function __construct(readonly protected SidSuratRepository $repository)
     {
     }
 
@@ -16,7 +16,7 @@ class PamongIndexAction extends IndexAction
         $filters = [];
 
         if (!empty($validatedPayload['keyword'])) {
-            $filters['anggota.nama:|anggota.nik:|nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
+            $filters['penduduk.nama:|penduduk.nik:|penduduk.nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
         }
 
         return $this->repository->index(

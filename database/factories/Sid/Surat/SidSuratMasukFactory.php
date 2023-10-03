@@ -20,8 +20,8 @@ class SidSuratMasukFactory extends Factory
         return [
             'klasifikasi_id' => SidSuratKlasifikasi::factory(),
             'pengirim' => $this->faker->company,
-            'perihal_surat' => $this->faker->paragraph,
-            'isi_disposisi' => $this->faker->paragraph,
+            'perihal' => $this->faker->paragraph,
+            'disposisi' => $this->faker->paragraph,
             'tanggal_penerimaan' => now(),
         ];
     }

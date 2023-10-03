@@ -26,7 +26,7 @@ class SidSuratFactory extends Factory
             'surat_id' => SidSuratMasuk::factory(),
             'surat_type' => SidSuratMasuk::class,
             'nomor_surat' => Str::random(),
-            'tanggal_surat' => now(),
+            'tanggal' => now(),
         ];
     }
 

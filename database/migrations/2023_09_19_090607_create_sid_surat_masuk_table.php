@@ -15,8 +15,8 @@ return new class() extends Migration {
             $table->foreignId('klasifikasi_id')->nullable();
 
             $table->string('pengirim');
-            $table->string('perihal_surat');
-            $table->string('isi_disposisi');
+            $table->string('perihal');
+            $table->string('disposisi');
 
             $table->date('tanggal_penerimaan');
 

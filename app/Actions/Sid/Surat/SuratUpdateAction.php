@@ -1,68 +1,49 @@
 <?php
 
-namespace App\Actions\Sid\Pamong;
+namespace App\Actions\Sid\Surat;
 
 use App\Abstractions\Action\Action;
-use App\Actions\Sid\Pamong\Profile\ProfileUpdateAction;
-use App\Actions\Sid\Penduduk\PendudukUpdateAction;
 use App\Contracts\Action\RuledActionContract;
-use App\Models\Sid\Pamong\SidPamong;
-use App\Models\Sid\SidPenduduk;
-use App\Repositories\Sid\Pamong\SidPamongRepository;
-use Illuminate\Support\Facades\DB;
+use App\Models\Sid\Surat\SidSurat;
+use App\Repositories\Sid\Surat\SidSuratRepository;
+use Illuminate\Validation\Rule;
 
 /**
- * @extends Action<SidPamong>
+ * @extends Action<SidSurat>
  */
-class PamongUpdateAction extends Action implements RuledActionContract
+class SuratUpdateAction extends Action implements RuledActionContract
 {
-    protected SidPamong $pamong;
+    protected SidSurat $surat;
 
     public function __construct(
-        readonly protected SidPamongRepository $sidPamongRepository,
-        readonly protected ProfileUpdateAction $profileUpdateAction,
-        readonly protected PendudukUpdateAction $pendudukUpdateAction
+        readonly protected SidSuratRepository $sidSuratRepository
     ) {
     }
 
-    public function prepare(SidPamong $pamong)
+    public function prepare(SidSurat $surat)
     {
-        return tap($this, fn (self $action) => $action->pamong = $pamong);
+        return tap($this, fn (self $action) => $action->surat = $surat);
     }
 
     public function rules(array $payload): array
     {
         return [
-            'nik' => ['sometimes', 'string', 'regex:/^[0-9]{16}$/'],
-            'nipd' => ['sometimes', 'numeric'],
-            'jabatan' => 'sometimes|string',
-            'golongan' => 'sometimes|string',
-            'tupoksi' => 'sometimes|string',
-            'tgl_pengangkatan' => 'sometimes|date',
+            'nomor_surat' => [
+                'sometimes',
+                'string',
+                'min:4',
+                'max8',
+
+                Rule::unique(SidSurat::class),
+            ],
+
+            'nomor_urut' => 'sometimes|numeric',
+            'tanggal_surat' => 'sometimes|date',
         ];
     }
 
     protected function handler(array $validatedPayload = [], array $payload = [])
     {
-        return DB::transaction(function () use ($validatedPayload, $payload) {
-            if ($this->pamong->profile instanceof SidPenduduk) {
-                $this
-
-                    ->pendudukUpdateAction
-                    ->prepare($this->pamong->profile)
-                    ->execute($payload);
-            } else {
-                $this
-
-                ->profileUpdateAction
-                ->prepare($this->pamong->profile)
-                ->execute($payload);
-            }
-
-            return $this
-
-                ->sidPamongRepository
-                ->update($this->pamong->getKey(), $validatedPayload);
-        });
+        return $this->sidSuratRepository->update($this->surat->getKey(), $validatedPayload);
     }
 }

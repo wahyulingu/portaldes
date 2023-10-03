@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Actions\Sid\Pamong;
+namespace App\Actions\Sid\Surat;
 
 use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
-use App\Models\Sid\Pamong\SidPamong;
 use App\Models\Sid\Surat\SidSurat;
 use App\Models\Sid\Surat\SidSuratKeluar;
 use App\Models\Sid\Surat\SidSuratMasuk;
@@ -13,9 +12,9 @@ use App\Repositories\Sid\Surat\SidSuratRepository;
 use Illuminate\Validation\Rule;
 
 /**
- * @extends Action<SidPamong>
+ * @extends Action<SidSurat>
  */
-class PamongStoreAction extends Action implements RuledActionContract
+class SuratStoreAction extends Action implements RuledActionContract
 {
     public function __construct(
         readonly protected SidSuratRepository $sidSuratRepository
@@ -35,7 +34,7 @@ class PamongStoreAction extends Action implements RuledActionContract
                 'required',
                 'integer',
 
-                Rule::exists(SidPamong::class, 'id'),
+                Rule::exists(SidSurat::class, 'id'),
             ],
 
             'surat_type' => ['required', Rule::in($suratTypes)],

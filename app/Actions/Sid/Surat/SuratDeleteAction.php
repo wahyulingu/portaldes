@@ -1,26 +1,37 @@
 <?php
 
-namespace App\Actions\Sid\Pamong;
+namespace App\Actions\Sid\Surat;
 
 use App\Abstractions\Action\Action;
-use App\Models\Sid\Pamong\SidPamong;
-use App\Repositories\Sid\Pamong\SidPamongRepository;
+use App\Models\Sid\Surat\SidSurat;
+use App\Repositories\Sid\Surat\SidSuratRepository;
+use Illuminate\Support\Facades\DB;
 
-class PamongDeleteAction extends Action
+class SuratDeleteAction extends Action
 {
-    protected SidPamong $pamong;
+    protected SidSurat $surat;
 
-    public function __construct(protected readonly SidPamongRepository $sidPamongRepository)
+    public function __construct(protected readonly SidSuratRepository $sidSuratRepository)
     {
     }
 
-    public function prepare(SidPamong $pamong): self
+    public function prepare(SidSurat $surat): self
     {
-        return tap($this, fn (self $action) => $action->pamong = $pamong);
+        return tap($this, fn (self $action) => $action->surat = $surat);
     }
 
     protected function handler(array $validatedPayload = [], array $payload = []): bool
     {
-        return $this->sidPamongRepository->delete($this->pamong->getKey());
+        return DB::transaction(
+            fn () => tap(
+                $this->sidSuratRepository->delete($this->surat->getKey()),
+
+                fn () => $this
+
+                    ->surat
+                    ->surat_type::repository()
+                    ->delete($this->surat->surat_id)
+            )
+        );
     }
 }

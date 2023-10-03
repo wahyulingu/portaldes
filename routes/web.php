@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Dashboard\Sid;
+use App\Http\Controllers\Dashboard\Sid\Surat;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -40,6 +41,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
                 Route::patch('/', [Sid\IdentitasController::class, 'update'])->name('update');
                 Route::get('edit', [Sid\IdentitasController::class, 'edit'])->name('edit');
             });
+
+            Route::resource('surat', Surat\SuratController::class)->only(['index', 'destroy']);
 
             Route::resource('keluarga', Sid\KeluargaController::class);
             Route::resource('pamong', Sid\PamongController::class);

@@ -15,8 +15,6 @@ return new class() extends Migration {
             $table->id();
             $table->foreignId('penduduk_id');
 
-            $table->string('short_desc');
-
             $table->json('payload');
 
             $table->enum('status', Moderation::values()->toArray());
