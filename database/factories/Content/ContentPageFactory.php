@@ -6,7 +6,6 @@ use App\Enumerations\Moderation;
 use App\Models\Content\ContentCategory;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 /**
@@ -25,7 +24,7 @@ class ContentPageFactory extends Factory
             'title' => Str::ucfirst($this->faker->words(12, true)),
             'body' => Str::ucfirst($this->faker->paragraphs(8, true)),
             'description' => Str::ucfirst($this->faker->words(12, true)),
-            'status' => Arr::random(Moderation::names()),
+            'status' => Moderation::random(),
             'user_id' => User::factory(),
         ];
     }

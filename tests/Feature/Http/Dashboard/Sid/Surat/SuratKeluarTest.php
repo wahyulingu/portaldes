@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Dashboard\Sid\Surat;
 
+use App\Models\Sid\Pamong\SidPamong;
 use App\Models\Sid\Surat\SidSurat;
 use App\Models\Sid\Surat\SidSuratKeluar;
 use App\Models\Sid\Surat\SidSuratKlasifikasi;
@@ -54,12 +55,23 @@ class SuratKeluarTest extends TestCase
             'short_desc' => $this->faker->paragraph,
         ];
 
+        $suratMaster = [
+            'pamong_id' => SidPamong::factory()->create()->getKey(),
+            'nomor_surat' => Str::random(8),
+            'tanggal' => now()->addDays(mt_rand(1, 8)),
+        ];
+
         $this
 
             ->actingAs($user)
-            ->post('/dashboard/sid/surat/surat-keluar', $suratKeluar)
+            ->post('/dashboard/sid/surat/surat-keluar', [
+                ...$suratKeluar,
+                ...$suratMaster,
+            ])
+
             ->assertSuccessful();
 
+        $this->assertDatabaseHas(SidSurat::class, $suratMaster);
         $this->assertDatabaseHas(SidSuratKeluar::class, $suratKeluar);
     }
 
@@ -78,7 +90,7 @@ class SuratKeluarTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('viewAny.sid.surat.surat-keluar'));
 
-        SidSuratKeluar::factory(5)->suratKeluar()->create();
+        SidSurat::factory(5)->suratKeluar()->create();
 
         $this
 
@@ -87,7 +99,7 @@ class SuratKeluarTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Dashboard/Sid/Surat/Keluar/Index')
-                ->has('suratKeluar', fn (AssertableInertia $suratKeluar) => $suratKeluar
+                ->has('surat', fn (AssertableInertia $suratKeluar) => $suratKeluar
                     ->has('data', 5, fn (AssertableInertia $data) => $data
                         ->etc())
                     ->where('total', 5)
@@ -103,7 +115,7 @@ class SuratKeluarTest extends TestCase
         /**
          * @var SidSuratKeluar
          */
-        $suratKeluar = SidSuratKeluar::factory()->create();
+        $suratKeluar = SidSurat::factory()->suratKeluar()->create()->surat;
 
         $this
 
@@ -112,7 +124,7 @@ class SuratKeluarTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Dashboard/Sid/Surat/Keluar/Index')
-                ->has('suratKeluar', fn (AssertableInertia $suratKeluar) => $suratKeluar
+                ->has('surat', fn (AssertableInertia $suratKeluar) => $suratKeluar
                     ->has('data', 1, fn (AssertableInertia $data) => $data
                         ->etc())
                     ->where('total', 1)
@@ -146,7 +158,7 @@ class SuratKeluarTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Dashboard/Sid/Surat/Keluar/Edit')
-                ->has('suratKeluar', fn (AssertableInertia $data) => $data
+                ->has('surat_keluar', fn (AssertableInertia $data) => $data
                     ->where($suratKeluar->getKeyName(), $suratKeluar->getKey())
                     ->etc()));
     }
@@ -221,7 +233,7 @@ class SuratKeluarTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Dashboard/Sid/Surat/Keluar/Show')
-                ->has('suratKeluar', fn (AssertableInertia $renderedSuratKeluar) => $renderedSuratKeluar
+                ->has('surat_keluar', fn (AssertableInertia $renderedSuratKeluar) => $renderedSuratKeluar
                     ->where($suratKeluar->getKeyName(), $suratKeluar->getKey())
                     ->etc()));
     }

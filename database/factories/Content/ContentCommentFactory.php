@@ -7,7 +7,6 @@ use App\Models\Content\ContentArticle;
 use App\Models\Content\ContentComment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 /**
@@ -24,7 +23,7 @@ class ContentCommentFactory extends Factory
     {
         return [
             'body' => Str::ucfirst($this->faker->words(12, true)),
-            'status' => Arr::random(Moderation::names()),
+            'status' => Moderation::random(),
             'user_id' => User::factory(),
             'content_id' => ContentArticle::factory(),
             'content_type' => ContentArticle::class,

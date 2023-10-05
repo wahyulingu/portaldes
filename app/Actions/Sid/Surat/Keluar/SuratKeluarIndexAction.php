@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Sid\Surat;
+namespace App\Actions\Sid\Surat\Keluar;
 
 use App\Abstractions\Action\IndexAction;
 use App\Repositories\Sid\Surat\SidSuratKeluarRepository;

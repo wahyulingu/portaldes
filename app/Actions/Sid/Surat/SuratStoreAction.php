@@ -4,6 +4,7 @@ namespace App\Actions\Sid\Surat;
 
 use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
+use App\Models\Sid\Pamong\SidPamong;
 use App\Models\Sid\Surat\SidSurat;
 use App\Models\Sid\Surat\SidSuratKeluar;
 use App\Models\Sid\Surat\SidSuratMasuk;
@@ -34,7 +35,7 @@ class SuratStoreAction extends Action implements RuledActionContract
                 'required',
                 'integer',
 
-                Rule::exists(SidSurat::class, 'id'),
+                Rule::exists(SidPamong::class, 'id'),
             ],
 
             'surat_type' => ['required', Rule::in($suratTypes)],
@@ -49,7 +50,7 @@ class SuratStoreAction extends Action implements RuledActionContract
             ],
 
             'nomor_urut' => 'nullable|numeric',
-            'tanggal_surat' => 'required|date',
+            'tanggal' => 'required|date',
         ];
 
         if (in_array(@$payload['surat_type'], $suratTypes)) {

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Dashboard\Sid\Surat;
 
+use App\Actions\Sid\Surat\Keluar\SuratKeluarIndexAction;
 use App\Actions\Sid\Surat\Keluar\SuratKeluarStoreAction;
 use App\Actions\Sid\Surat\Keluar\SuratKeluarUpdateAction;
-use App\Actions\Sid\Surat\SuratKeluarIndexAction;
 use App\Http\Controllers\Controller;
 use App\Models\Sid\Surat\SidSurat;
 use App\Models\Sid\Surat\SidSuratKeluar;
@@ -76,7 +76,7 @@ class SuratKeluarController extends Controller
      */
     public function edit(SidSuratKeluar $surat_keluar)
     {
-        return Inertia::render('Dashboard/Sid/Surat/Edit', compact('surat_keluar'));
+        return Inertia::render('Dashboard/Sid/Surat/Keluar/Edit', compact('surat_keluar'));
     }
 
     /**

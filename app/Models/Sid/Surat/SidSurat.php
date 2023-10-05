@@ -15,6 +15,8 @@ class SidSurat extends Model implements BelongsToDocument
     use BelongsToSidDocument;
     use BelongsToSidPamong;
 
+    protected $casts = ['tanggal_surat' => 'date'];
+
     protected $guarded = ['id'];
 
     protected $table = 'sid_surat';
