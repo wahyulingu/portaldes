@@ -198,7 +198,7 @@ class ArticleTest extends TestCase
 
             ->actingAs($user)
             ->patch(sprintf('/dashboard/content/article/%s', $article->getKey()), $newData)
-            ->assertSuccessful();
+            ->assertRedirectToRoute('dashboard.content.article.show', $article->getKey());
 
         $this->assertDatabaseHas(ContentArticle::class, [...$newData, 'id' => $article->getKey()]);
     }
@@ -261,7 +261,7 @@ class ArticleTest extends TestCase
 
             ->actingAs($user)
             ->delete(sprintf('/dashboard/content/article/%s', $article->getKey()))
-            ->assertOk();
+            ->assertRedirectToRoute('dashboard.content.article.index');
 
         $this->assertNull($article->fresh());
     }

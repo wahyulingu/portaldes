@@ -11,4 +11,20 @@ class CategoryIndexAction extends ContentIndexAction
     {
         parent::__construct($repository);
     }
+
+    public function rules(array $payload): array
+    {
+        return [...parent::rules($payload), 'noparentOnly' => 'sometimes|bolean'];
+    }
+
+    protected function handler(array $validatedPayload = [], array $payload = [])
+    {
+        $filters = [];
+
+        if (!empty($validatedPayload['keyword'])) {
+            $filters['title:|description:|body:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
+        }
+
+        return $this->repository->index($filters);
+    }
 }

@@ -19,9 +19,6 @@ abstract class ContentIndexAction extends IndexAction
             $filters['title:|description:|body:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
         }
 
-        return $this->repository->index(
-            $filters,
-            paginate: @$validatedPayload['limit'] ?: 0
-        );
+        return $this->repository->index($filters);
     }
 }

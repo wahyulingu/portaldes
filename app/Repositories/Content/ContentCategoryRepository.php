@@ -10,4 +10,7 @@ use App\Models\Content\ContentArticle;
  */
 class ContentCategoryRepository extends ContentRepository
 {
+    public function indexNoparentOnly()
+    {
+    }
 }

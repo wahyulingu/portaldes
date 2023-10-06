@@ -47,7 +47,12 @@ class PageController extends Controller
      */
     public function store(Request $request, PageStoreAction $store)
     {
-        return Response::make($store->prepare($request->user())->execute($request->all()), 202);
+        $page = $store->prepare($request->user())->execute($request->all());
+
+        return Response::redirectTo(route('dashboard.sid.wilayah.page.index'), 201)
+
+        ->with('flash', compact('page'))
+        ->banner(sprintf('Lingkungan Created', $page->title));
     }
 
     /**

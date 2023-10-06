@@ -58,9 +58,10 @@ class CategoryController extends Controller
          */
         $category = $categoryStoreAction->execute($request->all());
 
-        $response = Response::see(route('dashboard.content.category.show', $category->getKey()));
+        return Response::redirectToRoute('dashboard.content.category.index', status: 201)
 
-        return $response->banner(sprintf('Category Created', $category->name));
+            ->with('flash', compact('category'))
+            ->banner(sprintf('Lingkungan Created', $category->title));
     }
 
     /**
@@ -86,9 +87,10 @@ class CategoryController extends Controller
     {
         $categoryUpdateAction->prepare($category)->execute($request->all());
 
-        $response = Response::see(route('dashboard.content.category.show', $category->getKey()));
+        return Response::redirectToRoute('dashboard.content.category.show', $category->getKey())
 
-        return $response->banner(sprintf('Updated category "%s"', $category->name));
+            ->with('flash', compact('category'))
+            ->banner(sprintf('Category Updated', $category->title));
     }
 
     /**
@@ -98,7 +100,7 @@ class CategoryController extends Controller
     {
         $categoryDeleteAction->prepare($category)->execute();
 
-        return Response::see(route('dashboard.content.category.index'))
+        return Response::redirectToRoute('dashboard.content.category.index')
 
             ->with('flash', compact('category'))
             ->dangerBanner(sprintf('Destroyed category "%s"', $category->name));

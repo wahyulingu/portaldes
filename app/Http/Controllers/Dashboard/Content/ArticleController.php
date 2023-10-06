@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\Content;
 
+use App\Actions\Content\Article\ArticleDeleteAction;
 use App\Actions\Content\Article\ArticleStoreAction;
 use App\Actions\Content\Article\ArticleUpdateAction;
 use App\Actions\Content\Article\Index\ArticleIndexAction;
@@ -29,8 +30,8 @@ class ArticleController extends Controller
             $payload['keyword'] = $keyword;
         }
 
-        return Inertia::render('Dashboard/Content/Category/Index', [
-            'categories' => $index->execute($payload),
+        return Inertia::render('Dashboard/Content/Article/Index', [
+            'articles' => $index->execute($payload),
         ]);
     }
 
@@ -47,7 +48,12 @@ class ArticleController extends Controller
      */
     public function store(Request $request, ArticleStoreAction $store)
     {
-        return Response::make($store->prepare($request->user())->execute($request->all()), 202);
+        $article = $store->prepare($request->user())->execute($request->all());
+
+        return Response::redirectToRoute('dashboard.content.article.index', status: 201)
+
+            ->with('flash', compact('article'))
+            ->banner(sprintf('Lingkungan Created', $article->title));
     }
 
     /**
@@ -71,14 +77,24 @@ class ArticleController extends Controller
      */
     public function update(Request $request, ContentArticle $article, ArticleUpdateAction $update)
     {
-        return Response::make($update->prepare($article)->execute($request->all()));
+        $update->prepare($article)->execute($request->all());
+
+        return Response::redirectToRoute('dashboard.content.article.show', $article->getKey())
+
+            ->with('flash', compact('article'))
+            ->banner(sprintf('Lingkungan Created', $article->title));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ContentArticle $article)
+    public function destroy(ContentArticle $article, ArticleDeleteAction $articleDeleteAction)
     {
-        return Response::make($article->delete());
+        $articleDeleteAction->prepare($article)->execute();
+
+        return Response::redirectToRoute('dashboard.content.article.index')
+
+            ->with('flash', compact('article'))
+            ->banner(sprintf('Lingkungan Created', $article->title));
     }
 }

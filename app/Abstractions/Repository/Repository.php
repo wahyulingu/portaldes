@@ -7,9 +7,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
-use Throwable;
 
 /**
  * @template TModel of \Illuminate\Database\Eloquent\Model
@@ -146,7 +144,7 @@ abstract class Repository
             return Container::getInstance()
                 ->make(Application::class)
                 ->getNamespace();
-        } catch (Throwable) {
+        } catch (\Throwable) {
             return 'App\\';
         }
     }
@@ -196,19 +194,11 @@ abstract class Repository
         return $this->model()::whereKey($key)->delete();
     }
 
-    public function index(
-        array $filters = [],
-        int $paginate = 0,
-        array $columns = ['*'],
-        string $pageName = 'page',
-        int $page = null
-    ): Collection|LengthAwarePaginator {
-        /**
-         * @var Builder
-         */
-        $builder = $this->model(fn ($model) => $model::where(
+    public function index(array $filters = []): Builder
+    {
+        return $this->model(fn ($model) => $model::where(
             fn (Builder $builder) => collect($filters)->each(
-                function (string|Model $filterValue, string $filterKey) use ($builder) {
+                function (string|Model|callable $filterValue, string $filterKey) use ($builder) {
                     if (is_string($filterValue)) {
                         return collect(explode('|', $filterKey))->each(
                             function (string|Model $keyValue, string $keyIndex) use ($builder, $filterValue) {
@@ -233,20 +223,16 @@ abstract class Repository
                         );
                     }
 
-                    $builder->whereHas($filterKey, fn ($builder) => $builder->where(
-                        $filterValue->getKeyName(),
-                        $filterValue->getKey()
-                    ));
+                    if ($filterValue instanceof Model) {
+                        $filterValue = fn ($builder) => $builder->where(
+                            $filterValue->getKeyName(),
+                            $filterValue->getKey()
+                        );
+                    }
+
+                    $builder->whereHas($filterKey, $filterValue);
                 }
             )
         ));
-
-        $builder->latest();
-
-        if (0 < $paginate) {
-            return $builder->paginate($paginate, $columns, $pageName, $page);
-        }
-
-        return $builder->get($columns);
     }
 }
