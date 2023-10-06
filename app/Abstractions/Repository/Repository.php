@@ -10,6 +10,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
+ * Beberapa baris dari file ini atau
+ * potongan kode ini diambil dari internal laravel,
+ * kalau saya tidak salah ingat, sepertinya dari Factory,
+ * saya ambil dan sesuaikan untuk melakukan hal yang kurang lebih
+ * mirip untuk melakukan pemanggilan Repository, Hahahaha :p.
+ */
+
+/**
  * @template TModel of \Illuminate\Database\Eloquent\Model
  */
 abstract class Repository
