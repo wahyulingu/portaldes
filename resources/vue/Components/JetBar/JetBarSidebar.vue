@@ -40,18 +40,18 @@
                     Manage Article
                 </DropdownLink>
             </SidebarDropdown>
-            <SidebarDropdown icon="globe" title="Article">
+            <SidebarDropdown icon="globe" title="Content">
                 <DropdownLink :href="route('dashboard.content.article.index')">
-                    Manage Article
+                    Article
                 </DropdownLink>
-                <DropdownLink :href="route('dashboard.content.article.index')">
-                    Manage Article
+                <DropdownLink :href="route('dashboard.content.category.index')">
+                    Category
                 </DropdownLink>
-                <DropdownLink :href="route('dashboard.content.article.index')">
-                    Manage Article
+                <DropdownLink :href="route('dashboard.content.comment.index')">
+                    Comment
                 </DropdownLink>
-                <DropdownLink :href="route('dashboard.content.article.index')">
-                    Manage Article
+                <DropdownLink :href="route('dashboard.content.page.index')">
+                    Page
                 </DropdownLink>
             </SidebarDropdown>
             <SidebarDropdown icon="globe" title="Article">

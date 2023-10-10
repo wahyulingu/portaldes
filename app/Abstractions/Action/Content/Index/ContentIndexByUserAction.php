@@ -13,8 +13,8 @@ abstract class ContentIndexByUserAction extends ContentIndexAction
         return tap($this, fn (self $action) => $action->user = $user);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function filters(array $payload = []): array
     {
-        return $this->repository->index(['user' => $this->user], @$validatedPayload['limit'] ?: 0);
+        return ['user' => $this->user];
     }
 }

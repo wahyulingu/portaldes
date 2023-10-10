@@ -11,4 +11,9 @@ class ArticleIndexAction extends ContentIndexAction
     {
         parent::__construct($repository);
     }
+
+    protected function filters(array $payload = []): array
+    {
+        return [];
+    }
 }

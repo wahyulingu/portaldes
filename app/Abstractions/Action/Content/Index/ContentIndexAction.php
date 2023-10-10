@@ -7,21 +7,8 @@ use App\Abstractions\Repository\ContentRepository;
 
 abstract class ContentIndexAction extends IndexAction
 {
-    public function __construct(protected ContentRepository $repository)
+    public function __construct(ContentRepository $repository)
     {
-    }
-
-    protected function handler(array $validatedPayload = [], array $payload = [])
-    {
-        $filters = [];
-
-        if (!empty($validatedPayload['keyword'])) {
-            $filters['title:|description:|body:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
-        }
-
-        return $this->repository->index(
-            $filters,
-            paginate: @$validatedPayload['limit'] ?: 0
-        );
+        parent::__construct($repository);
     }
 }

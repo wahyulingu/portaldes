@@ -13,14 +13,8 @@ abstract class ContentIndexByCategoryAction extends ContentIndexAction
         return tap($this, fn (self $action) => $action->category = $category);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function filters(array $payload = []): array
     {
-        return $this->repository->index(
-            filters: [
-                'category' => $this->category,
-            ],
-
-            paginate: @$validatedPayload['limit'] ?: 0
-        );
+        return ['category' => $this->category];
     }
 }

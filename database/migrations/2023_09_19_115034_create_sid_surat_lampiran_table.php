@@ -10,12 +10,10 @@ return new class() extends Migration {
      */
     public function up(): void
     {
-        Schema::create('sid_surat_lampirans', function (Blueprint $table) {
+        Schema::create('sid_surat_lampiran', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('surat_id');
-
-            $table->string('surat_type');
             $table->string('description');
 
             $table->timestamps();
@@ -27,6 +25,6 @@ return new class() extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('sid_surat_lampirans');
+        Schema::dropIfExists('sid_surat_lampiran');
     }
 };

@@ -168,7 +168,7 @@ class RukunTetanggaTest extends TestCase
 
         $rukunTetangga = SidWilayahRukunTetangga::factory()->create();
 
-        $newData = ['nama' => $this->faker->streetName];
+        $newData = ['nama' => trim($this->faker->streetName)];
 
         $this
 

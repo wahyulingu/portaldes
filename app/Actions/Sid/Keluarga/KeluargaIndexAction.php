@@ -7,11 +7,12 @@ use App\Repositories\Sid\SidKeluargaRepository;
 
 class KeluargaIndexAction extends IndexAction
 {
-    public function __construct(readonly protected SidKeluargaRepository $repository)
+    public function __construct(SidKeluargaRepository $repository)
     {
+        parent::__construct($repository);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function filters(array $payload = []): array
     {
         $filters = [];
 
@@ -19,9 +20,6 @@ class KeluargaIndexAction extends IndexAction
             $filters['anggota.nama:|anggota.nik:|nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
         }
 
-        return $this->repository->index(
-            $filters,
-            paginate: @$validatedPayload['limit'] ?: 0
-        );
+        return $filters;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Database\Factories\Sid\Surat;
 
+use App\Enumerations\Moderation;
+use App\Models\Sid\SidPenduduk;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,10 @@ class SidSuratWargaFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'penduduk_id' => SidPenduduk::factory(),
+            'short_desc' => $this->faker->paragraph,
+            'payload' => [],
+            'status' => Moderation::accepted,
         ];
     }
 }

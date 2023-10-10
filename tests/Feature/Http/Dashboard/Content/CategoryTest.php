@@ -194,7 +194,7 @@ class CategoryTest extends TestCase
 
             ->actingAs($user)
             ->patch(sprintf('/dashboard/content/category/%s', $category->getKey()), $newData)
-            ->assertSuccessful();
+            ->assertRedirectToRoute('dashboard.content.category.show', $category->getKey());
 
         $this->assertDatabaseHas(ContentCategory::class, [...$newData, 'id' => $category->getKey()]);
     }
@@ -257,7 +257,7 @@ class CategoryTest extends TestCase
 
             ->actingAs($user)
             ->delete(sprintf('/dashboard/content/category/%s', $category->getKey()))
-            ->assertOk();
+            ->assertRedirectToRoute('dashboard.content.category.index');
 
         $this->assertNull($category->fresh());
     }

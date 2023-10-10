@@ -7,5 +7,8 @@ export type Category = {
     type: string
     slug: string
     name: string
-    description: string
+    description: string,
+    articles_count?: number,
+    pages_count?: number,
+    childs_count?: number
 }

@@ -7,11 +7,12 @@ use App\Repositories\Sid\Wilayah\SidWilayahRukunWargaRepository;
 
 class RukunWargaIndexAction extends IndexAction
 {
-    public function __construct(readonly protected SidWilayahRukunWargaRepository $sidWilayahRukunWargaRepository)
+    public function __construct(SidWilayahRukunWargaRepository $repository)
     {
+        parent::__construct($repository);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function filters(array $payload = []): array
     {
         $filters = [];
 
@@ -19,9 +20,6 @@ class RukunWargaIndexAction extends IndexAction
             $filters['nama:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
         }
 
-        return $this->sidWilayahRukunWargaRepository->index(
-            $filters,
-            paginate: @$validatedPayload['limit'] ?: 0
-        );
+        return $filters;
     }
 }
