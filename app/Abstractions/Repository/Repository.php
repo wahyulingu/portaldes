@@ -205,11 +205,10 @@ abstract class Repository
         return $this->model()::whereKey($key)->delete();
     }
 
-    public function latest(array $filters = []): self
+    public function latest(): self
     {
         $this
 
-            ->filter($filters)
             ->builder
             ->latest();
 
@@ -226,11 +225,10 @@ abstract class Repository
         return tap($this, fn (self $repository) => $repository->builder->withCount($realations));
     }
 
-    public function oldest(array $filters = []): self
+    public function oldest(): self
     {
         $this
 
-            ->filter($filters)
             ->builder
             ->oldest();
 

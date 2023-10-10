@@ -31,7 +31,8 @@ abstract class IndexAction extends Action implements RuledActionContract
         $this
 
             ->repository
-            ->latest($this->filters($validatedPayload));
+            ->filter($this->filters($validatedPayload))
+            ->latest();
 
         if (!empty($validatedPayload['relations'])) {
             $this->repository->with($validatedPayload['relations']);
