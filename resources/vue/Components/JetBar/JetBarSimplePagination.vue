@@ -7,9 +7,8 @@
                     <span class="font-medium">{{ items.from }}</span> to
                     <span class="font-medium">{{ items.to }}</span>
                 </span>
-                <template>
-
-                    <span v-if="items.total" class="font-medium"> of {{ items.total }}</span> results
+                <template v-if="items.total">
+                    of <span class="font-medium">{{ items.total }}</span> results
                 </template>
             </p>
         </div>
@@ -33,6 +32,16 @@
                 class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-200 text-sm leading-5 font-medium rounded-md text-gray-300 bg-white cursor-default"
                 disabled>
                 Next
+            </button>
+
+            <Link v-if="items.last_page_url && items.current_page != items.last_page" :href="items.last_page_url"
+                class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150"
+                preserve-scroll>Last</Link>
+
+                <button v-else
+                class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-200 text-sm leading-5 font-medium rounded-md text-gray-300 bg-white cursor-default"
+                disabled>
+                Last
             </button>
         </div>
     </div>

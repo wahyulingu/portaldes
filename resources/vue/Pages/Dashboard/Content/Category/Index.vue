@@ -1,67 +1,54 @@
 <template>
-    <JetBarLayout title="Dashboard">
+    <JetBarLayout title="Content Category">
         <JetBarContainer>
-            <JetBarStatsContainer>
-                <JetBarStatCard title="Total clients" number="6389" type="warning">
-                    <template v-slot:icon>
-                        <JetBarIcon type="users" fill />
-                    </template>
-                </JetBarStatCard>
-
-                <JetBarStatCard title="Account balance" number="$ 46,760.89" type="success">
-                    <template v-slot:icon>
-                        <JetBarIcon type="money" fill />
-                    </template>
-                </JetBarStatCard>
-
-                <JetBarStatCard title="New sales" number="376" type="info">
-                    <template v-slot:icon>
-                        <JetBarIcon type="cart" fill />
-                    </template>
-                </JetBarStatCard>
-
-                <JetBarStatCard title="Pending contacts" number="35" type="danger">
-                    <template v-slot:icon>
-                        <JetBarIcon type="message" fill />
-                    </template>
-                </JetBarStatCard>
-            </JetBarStatsContainer>
-
-            <JetBarTable :headers="['name', 'title', 'status', 'role', '', '']">
-                <tr class="hover:bg-gray-50" v-for="index in 3" :key="index">
-                    <JetBarTableData>Jane Cooper</JetBarTableData>
+            <JetBarTable>
+                <template #pagination>
+                    <JetBarSimplePagination :items="categories"/>
+                </template>
+                <template #head>
+                    <JetBarTableHead :headers="['Name', 'Description', 'Status', '']"/>
+                </template>
+                <template v-for="category in categories.data">
+                    <tr class="hover:bg-gray-50">
+                    <JetBarTableData>{{ category.name }}</JetBarTableData>
                     <JetBarTableData>
-                        <div class="text-sm text-gray-900">Regional Paradigm Technician</div>
-                        <div class="text-sm text-gray-500">Optimization</div>
+                        <div class="text-sm text-gray-900">{{  category.description }}</div>
+                        <div class="text-sm text-gray-500">
+                            {{ category.articles_count }} Articles |
+                            {{ category.pages_count }} Pages |
+                            {{ category.childs_count }} Childs
+                        </div>
                     </JetBarTableData>
                     <JetBarTableData>
                         <JetBarBadge text="Active" type="success" />
                     </JetBarTableData>
-                    <JetBarTableData>Admin</JetBarTableData>
-                    <JetBarTableData>
-                        <Link href="#" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
-                    </JetBarTableData>
                     <JetBarTableData>
                         <Link href="#" class="text-gray-400 hover:text-gray-500">
-                        <JetBarIcon type="trash" fill />
+                        <JetBarIcon type="eye" fill />
                         </Link>
                     </JetBarTableData>
                 </tr>
+                </template>
             </JetBarTable>
-
         </JetBarContainer>
-
     </JetBarLayout>
 </template>
 
-<script setup>
-import { Link } from '@inertiajs/vue3';
+<script setup lang="ts">
+import { Link, router } from '@inertiajs/vue3';
 import JetBarLayout from '@res/vue/Layouts/JetBarLayout.vue'
 import JetBarContainer from '@res/vue/Components/JetBar/JetBarContainer.vue';
-import JetBarStatsContainer from '@res/vue/Components/JetBar/JetBarStatsContainer.vue';
-import JetBarStatCard from '@res/vue/Components/JetBar/JetBarStatCard.vue';
 import JetBarTable from '@res/vue/Components/JetBar/JetBarTable.vue';
 import JetBarTableData from '@res/vue/Components/JetBar/JetBarTableData.vue';
 import JetBarBadge from '@res/vue/Components/JetBar/JetBarBadge.vue';
 import JetBarIcon from '@res/vue/Components/JetBar/JetBarIcon.vue';
+import { Category } from '@/resources/ts/types/data/category';
+import { Paginate } from '@/resources/ts/types/data/pagination/paginate';
+import JetBarTableHead from '@/resources/vue/Components/JetBar/JetBarTableHead.vue';
+import JetBarSimplePagination from '@/resources/vue/Components/JetBar/JetBarSimplePagination.vue';
+
+defineProps<{
+    categories: Paginate<Category>
+}>()
+
 </script>

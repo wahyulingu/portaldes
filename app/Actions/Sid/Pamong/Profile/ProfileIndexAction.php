@@ -19,9 +19,6 @@ class ProfileIndexAction extends IndexAction
             $filters['anggota.nama:|anggota.nik:|nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
         }
 
-        return $this->repository->index(
-            $filters,
-            paginate: @$validatedPayload['limit'] ?: 0
-        );
+        return $this->repository->latest($filters)->paginate(@$validatedPayload['limit'] ?: 0);
     }
 }

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Dashboard\Content;
 
+use App\Actions\Content\Category\CategoryChildsPaginateAction;
 use App\Actions\Content\Category\CategoryDeleteAction;
+use App\Actions\Content\Category\CategoryPaginateAction;
 use App\Actions\Content\Category\CategoryStoreAction;
 use App\Actions\Content\Category\CategoryUpdateAction;
-use App\Actions\Content\Category\Index\CategoryIndexAction;
 use App\Http\Controllers\Controller;
 use App\Models\Content\ContentCategory;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 
@@ -23,19 +24,24 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, CategoryIndexAction $index)
+    public function index(Request $request, CategoryPaginateAction $categoryPaginateAction)
     {
-        $payload = ['limit' => $request->get('limit', 8)];
+        $payload = [
+            'limit' => $request->get('limit', 8),
+            'relationsCount' => ['articles', 'pages', 'childs'],
+        ];
 
-        if ($keyword = $request->get('keyword')) {
+        if (!empty($keyword = $request->get('keyword'))) {
             $payload['keyword'] = $keyword;
         }
 
-        $categories = $index->execute($payload);
+        /**
+         * @var LengthAwarePaginator
+         */
+        $categories = $categoryPaginateAction
 
-        if ($categories instanceof LengthAwarePaginator) {
-            $categories->appends($request->query());
-        }
+            ->execute($payload)
+            ->appends($request->query());
 
         return Inertia::render('Dashboard/Content/Category/Index', compact('categories'));
     }
@@ -67,9 +73,31 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ContentCategory $category)
-    {
-        return Inertia::render('Dashboard/Content/Category/Show', compact('category'));
+    public function show(
+        Request $request,
+        ContentCategory $category,
+        CategoryChildsPaginateAction $categoryChildsPaginateAction
+    ) {
+        $childsPayload = [
+            'limit' => $request->get('limit', 8),
+            'relationsCount' => ['articles', 'pages', 'childs'],
+            'pageName' => 'childsPage',
+        ];
+
+        if (!empty($keyword = $request->get('keyword'))) {
+            $childsPayload['keyword'] = $keyword;
+        }
+
+        /**
+         * @var LengthAwarePaginator
+         */
+        $childs = $categoryChildsPaginateAction
+
+            ->prepare($category)
+            ->execute($childsPayload)
+            ->appends($request->query());
+
+        return Inertia::render('Dashboard/Content/Category/Show', compact('category', 'childs'));
     }
 
     /**

@@ -7,11 +7,12 @@ use App\Repositories\Sid\Pamong\SidPamongRepository;
 
 class PamongIndexAction extends IndexAction
 {
-    public function __construct(readonly protected SidPamongRepository $repository)
+    public function __construct(SidPamongRepository $repository)
     {
+        parent::__construct($repository);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function filters(array $payload = []): array
     {
         $filters = [];
 
@@ -19,9 +20,6 @@ class PamongIndexAction extends IndexAction
             $filters['anggota.nama:|anggota.nik:|nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
         }
 
-        return $this->repository->index(
-            $filters,
-            paginate: @$validatedPayload['limit'] ?: 0
-        );
+        return $filters;
     }
 }

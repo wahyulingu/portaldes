@@ -4,6 +4,7 @@ namespace App\Abstractions\Repository;
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,8 @@ use Illuminate\Support\Str;
  */
 abstract class Repository
 {
+    protected Builder $builder;
+
     /**
      * The name of the repository's corresponding model.
      *
@@ -202,45 +205,122 @@ abstract class Repository
         return $this->model()::whereKey($key)->delete();
     }
 
-    public function index(array $filters = []): Builder
+    public function latest(array $filters = []): self
     {
-        return $this->model(fn ($model) => $model::where(
-            fn (Builder $builder) => collect($filters)->each(
-                function (string|Model|callable $filterValue, string $filterKey) use ($builder) {
-                    if (is_string($filterValue)) {
-                        return collect(explode('|', $filterKey))->each(
-                            function (string|Model $keyValue, string $keyIndex) use ($builder, $filterValue) {
-                                if (!empty($keyValue)) {
-                                    if (':' == substr($keyValue, -1)) {
-                                        $key = substr($keyValue, 0, -1);
+        $this
 
-                                        if (0 == $keyIndex) {
-                                            return $builder->where($key, 'LIKE', $filterValue);
+            ->filter($filters)
+            ->builder
+            ->latest();
+
+        return $this;
+    }
+
+    public function with(array $realations = []): self
+    {
+        return tap($this, fn (self $repository) => $repository->builder->with($realations));
+    }
+
+    public function withCount(array $realations = []): self
+    {
+        return tap($this, fn (self $repository) => $repository->builder->withCount($realations));
+    }
+
+    public function oldest(array $filters = []): self
+    {
+        $this
+
+            ->filter($filters)
+            ->builder
+            ->oldest();
+
+        return $this;
+    }
+
+    public function get(array $columns = ['*']): Collection
+    {
+        return $this
+
+            ->builder
+            ->get($columns);
+    }
+
+    public function limit(int $limit = 0): self
+    {
+        $this
+
+            ->builder
+            ->limit($limit);
+
+        return $this;
+    }
+
+    public function offset(int $offset = 0): self
+    {
+        $this
+
+            ->builder
+            ->offset($offset);
+
+        return $this;
+    }
+
+    public function paginate(
+        int $limit = 0,
+        array $columns = ['*'],
+        string $pageName = 'page',
+        int $page = null
+    ): LengthAwarePaginator {
+        return $this
+
+            ->builder
+            ->paginate($limit, $columns, $pageName, $page);
+    }
+
+    public function filter(array $filters = []): self
+    {
+        return tap(
+            $this,
+            fn () => $this->builder = $this->model(
+                fn ($model) => $model::where(
+                    fn (Builder $builder) => collect($filters)->each(
+                        function (string|Model|callable $filterValue, string $filterKey) use ($builder) {
+                            if (is_string($filterValue)) {
+                                return collect(explode('|', $filterKey))->each(
+                                    function (string|Model $keyValue, string $keyIndex) use ($builder, $filterValue) {
+                                        if (!empty($keyValue)) {
+                                            if (':' == substr($keyValue, -1)) {
+                                                $key = substr($keyValue, 0, -1);
+
+                                                if (0 == $keyIndex) {
+                                                    return $builder->where($key, 'LIKE', $filterValue);
+                                                }
+
+                                                return $builder->orWhere($key, 'LIKE', $filterValue);
+                                            }
+
+                                            if (0 == $keyIndex) {
+                                                return $builder->where($keyValue, $filterValue);
+                                            }
+
+                                            $builder->orWhere($keyValue, $filterValue);
                                         }
-
-                                        return $builder->orWhere($key, 'LIKE', $filterValue);
                                     }
-
-                                    if (0 == $keyIndex) {
-                                        return $builder->where($keyValue, $filterValue);
-                                    }
-
-                                    $builder->orWhere($keyValue, $filterValue);
-                                }
+                                );
                             }
-                        );
-                    }
 
-                    if ($filterValue instanceof Model) {
-                        $filterValue = fn ($builder) => $builder->where(
-                            $filterValue->getKeyName(),
-                            $filterValue->getKey()
-                        );
-                    }
+                            if ($filterValue instanceof Model) {
+                                $filterValue = fn ($builder) => $builder->where(
+                                    $filterValue->getKeyName(),
+                                    $filterValue->getKey()
+                                );
+                            }
 
-                    $builder->whereHas($filterKey, $filterValue);
-                }
+                            $builder->whereHas($filterKey, $filterValue);
+                        }
+                    )
+                )
             )
-        ));
+        );
     }
 }

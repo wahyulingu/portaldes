@@ -7,11 +7,12 @@ use App\Repositories\Sid\Surat\SidSuratKeluarRepository;
 
 class SuratKeluarIndexAction extends IndexAction
 {
-    public function __construct(readonly protected SidSuratKeluarRepository $repository)
+    public function __construct(SidSuratKeluarRepository $repository)
     {
+        parent::__construct($repository);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function filters(array $payload = []): array
     {
         $filters = [];
 
@@ -19,9 +20,6 @@ class SuratKeluarIndexAction extends IndexAction
             $filters['klasifikasi.nama|tujuan|short_desc|penduduk.nama:|penduduk.nik:|penduduk.nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
         }
 
-        return $this->repository->index(
-            $filters,
-            paginate: @$validatedPayload['limit'] ?: 0
-        );
+        return $filters;
     }
 }

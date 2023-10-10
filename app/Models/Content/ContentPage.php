@@ -8,6 +8,7 @@ use App\Traits\Model\HasRepository;
 use App\Traits\Model\Relations\BelongsToUser;
 use App\Traits\Model\Relations\Content\BelongsToCategory;
 use App\Traits\Model\Relations\Content\MorphOneThumbnail;
+use App\Traits\Model\Relations\Content\MorphToManyCategories;
 use App\Traits\Model\Slug\SluggableByTitle;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,6 +16,7 @@ class ContentPage extends ContentModel implements HasThumbnail
 {
     use HasFactory;
     use SluggableByTitle;
+    use MorphToManyCategories;
     use MorphOneThumbnail;
     use BelongsToCategory;
     use BelongsToUser;

@@ -7,11 +7,12 @@ use App\Repositories\Sid\Wilayah\SidWilayahLingkunganRepository;
 
 class LingkunganIndexAction extends IndexAction
 {
-    public function __construct(readonly protected SidWilayahLingkunganRepository $sidWilayahLingkunganRepository)
+    public function __construct(SidWilayahLingkunganRepository $repository)
     {
+        parent::__construct($repository);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function filters(array $payload = []): array
     {
         $filters = [];
 
@@ -19,9 +20,6 @@ class LingkunganIndexAction extends IndexAction
             $filters['nama:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
         }
 
-        return $this->sidWilayahLingkunganRepository->index(
-            $filters,
-            paginate: @$validatedPayload['limit'] ?: 0
-        );
+        return $filters;
     }
 }
