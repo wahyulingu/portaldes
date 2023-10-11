@@ -3,6 +3,7 @@
 namespace App\Models\Content;
 
 use App\Abstractions\Model\ContentModel;
+use App\Enumerations\Content\CategoryStatus;
 use App\Traits\Model\HasRepository;
 use App\Traits\Model\Relations\BelongsToParent;
 use App\Traits\Model\Relations\HasManyChilds;
@@ -18,7 +19,9 @@ class ContentCategory extends ContentModel
     use BelongsToParent;
     use HasManyChilds;
 
-    protected $fillable = ['name', 'description', 'parent_id', 'status'];
+    protected $csats = ['status' => CategoryStatus::class];
+
+    protected $guarded = ['id'];
 
     public function articles(): MorphToMany
     {
