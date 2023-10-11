@@ -14,14 +14,19 @@ abstract class IndexAction extends Action implements RuledActionContract
 
     public function rules(array $payload): array
     {
-        return [
+        $rules = [
             'keyword' => 'nullable|string',
             'columns' => 'nullable|array',
             'limit' => 'nullable|numeric|min:1',
-            'pageName' => 'nullable|string',
             'relations' => 'nullable|array',
             'relationsCount' => 'nullable|array',
         ];
+
+        if ($this instanceof PaginatedActionContract) {
+            return [...$rules, 'pageName' => 'nullable|string'];
+        }
+
+        return [...$rules, 'offset' => 'nullable|numeric'];
     }
 
     abstract protected function filters(array $payload = []): array;
@@ -51,6 +56,14 @@ abstract class IndexAction extends Action implements RuledActionContract
                     columns: @$validatedPayload['columns'] ?: ['*'],
                     pageName: @$validatedPayload['pageName'] ?: 'page'
                 );
+        }
+
+        if (!empty($validatedPayload['offset'])) {
+            $this->repository->offset($validatedPayload['offset']);
+        }
+
+        if (!empty($validatedPayload['limit'])) {
+            $this->repository->limit($validatedPayload['limit']);
         }
 
         return $this
