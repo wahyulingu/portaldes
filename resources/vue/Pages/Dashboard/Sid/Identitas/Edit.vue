@@ -10,7 +10,7 @@ const { identitas } = defineProps<{ identitas: Identitas }>();
 <template>
     <JetBarLayout title="Update Identitas">
         <JetBarContainer>
-            <UpdateIdentitasForm :identitas="identitas"/>
+            <UpdateIdentitasForm :identitas="identitas" />
         </JetBarContainer>
     </JetBarLayout>
 </template>
