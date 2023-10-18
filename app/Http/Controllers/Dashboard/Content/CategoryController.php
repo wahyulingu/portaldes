@@ -64,10 +64,10 @@ class CategoryController extends Controller
          */
         $category = $categoryStoreAction->execute($request->all());
 
-        return Response::redirectToRoute('dashboard.content.category.index', status: 201)
+        return Response::redirectToRoute('dashboard.content.category.index')
 
             ->with('flash', compact('category'))
-            ->banner(sprintf('Lingkungan Created', $category->title));
+            ->banner(sprintf('Category "%s" Created', $category->name));
     }
 
     /**

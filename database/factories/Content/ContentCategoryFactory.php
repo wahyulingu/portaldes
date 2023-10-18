@@ -2,7 +2,7 @@
 
 namespace Database\Factories\Content;
 
-use App\Enumerations\Moderation;
+use App\Enumerations\Content\CategoryStatus;
 use App\Models\Content\ContentCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -22,7 +22,7 @@ class ContentCategoryFactory extends Factory
         return [
             'name' => Str::ucfirst($this->faker->words(3, true)),
             'description' => Str::ucfirst($this->faker->words(12, true)),
-            'status' => Moderation::random(),
+            'status' => CategoryStatus::random(),
         ];
     }
 
@@ -31,7 +31,7 @@ class ContentCategoryFactory extends Factory
         return $this->state(['parent_id' => ContentCategory::factory()]);
     }
 
-    public function status(Moderation $status)
+    public function status(CategoryStatus $status)
     {
         return $this->state(['status' => $status->name]);
     }

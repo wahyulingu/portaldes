@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\Dashboard\Content;
 use App\Http\Controllers\Dashboard\Sid;
 use App\Http\Controllers\Dashboard\Sid\Surat;
 use Illuminate\Support\Facades\Route;
@@ -30,10 +30,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
         Route::name('dashboard.')->prefix('dashboard')->group(function () {
             Route::name('content.')->prefix('content')->group(function () {
-                Route::resource('article', Dashboard\Content\ArticleController::class);
-                Route::resource('category', Dashboard\Content\CategoryController::class);
-                Route::resource('comment', Dashboard\Content\CommentController::class);
-                Route::resource('page', Dashboard\Content\PageController::class);
+                Route::resource('article', Content\ArticleController::class);
+                Route::resource('category', Content\CategoryController::class);
+                Route::resource('comment', Content\CommentController::class);
+                Route::resource('page', Content\PageController::class);
             });
 
             Route::name('sid.')->prefix('sid')->group(function () {

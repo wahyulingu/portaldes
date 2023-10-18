@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import JetBarContainer from '@/resources/vue/Components/JetBar/JetBarContainer.vue';
 import JetBarLayout from '@res/vue/Layouts/JetBarLayout.vue';
-import CreateCategoryForm from './Partials/CreateCategoryForm.vue'
-import { Category } from '@/resources/ts/types/data/category';
 
-defineProps<{ category: Category }>();
+defineProps<{ identitas: Object }>();
 </script>
 
 <template>
-    <JetBarLayout :title="'Category ' + category.name">
+    <JetBarLayout :title="'Identitas '">
         <JetBarContainer>
-            {{ JSON.stringify(category) }}
+            <h2>
+                Yooos!
+            </h2>
+            <code>
+
+            {{ JSON.stringify(identitas) }}
+            </code>
         </JetBarContainer>
     </JetBarLayout>
 </template>
