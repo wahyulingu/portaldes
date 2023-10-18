@@ -62,7 +62,7 @@ class IdentitasTest extends TestCase
             'nama_kabupaten' => $this->faker->city,
             'kode_kabupaten' => $this->faker->randomDigitNotNull,
             'provinsi' => $this->faker->randomDigitNotNull,
-        ];
+     ];
 
         $this
 
