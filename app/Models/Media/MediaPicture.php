@@ -18,5 +18,5 @@ class MediaPicture extends Model implements HasFile
     use BelongsToUser;
     use MorphOneFile;
 
-    protected $fillable = ['name', 'description'];
+    protected $guarded = ['id'];
 }

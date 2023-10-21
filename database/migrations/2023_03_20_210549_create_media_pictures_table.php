@@ -12,7 +12,7 @@ return new class() extends Migration {
     {
         Schema::create('media_pictures', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('pictureable_id');
+            $table->foreignId('pictureable_id');
             $table->timestamps();
             $table->string('pictureable_type');
             $table->string('name');
