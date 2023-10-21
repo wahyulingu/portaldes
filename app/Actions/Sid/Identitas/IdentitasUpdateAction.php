@@ -3,11 +3,15 @@
 namespace App\Actions\Sid\Identitas;
 
 use App\Abstractions\Action\Action;
+use App\Actions\Media\Picture\PictureStoreAction;
+use App\Actions\Media\Picture\PictureUpdateAction;
 use App\Actions\Meta\MetaStoreAction;
 use App\Actions\Meta\MetaUpdateAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\SidIdentitas;
+use App\Repositories\Media\MediaPictureRepository;
 use App\Repositories\MetaRepository;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @extends Action<SidIdentitas>
@@ -15,9 +19,12 @@ use App\Repositories\MetaRepository;
 class IdentitasUpdateAction extends Action implements RuledActionContract
 {
     public function __construct(
+        readonly protected MediaPictureRepository $mediaPictureRepository,
         readonly protected MetaRepository $metaRepository,
         readonly protected MetaStoreAction $metaStoreAction,
-        readonly protected MetaUpdateAction $metaUpdateAction
+        readonly protected MetaUpdateAction $metaUpdateAction,
+        readonly protected PictureStoreAction $pictureStoreAction,
+        readonly protected PictureUpdateAction $pictureUpdateAction
     ) {
     }
 
@@ -37,26 +44,98 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
             'nama_kepala_camat' => 'required|string',
             'nama_kabupaten' => 'required|string',
             'kode_kabupaten' => 'required|numeric',
+            'cordinate' => 'required|array|size:2',
+            'logo' => 'nullable|image|max:2048',
+            'stamp' => 'nullable|image|max:2048',
             'provinsi' => 'required|integer',
         ];
     }
 
     protected function handler(array $validatedPayload = [], array $payload = [])
     {
-        if ($meta = $this->metaRepository->findBySlug('sid-identitas')) {
+        return DB::transaction(function () use ($validatedPayload) {
+            $meta = $this->metaRepository->findBySlug('sid-identitas');
+
+            /*
+             * Jika Meta Tersedia Akan Dilakukan Pengecekan Logo dan Stamp
+             * jika ditemukan model untuk logo atau stamp model tersebut
+             * akan diupdate gambarnya dan kemudian payload akan dihapus
+             */
+            if (!empty($meta)) {
+                if (!empty($meta->value['logo']) && $logoModel = $this->mediaPictureRepository->find($meta->value['logo'])) {
+                    $this
+                        ->pictureUpdateAction
+                        ->prepare($logoModel)
+                        ->execute(['image' => $validatedPayload['logo']]);
+
+                    unset($validatedPayload['logo']);
+                }
+
+                if (!empty($meta->value['stamp']) && $stampModel = $this->mediaPictureRepository->find($meta->value['stamp'])) {
+                    $this
+                        ->pictureUpdateAction
+                        ->prepare($stampModel)
+                        ->execute(['image' => $validatedPayload['stamp']]);
+
+                    unset($validatedPayload['stamp']);
+                }
+            }
+
+            /*
+             * jika baris 59 tidak terpenuhi, payload tidak akan terhapus
+             * dan akan disimpan ke dalam database dan mengganti payload
+             * dengan ID model
+             */
+
+            if (isset($validatedPayload['logo'])) {
+                $this->$validatedPayload['logo'] = $this
+
+                    ->pictureStoreAction
+                    ->execute([
+                        'name' => 'Logo Desa',
+                        'description' => 'Picture Model untuk Logo Desa',
+                        'image' => $validatedPayload['logo'],
+                        'path' => 'media/picture/sid',
+                    ])
+
+                    ->getKey();
+            }
+
+            if (isset($validatedPayload['stamp'])) {
+                $this->$validatedPayload['stamp'] = $this
+
+                    ->pictureStoreAction
+                    ->execute([
+                        'name' => 'Logo Desa',
+                        'description' => 'Picture Model untuk Logo Desa',
+                        'image' => $validatedPayload['stamp'],
+                        'path' => 'media/picture/sid',
+                    ])
+
+                    ->getKey();
+            }
+
+            if (!empty($meta)) {
+                return (bool) $this
+
+                    ->metaUpdateAction
+                    ->prepare($meta)
+
+                    ->execute([
+                        'value' => [
+                            ...$meta->value,
+                            ...$validatedPayload,
+                        ],
+                    ]);
+            }
+
             return (bool) $this
 
-                ->metaUpdateAction
-                ->prepare($meta)
-                ->execute(['value' => $validatedPayload]);
-        }
-
-        return (bool) $this
-
-            ->metaStoreAction
-            ->execute([
-                'name' => 'Sid Identitas',
-                'value' => $validatedPayload,
-            ]);
+                ->metaStoreAction
+                ->execute([
+                    'name' => 'Sid Identitas',
+                    'value' => $validatedPayload,
+                ]);
+        });
     }
 }
