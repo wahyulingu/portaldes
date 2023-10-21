@@ -5,7 +5,6 @@ namespace App\Actions\Media\Picture;
 use App\Abstractions\Action\Action;
 use App\Actions\File\FileUploadAction;
 use App\Contracts\Action\RuledActionContract;
-use App\Contracts\Model\HasPicture;
 use App\Models\Media\MediaPicture;
 use App\Repositories\Media\MediaPictureRepository;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PictureStoreAction extends Action implements RuledActionContract
 {
-    protected HasPicture&Model $pictureable;
+    protected Model $pictureable;
 
     public function __construct(
         protected MediaPictureRepository $mediaPictureRepository,
@@ -23,7 +22,7 @@ class PictureStoreAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function prepare(HasPicture&Model $pictureable): self
+    public function prepare(Model $pictureable): self
     {
         $this->pictureable = $pictureable;
 
