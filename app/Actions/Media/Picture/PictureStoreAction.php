@@ -5,6 +5,7 @@ namespace App\Actions\Media\Picture;
 use App\Abstractions\Action\Action;
 use App\Actions\File\FileUploadAction;
 use App\Contracts\Action\RuledActionContract;
+use App\Contracts\Model\MorphToManyPictures;
 use App\Models\Media\MediaPicture;
 use App\Repositories\Media\MediaPictureRepository;
 use Illuminate\Database\Eloquent\Model;
@@ -41,7 +42,11 @@ class PictureStoreAction extends Action implements RuledActionContract
 
     protected function handler(array $validatedPayload = [], array $payload = [])
     {
-        $picture = $this->mediaPictureRepository->create($this->pictureable, $validatedPayload);
+        $picture = $this->mediaPictureRepository->store($validatedPayload);
+
+        if (isset($this->pictureable) && $this->pictureable instanceof MorphToManyPictures) {
+            $this->pictureable->pictures()->save($picture);
+        }
 
         $fileData = [
             'file' => $validatedPayload['image'],

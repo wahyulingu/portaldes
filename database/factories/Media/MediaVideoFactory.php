@@ -17,6 +17,8 @@ class MediaVideoFactory extends Factory
     public function definition(): array
     {
         return [
+            'name' => $this->faker->words(6, true),
+            'description' => $this->faker->paragraph(),
         ];
     }
 }

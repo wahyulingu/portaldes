@@ -12,12 +12,41 @@ return new class() extends Migration {
     {
         Schema::create('media_videos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('videoable_id');
             $table->timestamps();
-            $table->string('videoable_type');
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('description');
+        });
+
+        Schema::create('model_has_videos', function (Blueprint $table) {
+            $table->foreignId('media_video_id');
+            $table->foreignId('model_has_videos_id');
+
+            $table->string('model_has_videos_type');
+
+            $table->index(
+                [
+                    'model_has_videos_id',
+                    'model_has_videos_type',
+                ],
+
+                'model_has_video_index'
+            );
+
+            $table->foreign('media_video_id')
+                ->references('id') // video id
+                ->on('media_videos')
+                ->onDelete('cascade');
+
+            $table->primary(
+                [
+                    'media_video_id',
+                    'model_has_videos_id',
+                    'model_has_videos_type',
+                ],
+
+                'model_has_video_primary'
+            );
         });
     }
 
@@ -27,5 +56,6 @@ return new class() extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('media_videos');
+        Schema::dropIfExists('model_has_videos');
     }
 };

@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Abstractions\Repository\Repository;
 use App\Contracts\Model\HasFile;
 use App\Models\File;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
@@ -42,7 +41,7 @@ class FileRepository extends Repository
     /**
      * Creates a file and returns it.
      */
-    public function create(Model&HasFile $fileable, array $attributes): File
+    public function create(HasFile $fileable, array $attributes): File
     {
         $file = $attributes['file'] ?? null;
 
