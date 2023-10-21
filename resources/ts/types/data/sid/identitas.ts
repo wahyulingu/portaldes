@@ -1,4 +1,8 @@
 export type Identitas = {
+    logo: string | File,
+    stamp: string | File,
+    lat: number,
+    long: number,
     nama_desa: string,
     alamat: string,
     telepon: string,
@@ -8,6 +12,7 @@ export type Identitas = {
     nama_kepala_desa: string,
     kodepos: number,
     nama_kecamatan: string,
+    nama_camat: string,
     kode_kecamatan: number,
     nama_kepala_camat: string,
     nama_kabupaten: string,

@@ -26,7 +26,7 @@ class PictureUpdateAction extends Action implements RuledActionContract
 
     public function prepare(MediaPicture $picture)
     {
-        $this->picture = $picture;
+        return tap($this, fn (self $action) => $action->picture = $picture);
     }
 
     public function rules(array $payload): array
