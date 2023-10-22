@@ -76,7 +76,7 @@ const updateStampPreview = async () => {
                     <span v-show="logoPreview" class="block w-auto h-28 bg-cover bg-no-repeat bg-center" :style="'background-image: url(\'' + logoPreview + '\');'
                         " />
 
-                    <SecondaryButton class="mt-5 mr-2 small" type="button" @click.prevent="selectNewLogo">
+                    <SecondaryButton class="mt-5 mr-2" type="button" @click.prevent="selectNewLogo">
                         Select A New Logo
                     </SecondaryButton>
 
@@ -96,7 +96,7 @@ const updateStampPreview = async () => {
                     <span v-show="stampPreview" class="block w-auto h-28 bg-cover bg-no-repeat bg-center" :style="'background-image: url(\'' + stampPreview + '\');'
                         " />
 
-                    <SecondaryButton class="mt-5 mr-2 small" type="button" @click.prevent="selectNewStamp">
+                    <SecondaryButton class="mt-5 mr-2" type="button" @click.prevent="selectNewStamp">
                         Select A New Stamp
                     </SecondaryButton>
 
