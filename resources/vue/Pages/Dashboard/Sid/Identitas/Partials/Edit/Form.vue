@@ -67,9 +67,13 @@ const updateStampPreview = async () => {
                     <!-- Profile Logo File Input -->
                     <input ref="logoInput" type="file" class="hidden" @change="updateLogoPreview" />
 
+                    <div v-show="!logoPreview && identitas.logo.url">
+                        <img :src="identitas.logo.url" :alt="identitas.nama_desa" class="h-28 w-full object-cover">
+                    </div>
+
                     <!-- New Profile Logo Preview -->
 
-                    <span class="block w-auto h-28 bg-cover bg-no-repeat bg-center" :style="'background-image: url(\'' + logoPreview + '\');'
+                    <span v-show="logoPreview" class="block w-auto h-28 bg-cover bg-no-repeat bg-center" :style="'background-image: url(\'' + logoPreview + '\');'
                         " />
 
                     <SecondaryButton class="mt-5 mr-2 small" type="button" @click.prevent="selectNewLogo">
@@ -83,9 +87,13 @@ const updateStampPreview = async () => {
                     <!-- Profile Stamp File Input -->
                     <input ref="stampInput" type="file" class="hidden" @change="updateStampPreview" />
 
+                    <div v-show="!stampPreview && identitas.stamp.url" class="mt-2">
+                        <img :src="identitas.stamp.url" :alt="identitas.nama_desa" class="h-28 w-full object-cover">
+                    </div>
+
                     <!-- New Profile Stamp Preview -->
 
-                    <span class="block w-auto h-28 bg-cover bg-no-repeat bg-center" :style="'background-image: url(\'' + stampPreview + '\');'
+                    <span v-show="stampPreview" class="block w-auto h-28 bg-cover bg-no-repeat bg-center" :style="'background-image: url(\'' + stampPreview + '\');'
                         " />
 
                     <SecondaryButton class="mt-5 mr-2 small" type="button" @click.prevent="selectNewStamp">

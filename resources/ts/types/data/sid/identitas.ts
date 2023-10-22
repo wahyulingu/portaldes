@@ -1,6 +1,6 @@
 export type Identitas = {
-    logo: string | File,
-    stamp: string | File,
+    logo: any,
+    stamp: any,
     lat: number,
     long: number,
     nama_desa: string,

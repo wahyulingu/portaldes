@@ -43,27 +43,18 @@ class IdentitasFetchAction extends Action
         if ($meta = $this->metaRepository->findBySlug('sid-identitas')) {
             $identitas = [...$identitas, ...$meta->value];
 
-            if (!empty($identitas['logo'])) {
-                if ($logoModel = $this->mediaPictureRepository->find($identitas['logo'])) {
-                    $identitas['logo'] = [
-                        'path' => $logoModel->file->path,
-                        'url' => $logoModel->file->url,
-                    ];
-                } else {
-                    $identitas['logo'] = '';
-                }
-            }
+            $logoModel = $this->mediaPictureRepository->find($identitas['logo']);
+            $stampModel = $this->mediaPictureRepository->find($identitas['stamp']);
 
-            if (!empty($identitas['stamp'])) {
-                if ($stampModel = $this->mediaPictureRepository->find($identitas['stamp'], realations: ['file'])) {
-                    $identitas['stamp'] = [
-                        'path' => $stampModel->file->path,
-                        'url' => $stampModel->file->url,
-                    ];
-                } else {
-                    $identitas['stamp'] = '';
-                }
-            }
+            $identitas['logo'] = [
+                    'path' => @$logoModel->file->path,
+                    'url' => @$logoModel->file->url,
+                ];
+
+            $identitas['stamp'] = [
+                'path' => @$stampModel->file->path,
+                'url' => @$stampModel->file->url,
+            ];
         }
 
         return $identitas;
