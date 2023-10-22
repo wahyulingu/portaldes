@@ -152,17 +152,31 @@ const updateStamp = async () => {
                         </div>
 
                         <div class="col-span-6 sm:col-span-2">
+                            <InputLabel for="nama_kecamatan" value="Nama Kecamatan" />
+                            <TextInput id="nama_kecamatan" v-model="form.nama_kecamatan" type="text"
+                                class="block w-full mt-1" autofocus />
+                            <InputError :message="form.errors.nama_kecamatan" class="mt-2" />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-2">
                             <InputLabel for="nama_camat" value="Nama Camat" />
                             <TextInput id="nama_camat" v-model="form.nama_camat" type="text" class="block w-full mt-1"
                                 autofocus />
                             <InputError :message="form.errors.nama_camat" class="mt-2" />
                         </div>
 
-                        <div class="col-span-6 sm:col-span-4">
+                        <div class="col-span-6 sm:col-span-2">
                             <InputLabel for="nama_kabupaten" value="Nama Kabupaten" />
                             <TextInput id="nama_kabupaten" v-model="form.nama_kabupaten" type="text"
                                 class="block w-full mt-1" autofocus />
                             <InputError :message="form.errors.nama_kabupaten" class="mt-2" />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-2">
+                            <InputLabel for="nama_bupati" value="Nama Bupati" />
+                            <TextInput id="nama_bupati" v-model="form.nama_bupati" type="text" class="block w-full mt-1"
+                                autofocus />
+                            <InputError :message="form.errors.nama_bupati" class="mt-2" />
                         </div>
 
                         <div class="col-span-6 sm:col-span-2">
