@@ -35,7 +35,7 @@ class PictureStoreAction extends Action implements RuledActionContract
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
-            'image' => ['required', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'image' => ['required', 'mimes:jpg,jpeg,png'],
             'path' => ['sometimes', 'string', 'max:255'],
         ];
     }

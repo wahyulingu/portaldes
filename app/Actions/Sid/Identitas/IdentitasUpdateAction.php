@@ -40,7 +40,7 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
             'email' => 'required|string',
             'website' => 'required|string',
             'kode_desa' => 'required|numeric',
-            'nama_kepala_desa' => 'required|string',
+            'nama_kades' => 'required|string',
             'kodepos' => 'required|numeric',
             'nama_kecamatan' => 'required|string',
             'kode_kecamatan' => 'required|numeric',
@@ -52,7 +52,9 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
             'long' => 'required|numeric',
             'logo' => 'nullable|image|max:2048',
             'stamp' => 'nullable|image|max:2048',
-            'provinsi' => 'required|integer',
+            'nama_provinsi' => 'required|string',
+            'nama_gubernur' => 'required|string',
+            'kode_provinsi' => 'required|numeric',
         ];
     }
 
@@ -75,7 +77,10 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
                     $this
                         ->pictureUpdateAction
                         ->prepare($logoModel)
-                        ->execute(['image' => $validatedPayload['logo']]);
+                        ->execute([
+                            'image' => $validatedPayload['logo'],
+                            'path' => 'media/picture/sid',
+                        ]);
 
                     unset($validatedPayload['logo']);
                 }
@@ -88,7 +93,10 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
                     $this
                         ->pictureUpdateAction
                         ->prepare($stampModel)
-                        ->execute(['image' => $validatedPayload['stamp']]);
+                        ->execute([
+                            'image' => $validatedPayload['stamp'],
+                            'path' => 'media/picture/sid',
+                        ]);
 
                     unset($validatedPayload['stamp']);
                 }

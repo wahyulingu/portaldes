@@ -17,5 +17,7 @@ export type Identitas = {
     nama_kabupaten: string,
     nama_bupati: string,
     kode_kabupaten: number,
-    provinsi: number,
+    nama_provinsi: string,
+    nama_gubernur: string,
+    kode_provinsi: number,
 }

@@ -14,20 +14,29 @@ import { ref } from "vue";
 
 const { identitas } = defineProps<{ identitas: Identitas }>();
 
-const form = useForm(identitas);
-
-const updateIdentitas = () => {
-    form.patch(route("dashboard.sid.identitas.update"), {
-        errorBag: "updateIdentitas",
-        preserveScroll: true,
-    });
-};
+const form = useForm({ ...identitas, _method: 'patch' });
 
 const logoPreview = ref<string>();
 const logoInput = ref<HTMLInputElement>();
 
 const stampPreview = ref<string>();
 const stampInput = ref<HTMLInputElement>();
+
+const updateIdentitas = () => {
+
+    if (logoInput.value?.files) {
+        form.logo = logoInput.value.files[0];
+    }
+
+    if (stampInput.value?.files) {
+        form.stamp = stampInput.value.files[0];
+    }
+
+    form.post(route("dashboard.sid.identitas.update"), {
+        errorBag: "updateIdentitas",
+        preserveScroll: true,
+    });
+};
 
 const selectNewLogo = () => {
     logoInput.value?.click();
@@ -37,16 +46,14 @@ const selectNewStamp = () => {
     stampInput.value?.click();
 }
 
-const updateLogo = async () => {
+const updateLogoPreview = async () => {
     if (logoInput.value?.files) {
-        form.logo = logoInput.value.files[0];
         logoPreview.value = await readAsDataURL(logoInput.value.files[0]);
     }
 }
 
-const updateStamp = async () => {
+const updateStampPreview = async () => {
     if (stampInput.value?.files) {
-        form.stamp = stampInput.value.files[0];
         stampPreview.value = await readAsDataURL(stampInput.value.files[0]);
     }
 };
@@ -58,7 +65,7 @@ const updateStamp = async () => {
             <div class="mt-5 md:mt-0 md:col-span-1">
                 <div class="px-4 py-5 bg-white dark:bg-gray-800 sm:p-6 shadow sm:rounded-md">
                     <!-- Profile Logo File Input -->
-                    <input ref="logoInput" type="file" class="hidden" @change="updateLogo" />
+                    <input ref="logoInput" type="file" class="hidden" @change="updateLogoPreview" />
 
                     <!-- New Profile Logo Preview -->
 
@@ -74,7 +81,7 @@ const updateStamp = async () => {
 
                 <div class="mt-6 px-4 py-5 bg-white dark:bg-gray-800 sm:p-6 shadow sm:rounded-md">
                     <!-- Profile Stamp File Input -->
-                    <input ref="stampInput" type="file" class="hidden" @change="updateStamp" />
+                    <input ref="stampInput" type="file" class="hidden" @change="updateStampPreview" />
 
                     <!-- New Profile Stamp Preview -->
 
@@ -199,6 +206,27 @@ const updateStamp = async () => {
                                 class="block w-full mt-1" autofocus />
                             <InputError :message="form.errors.kode_kabupaten" class="mt-2" />
                         </div>
+
+                        <div class="col-span-6 sm:col-span-2">
+                            <InputLabel for="nama_provinsi" value="Nama Provinsi" />
+                            <TextInput id="nama_provinsi" v-model="form.nama_provinsi" type="text" class="block w-full mt-1"
+                                autofocus />
+                            <InputError :message="form.errors.nama_provinsi" class="mt-2" />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-2">
+                            <InputLabel for="nama_gubernur" value="Nama Gubernur" />
+                            <TextInput id="nama_gubernur" v-model="form.nama_gubernur" type="text" class="block w-full mt-1"
+                                autofocus />
+                            <InputError :message="form.errors.nama_gubernur" class="mt-2" />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-2">
+                            <InputLabel for="kode_provinsi" value="Kode Provinsi" />
+                            <NumericInput id="kode_provinsi" v-model="form.kode_provinsi" type="number"
+                                class="block w-full mt-1" autofocus />
+                            <InputError :message="form.errors.kode_provinsi" class="mt-2" />
+                        </div>
                     </div>
                 </div>
 
@@ -208,6 +236,7 @@ const updateStamp = async () => {
                         Update
                     </PrimaryButton>
                 </div>
+
             </div>
         </div>
     </form>

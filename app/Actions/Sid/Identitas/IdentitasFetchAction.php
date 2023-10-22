@@ -23,14 +23,21 @@ class IdentitasFetchAction extends Action
             'email' => '',
             'website' => '',
             'kode_desa' => '',
-            'nama_kepala_desa' => '',
+            'nama_kades' => '',
             'kodepos' => '',
             'nama_kecamatan' => '',
             'kode_kecamatan' => '',
-            'nama_kepala_camat' => '',
+            'nama_camat' => '',
             'nama_kabupaten' => '',
+            'nama_bupati' => '',
             'kode_kabupaten' => '',
-            'provinsi' => '',
+            'lat' => '',
+            'long' => '',
+            'logo' => '',
+            'stamp' => '',
+            'nama_provinsi' => '',
+            'nama_gubernur' => '',
+            'kode_provinsi' => '',
         ];
 
         if ($meta = $this->metaRepository->findBySlug('sid-identitas')) {
@@ -38,15 +45,21 @@ class IdentitasFetchAction extends Action
 
             if (!empty($identitas['logo'])) {
                 if ($logoModel = $this->mediaPictureRepository->find($identitas['logo'])) {
-                    $identitas['logo'] = $logoModel->file->path;
+                    $identitas['logo'] = [
+                        'path' => $logoModel->file->path,
+                        'url' => $logoModel->file->url,
+                    ];
                 } else {
                     $identitas['logo'] = '';
                 }
             }
 
             if (!empty($identitas['stamp'])) {
-                if ($stampModel = $this->mediaPictureRepository->find($identitas['stamp'])) {
-                    $identitas['stamp'] = $stampModel->file->path;
+                if ($stampModel = $this->mediaPictureRepository->find($identitas['stamp'], realations: ['file'])) {
+                    $identitas['stamp'] = [
+                        'path' => $stampModel->file->path,
+                        'url' => $stampModel->file->url,
+                    ];
                 } else {
                     $identitas['stamp'] = '';
                 }

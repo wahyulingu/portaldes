@@ -34,7 +34,7 @@ class PictureUpdateAction extends Action implements RuledActionContract
         return [
             'name' => ['sometimes', 'string', 'max:255'],
             'description' => ['sometimes', 'string', 'max:255'],
-            'image' => ['sometimes', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'image' => ['sometimes', 'mimes:jpg,jpeg,png'],
             'path' => ['sometimes', 'string', 'max:255'],
         ];
     }
@@ -42,7 +42,7 @@ class PictureUpdateAction extends Action implements RuledActionContract
     protected function handler(array $validatedPayload = [], array $payload = [])
     {
         if (isset($validatedPayload['image'])) {
-            $this->updateFile($validatedPayload['image'], $validatedPayload['path'] ?: 'media/pictures');
+            $this->updateFile($validatedPayload['image'], @$validatedPayload['path'] ?: 'media/pictures');
         }
 
         return $this->mediaPictureRepository->update($this->picture->getKey(), $validatedPayload);
