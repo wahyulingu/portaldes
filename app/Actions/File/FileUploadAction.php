@@ -24,7 +24,7 @@ class FileUploadAction extends Action implements RuledActionContract
     {
     }
 
-    public function prepare(HasFile&Model $fileable)
+    public function prepare(Model $fileable)
     {
         $this->fileable = $fileable;
 

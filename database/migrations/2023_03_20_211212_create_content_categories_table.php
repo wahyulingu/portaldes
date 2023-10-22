@@ -33,7 +33,7 @@ return new class() extends Migration {
                     'content_model_has_categories_type',
                 ],
 
-                'content_model_has_categories_content_model_has_categories_id_content_model_has_categories_type_index'
+                'content_model_has_category_index'
             );
 
             $table->foreign('content_category_id')
@@ -48,7 +48,7 @@ return new class() extends Migration {
                     'content_model_has_categories_type',
                 ],
 
-                'content_model_has_categories_content_model_has_categories_id_content_model_has_categories_type_primary'
+                'content_model_has_category_primary'
             );
         });
     }
