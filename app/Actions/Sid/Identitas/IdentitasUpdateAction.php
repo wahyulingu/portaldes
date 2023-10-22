@@ -63,7 +63,11 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
              * akan diupdate gambarnya dan kemudian payload akan dihapus
              */
             if (!empty($meta)) {
-                if (!empty($meta->value['logo']) && $logoModel = $this->mediaPictureRepository->find($meta->value['logo'])) {
+                if (
+                    !empty($meta->value['logo'])
+                    && !empty($logoModel = $this->mediaPictureRepository->find($meta->value['logo']))
+                    && isset($validatedPayload['logo'])
+                ) {
                     $this
                         ->pictureUpdateAction
                         ->prepare($logoModel)
@@ -72,7 +76,11 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
                     unset($validatedPayload['logo']);
                 }
 
-                if (!empty($meta->value['stamp']) && $stampModel = $this->mediaPictureRepository->find($meta->value['stamp'])) {
+                if (
+                    !empty($meta->value['stamp'])
+                    && !empty($stampModel = $this->mediaPictureRepository->find($meta->value['stamp']))
+                    && isset($validatedPayload['logo'])
+                ) {
                     $this
                         ->pictureUpdateAction
                         ->prepare($stampModel)
@@ -83,13 +91,13 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
             }
 
             /*
-             * jika baris 59 tidak terpenuhi, payload tidak akan terhapus
+             * jika baris 60 tidak terpenuhi, payload tidak akan terhapus
              * dan akan disimpan ke dalam database dan mengganti payload
              * dengan ID model
              */
 
             if (isset($validatedPayload['logo'])) {
-                $this->$validatedPayload['logo'] = $this
+                $validatedPayload['logo'] = $this
 
                     ->pictureStoreAction
                     ->execute([
@@ -103,7 +111,7 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
             }
 
             if (isset($validatedPayload['stamp'])) {
-                $this->$validatedPayload['stamp'] = $this
+                $validatedPayload['stamp'] = $this
 
                     ->pictureStoreAction
                     ->execute([

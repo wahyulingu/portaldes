@@ -74,13 +74,12 @@ class IdentitasTest extends TestCase
             'nama_kabupaten' => $this->faker->city,
             'kode_kabupaten' => $this->faker->randomDigitNotNull,
             'provinsi' => $this->faker->randomDigitNotNull,
-            ...compact('logo', 'stamp'),
-     ];
+        ];
 
         $this
 
             ->actingAs($user)
-            ->patch(sprintf('/dashboard/sid/identitas'), $data)
+            ->patch(sprintf('/dashboard/sid/identitas'), [...$data, ...compact('logo', 'stamp')])
             ->assertRedirectToRoute('dashboard.sid.identitas.show');
 
         $actualIdentitas = app(MetaRepository::class)->findBySlug('sid-identitas');
@@ -93,18 +92,30 @@ class IdentitasTest extends TestCase
         $fakeStorage->assertExists($logo->hashName('media/picture/sid'));
         $fakeStorage->assertExists($stamp->hashName('media/picture/sid'));
 
+        $logoModel = $pictureRepository->find($actualIdentitas->value['logo']);
+        $stampModel = $pictureRepository->find($actualIdentitas->value['stamp']);
+
         $this->assertEquals(
             expected: $logo->hashName('media/picture/sid'),
-            actual: $pictureRepository->find($actualIdentitas->value->logo)->path
+            actual: $logoModel->file->path
         );
 
         $this->assertEquals(
             expected: $stamp->hashName('media/picture/sid'),
-            actual: $pictureRepository->find($actualIdentitas->value->stamp)->path
+            actual: $stampModel->file->path
         );
 
         $this->assertNotNull($actualIdentitas);
-        $this->assertEquals($data, $actualIdentitas->value);
+        $this->assertEquals(
+            [
+                ...$data,
+
+                'logo' => $logoModel->getKey(),
+                'stamp' => $stampModel->getKey(),
+            ],
+
+            $actualIdentitas->value
+        );
     }
 
     public function testOnlyAuthorizedUserCanUpdateIdentitas(): void
