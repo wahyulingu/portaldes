@@ -12,6 +12,7 @@ use App\Models\Sid\SidIdentitas;
 use App\Repositories\Media\MediaPictureRepository;
 use App\Repositories\MetaRepository;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @extends Action<SidIdentitas>
@@ -30,6 +31,8 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
 
     public function rules(array $payload): array
     {
+        Log::debug('asu', $payload);
+
         return [
             'nama_desa' => 'required|string',
             'alamat' => 'required|string',

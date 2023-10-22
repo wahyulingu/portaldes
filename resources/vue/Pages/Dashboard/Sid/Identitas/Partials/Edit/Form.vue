@@ -92,7 +92,7 @@ const updateStamp = async () => {
             <div class="mt-5 md:mt-0 md:col-span-2">
                 <div class="px-4 py-5 bg-white dark:bg-gray-800 sm:p-6 shadow sm:rounded-tl-md sm:rounded-tr-md">
                     <div class="grid grid-cols-6 gap-6">
-                        <div class="col-span-6 sm:col-span-2">
+                        <div class="col-span-6 sm:col-span-4">
                             <InputLabel for="nama_desa" value="Nama Desa" />
                             <TextInput id="nama_desa" v-model="form.nama_desa" type="text" class="block w-full mt-1"
                                 autofocus />
@@ -104,6 +104,13 @@ const updateStamp = async () => {
                             <NumericInput id="kode_desa" v-model="form.kode_desa" type="number" class="block w-full mt-1"
                                 autofocus />
                             <InputError :message="form.errors.kode_desa" class="mt-2" />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-4">
+                            <InputLabel for="nama_kades" value="Nama Kepala Desa" />
+                            <TextInput id="nama_kades" v-model="form.nama_kades" type="text" class="block w-full mt-1"
+                                autofocus />
+                            <InputError :message="form.errors.nama_kades" class="mt-2" />
                         </div>
 
                         <div class="col-span-6 sm:col-span-2">
@@ -163,6 +170,13 @@ const updateStamp = async () => {
                             <TextInput id="nama_camat" v-model="form.nama_camat" type="text" class="block w-full mt-1"
                                 autofocus />
                             <InputError :message="form.errors.nama_camat" class="mt-2" />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-2">
+                            <InputLabel for="kode_kecamatan" value="Kode Kecamatan" />
+                            <NumericInput id="kode_kecamatan" v-model="form.kode_kecamatan" type="text"
+                                class="block w-full mt-1" autofocus />
+                            <InputError :message="form.errors.kode_kecamatan" class="mt-2" />
                         </div>
 
                         <div class="col-span-6 sm:col-span-2">
