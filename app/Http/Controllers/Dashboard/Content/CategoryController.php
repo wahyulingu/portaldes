@@ -81,7 +81,6 @@ class CategoryController extends Controller
         $childsPayload = [
             'limit' => $request->get('limit', 8),
             'relationsCount' => ['articles', 'pages', 'childs'],
-            'pageName' => 'childsPage',
         ];
 
         if (!empty($keyword = $request->get('keyword'))) {

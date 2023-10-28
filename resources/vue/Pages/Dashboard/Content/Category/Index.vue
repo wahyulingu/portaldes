@@ -8,10 +8,9 @@
                 <template #head>
                     <JetBarTableHead :headers="['Name', 'Description', 'Status', '']">
                         <template #button>
-                            <Link
-                                :href="route('dashboard.content.category.create')"
+                            <Link :href="route('dashboard.content.category.create')"
                                 class="text-blue-500 hover:text-blue-600 uppercase">
-                                + Baru
+                            + Baru
                             </Link>
                         </template>
                     </JetBarTableHead>
@@ -33,11 +32,9 @@
                             <JetBarBadge text="Active" type="success" />
                         </JetBarTableData>
                         <JetBarTableData>
-                            <Link
-                                href="#"
-                                class="text-gray-400 hover:text-gray-500"
-                            >
-                                <JetBarIcon type="eye" fill />
+                            <Link :href="route('dashboard.content.category.show', [category.id])"
+                                class="text-gray-400 hover:text-gray-500">
+                            <JetBarIcon type="eye" fill />
                             </Link>
                         </JetBarTableData>
                     </tr>
