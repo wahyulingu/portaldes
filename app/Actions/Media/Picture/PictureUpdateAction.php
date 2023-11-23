@@ -61,7 +61,6 @@ class PictureUpdateAction extends Action implements RuledActionContract
         return $this
 
             ->fileUploadAction
-            ->prepare($this->picture)
             ->execute(payload: [
                 ...compact('file', 'path'),
 

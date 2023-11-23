@@ -6,6 +6,7 @@ use App\Abstractions\Repository\Repository;
 use App\Models\File;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class FileRepository extends Repository
@@ -41,11 +42,9 @@ class FileRepository extends Repository
      */
     public function create(array $attributes): ?File
     {
-        $file = $attributes['file'] ?? null;
-
-        if ($file instanceof UploadedFile) {
-            $attributes['path'] = $this->upload($file, $attributes['path'] ?? 'files');
-            $attributes['original_name'] = $file->getClientOriginalName();
+        if (@$attributes['file'] instanceof UploadedFile) {
+            $attributes['path'] = $this->upload($attributes['file'], $attributes['path'] ?? 'files');
+            $attributes['original_name'] = $attributes['file']->getClientOriginalName();
 
             return $this->store($attributes);
         }
@@ -56,21 +55,19 @@ class FileRepository extends Repository
      */
     public function update($key, array $attributes): bool
     {
-        $file = $attributes['file'] ?? null;
+        return DB::transaction(function () use ($attributes, $key) {
+            if (@$attributes['file'] instanceof UploadedFile) {
+                $attributes['path'] = $this->upload($attributes['file'], $attributes['path'] ?? 'files');
 
-        if ($file instanceof UploadedFile) {
-            $attributes['path'] = $this->upload($file, $attributes['path'] ?? 'files');
+                $oldFile = $this->find($key, 'path')->path;
+            }
 
-            $oldFile = $this->find($key, 'path')->path;
-        }
-
-        $success = parent::update($key, $attributes);
-
-        if ($oldFile && $success) {
-            $this->filesystemAdapter()->delete($oldFile);
-        }
-
-        return $success;
+            return tap(parent::update($key, $attributes), function (bool $success) use ($oldFile) {
+                if ($oldFile && $success) {
+                    $this->filesystemAdapter()->delete($oldFile);
+                }
+            });
+        });
     }
 
     public function fake($fileDisk = '')
