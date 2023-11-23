@@ -32,7 +32,7 @@ class ThumbnailStoreAction extends Action implements RuledActionContract
 
     public function rules(array $payload): array
     {
-        return ['image' => ['required', 'mimes:jpg,jpeg,png', 'max:1024']];
+        return ['image' => ['required', 'mimes:jpg,jpeg,png', 'max:2048']];
     }
 
     protected function handler(array $validatedPayload = [], array $payload = [])
