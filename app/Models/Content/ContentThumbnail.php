@@ -3,12 +3,12 @@
 namespace App\Models\Content;
 
 use App\Abstractions\Model\ContentModel;
-use App\Contracts\Model\HasPicture;
-use App\Traits\Model\Relations\Media\MorphOnePicture;
+use App\Contracts\Model\BelongsToPicture;
+use App\Traits\Model\Relations\Media\MorphToManyPictures;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ContentThumbnail extends ContentModel implements HasPicture
+class ContentThumbnail extends ContentModel implements BelongsToPicture
 {
-    use MorphOnePicture;
+    use MorphToManyPictures;
     use HasFactory;
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Traits\Model\Relations\Content;
+namespace App\Traits\Model\Relations\Media;
 
 use App\Models\Content\ContentCategory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-trait MorphToManyCategories
+trait MorphToManyPictures
 {
     /**
      * A model may have multiple files.
