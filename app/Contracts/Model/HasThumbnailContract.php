@@ -5,7 +5,7 @@ namespace App\Contracts\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-interface HasThumbnail
+interface HasThumbnailContract
 {
     public function thumbnail(): HasOne|MorphOne;
 }

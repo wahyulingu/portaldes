@@ -4,7 +4,7 @@ namespace App\Contracts\Model;
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-interface MorphToManyPicturesContract
+interface HasPicturesContract
 {
     public function pictures(): MorphToMany;
 }

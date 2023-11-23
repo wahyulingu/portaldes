@@ -14,8 +14,8 @@ return new class() extends Migration {
         Schema::create('content_articles', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('category_id')->nullable();
+            $table->foreignId('user_id');
+            $table->foreignId('category_id')->nullable();
             $table->enum('status', Moderation::names()->toArray())->default(Moderation::draft->name);
             $table->string('slug');
             $table->string('title');

@@ -13,7 +13,7 @@ return new class() extends Migration {
         Schema::create('rental_specifications', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('rental_id');
+            $table->foreignId('rental_id');
             $table->string('rental_type');
             $table->string('name');
             $table->text('description');

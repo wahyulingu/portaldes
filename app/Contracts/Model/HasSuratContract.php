@@ -4,7 +4,7 @@ namespace App\Contracts\Model;
 
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-interface MorphOneSurat
+interface HasSuratContract
 {
     public function surat(): MorphOne;
 }

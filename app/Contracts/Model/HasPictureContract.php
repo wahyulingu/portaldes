@@ -4,7 +4,7 @@ namespace App\Contracts\Model;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-interface BelongsToPicture
+interface HasPictureContract
 {
     public function picture(): BelongsTo;
 }

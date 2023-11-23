@@ -4,7 +4,7 @@ namespace App\Contracts\Model;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-interface BelongsToManyRoles
+interface HasRolesContract
 {
     public function roles(): BelongsToMany;
 }

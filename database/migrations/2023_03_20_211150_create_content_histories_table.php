@@ -14,8 +14,8 @@ return new class() extends Migration {
         Schema::create('content_histories', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('content_id');
+            $table->foreignId('user_id');
+            $table->foreignId('content_id');
             $table->string('content_type');
             $table->enum('status', Moderation::values()->toArray())->default(Moderation::draft->name);
             $table->json('data');
