@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Dashboard\Content;
 
+use App\Enumerations\Moderation;
 use App\Models\Content\ContentArticle;
 use App\Models\Content\ContentCategory;
 use App\Models\User;
@@ -118,7 +119,30 @@ class ArticleTest extends TestCase
         $this->assertDatabaseHas(ContentArticle::class, $article);
     }
 
-    public function testOnlyAuthorizedUserCanStoreNewArticleOrSubarticle(): void
+    public function testCanStoreStatusedArticle(): void
+    {
+        $user = User::factory()->create();
+
+        $user->givePermissionTo(Permission::findOrCreate('create.content.article'));
+
+        $article = [
+            'title' => $this->faker->words(3, true),
+            'description' => $this->faker->words(8, true),
+            'body' => $this->faker->paragraphs(8, true),
+            'status' => Moderation::draft->name,
+        ];
+
+        $this
+
+            ->actingAs($user)
+            ->post('/dashboard/content/article', $article)
+
+            ->assertRedirectToRoute('dashboard.content.article.index');
+
+        $this->assertDatabaseHas(ContentArticle::class, $article);
+    }
+
+    public function testOnlyAuthorizedUserCanStoreNewArticle(): void
     {
         $this
 

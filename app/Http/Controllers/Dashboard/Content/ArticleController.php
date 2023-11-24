@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Dashboard\Content;
 
 use App\Actions\Content\Article\ArticleDeleteAction;
+use App\Actions\Content\Article\ArticlePaginateAction;
 use App\Actions\Content\Article\ArticleStoreAction;
 use App\Actions\Content\Article\ArticleUpdateAction;
-use App\Actions\Content\Article\Index\ArticleIndexAction;
 use App\Http\Controllers\Controller;
 use App\Models\Content\ContentArticle;
 use Illuminate\Http\Request;
@@ -22,7 +22,7 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, ArticleIndexAction $index)
+    public function index(Request $request, ArticlePaginateAction $articlePaginateAction)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 
@@ -31,7 +31,7 @@ class ArticleController extends Controller
         }
 
         return Inertia::render('Dashboard/Content/Article/Index', [
-            'articles' => $index->execute($payload),
+            'articles' => $articlePaginateAction->execute($payload),
         ]);
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Content\Article\Index;
+namespace App\Actions\Content\Article;
 
 use App\Abstractions\Action\Content\Index\ContentIndexAction;
 use App\Repositories\Content\ContentArticleRepository;
