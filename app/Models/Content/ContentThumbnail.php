@@ -11,4 +11,6 @@ class ContentThumbnail extends ContentModel implements HasPictureContract
 {
     use BelongsToPicture;
     use HasFactory;
+
+    protected $fillable = ['picture_id', 'content_id', 'content_type'];
 }

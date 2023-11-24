@@ -48,9 +48,9 @@ class ArticleController extends Controller
      */
     public function store(Request $request, ArticleStoreAction $store)
     {
-        $article = $store->prepare($request->user())->execute($request->all());
+        $article = $store->execute([...$request->all(), 'user_id' => $request->user()->getKey()]);
 
-        return Response::redirectToRoute('dashboard.content.article.index', status: 201)
+        return Response::redirectToRoute('dashboard.content.article.index')
 
             ->with('flash', compact('article'))
             ->banner(sprintf('Lingkungan Created', $article->title));

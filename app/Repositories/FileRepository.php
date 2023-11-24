@@ -58,6 +58,7 @@ class FileRepository extends Repository
         return DB::transaction(function () use ($attributes, $key) {
             if (@$attributes['file'] instanceof UploadedFile) {
                 $attributes['path'] = $this->upload($attributes['file'], $attributes['path'] ?? 'files');
+                $attributes['original_name'] = $attributes['file']->getClientOriginalName();
 
                 $oldFile = $this->find($key, 'path')->path;
             }

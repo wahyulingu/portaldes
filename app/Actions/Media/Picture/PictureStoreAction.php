@@ -38,12 +38,14 @@ class PictureStoreAction extends Action implements RuledActionContract
                 function (MediaPicture $picture) use ($validatedPayload) {
                     $fileData = [
                         'file' => $validatedPayload['image'],
+                        'fileable_id' => $picture->getKey(),
+                        'fileable_type' => $picture::class,
                         'name' => sprintf('model %s[%s] file', $picture::class, $picture->getKey()),
                         'path' => $validatedPayload['path'] ?: 'media/pictures',
                         'description' => 'auto-generated model for media picture file',
                     ];
 
-                    $picture->file()->save($this->fileUploadAction->execute($fileData));
+                    $picture->file()->save($this->fileUploadAction->execute($fileData, skipRules: true));
                 }
             )
         );

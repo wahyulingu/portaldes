@@ -32,28 +32,36 @@ class ArticleStoreAction extends Action implements RuledActionContract
             'body' => ['required', 'string'],
             'description' => ['required', 'string', 'max:255'],
 
-            'category_id' => [
-                'sometimes',
-                sprintf('exists:%s,id', ContentCategory::class),
+            'user_id' => [
+                'required',
+                Rule::exists(User::class, 'id'),
             ],
 
-            'thumbnail' => ['sometimes', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'status' => ['sometimes', Rule::in(Moderation::names())],
-        ];
-    }
+            'category_id' => [
+                'sometimes',
+                Rule::exists(ContentCategory::class, 'id'),
+            ],
 
-    public function prepare(User $user)
-    {
-        return tap($this, fn (self $action) => $action->user = $user);
+            'status' => [
+                'sometimes',
+                Rule::in(Moderation::names()),
+            ],
+
+            'thumbnail' => ['sometimes', 'mimes:jpg,jpeg,png', 'max:2048'],
+        ];
     }
 
     protected function handler(array $validatedPayload = [], array $payload = [])
     {
         return tap(
-            $this->contentArticleRepository->store([...$validatedPayload, 'user_id' => $this->user->getKey()]),
+            $this->contentArticleRepository->store($validatedPayload),
             function (ContentArticle $content) use ($validatedPayload) {
                 if (isset($validatedPayload['thumbnail'])) {
-                    $this->thumbnailStoreAction->prepare($content)->execute(['image' => $validatedPayload['thumbnail']]);
+                    $this
+
+                        ->thumbnailStoreAction
+                        ->prepare($content)
+                        ->execute(['image' => $validatedPayload['thumbnail']]);
                 }
             }
         );
