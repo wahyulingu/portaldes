@@ -2,7 +2,7 @@
 
 namespace App\Actions\Content\Article;
 
-use App\Abstractions\Action\Content\Index\ContentIndexAction;
+use App\Abstractions\Action\Content\ContentIndexAction;
 use App\Repositories\Content\ContentArticleRepository;
 
 class ArticleIndexAction extends ContentIndexAction
@@ -10,10 +10,5 @@ class ArticleIndexAction extends ContentIndexAction
     public function __construct(ContentArticleRepository $repository)
     {
         parent::__construct($repository);
-    }
-
-    protected function filters(array $payload = []): array
-    {
-        return [];
     }
 }

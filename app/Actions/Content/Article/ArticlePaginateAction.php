@@ -2,8 +2,8 @@
 
 namespace App\Actions\Content\Article;
 
-use App\Contracts\Action\PaginatedActionContract;
+use App\Contracts\Action\PaginatedIndexContract;
 
-class ArticlePaginateAction extends ArticleIndexAction implements PaginatedActionContract
+class ArticlePaginateAction extends ArticleIndexAction implements PaginatedIndexContract
 {
 }

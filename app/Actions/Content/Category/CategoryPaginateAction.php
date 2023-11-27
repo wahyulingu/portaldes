@@ -2,10 +2,11 @@
 
 namespace App\Actions\Content\Category;
 
-use App\Abstractions\Action\Content\Paginate\ContentPaginateAction;
+use App\Abstractions\Action\Content\ContentIndexAction;
+use App\Contracts\Action\PaginatedIndexContract;
 use App\Repositories\Content\ContentCategoryRepository;
 
-class CategoryPaginateAction extends ContentPaginateAction
+class CategoryPaginateAction extends ContentIndexAction implements PaginatedIndexContract
 {
     public function __construct(ContentCategoryRepository $repository)
     {

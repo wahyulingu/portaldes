@@ -2,7 +2,7 @@
 
 namespace App\Actions\Content\Page\Index;
 
-use App\Abstractions\Action\Content\Index\ContentIndexAction;
+use App\Abstractions\Action\Content\ContentIndexAction;
 use App\Repositories\Content\ContentPageRepository;
 
 class PageIndexAction extends ContentIndexAction

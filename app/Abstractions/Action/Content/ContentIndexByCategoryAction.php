@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Abstractions\Action\Content\Paginate;
+namespace App\Abstractions\Action\Content;
 
 use App\Models\Content\ContentCategory;
 
-abstract class ContentPaginateByCategoryAction extends ContentPaginateAction
+abstract class ContentIndexByCategoryAction extends ContentIndexAction
 {
     protected ContentCategory $category;
 

@@ -2,6 +2,6 @@
 
 namespace App\Contracts\Action;
 
-interface PaginatedActionContract
+interface PaginatedIndexContract
 {
 }

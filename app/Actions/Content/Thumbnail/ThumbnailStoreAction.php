@@ -24,14 +24,14 @@ class ThumbnailStoreAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function prepare(ContentModel $content)
+    public function prepare(ContentModel $content): self
     {
         return tap($this, fn (self $action) => $action->content = $content);
     }
 
     public function rules(array $payload): array
     {
-        return ['image' => ['required', 'mimes:jpg,jpeg,png', 'max:2048']];
+        return ['thumbnail' => ['required', 'mimes:jpg,jpeg,png', 'max:2048']];
     }
 
     protected function handler(array $validatedPayload = [], array $payload = [])
@@ -43,8 +43,8 @@ class ThumbnailStoreAction extends Action implements RuledActionContract
                  */
                 $picture = $this->pictureStoreAction->execute(
                     payload: [
-                        'image' => $validatedPayload['image'],
-                        'name' => $validatedPayload['image']->getClientOriginalName(),
+                        'image' => $validatedPayload['thumbnail'],
+                        'name' => $validatedPayload['thumbnail']->getClientOriginalName(),
                         'path' => 'content/thumbnails',
                         'description' => 'auto-generated model for media thumbnail picture',
                     ],

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Abstractions\Action\Content\Paginate;
+namespace App\Abstractions\Action\Content;
 
 use App\Models\User;
 
-abstract class ContentPaginateByUserAction extends ContentPaginateAction
+abstract class ContentIndexByUserAction extends ContentIndexAction
 {
     protected User $user;
 

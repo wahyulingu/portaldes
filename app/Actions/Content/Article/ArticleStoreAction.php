@@ -61,7 +61,7 @@ class ArticleStoreAction extends Action implements RuledActionContract
 
                         ->thumbnailStoreAction
                         ->prepare($content)
-                        ->execute(['image' => $validatedPayload['thumbnail']]);
+                        ->execute($validatedPayload, skipRules: true);
                 }
             }
         );
