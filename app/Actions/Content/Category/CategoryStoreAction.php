@@ -26,7 +26,7 @@ class CategoryStoreAction extends Action implements RuledActionContract
 
             'parent_id' => [
                 'sometimes',
-                sprintf('exists:%s,id', ContentCategory::class),
+                Rule::exists(ContentCategory::class, 'id'),
             ],
 
             'status' => ['sometimes', Rule::in(Moderation::names())],

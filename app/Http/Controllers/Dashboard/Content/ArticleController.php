@@ -53,7 +53,7 @@ class ArticleController extends Controller
         return Response::redirectToRoute('dashboard.content.article.index')
 
             ->with('flash', compact('article'))
-            ->banner(sprintf('Lingkungan Created', $article->title));
+            ->banner(sprintf('Article Created', $article->title));
     }
 
     /**

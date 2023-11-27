@@ -67,7 +67,7 @@ class CategoryController extends Controller
         return Response::redirectToRoute('dashboard.content.category.index')
 
             ->with('flash', compact('category'))
-            ->banner(sprintf('Category "%s" Created', $category->name));
+            ->banner(sprintf('Category Created', $category->name));
     }
 
     /**
@@ -125,7 +125,7 @@ class CategoryController extends Controller
      */
     public function destroy(ContentCategory $category, CategoryDeleteAction $categoryDeleteAction)
     {
-        $categoryDeleteAction->prepare($category)->execute();
+        $categoryDeleteAction->execute($category->only('id'), skipRules: true);
 
         return Response::redirectToRoute('dashboard.content.category.index')
 

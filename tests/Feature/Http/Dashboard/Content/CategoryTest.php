@@ -54,7 +54,7 @@ class CategoryTest extends TestCase
 
             ->actingAs($user)
             ->post('/dashboard/content/category', $category)
-            ->assertSuccessful();
+            ->assertRedirectToRoute('dashboard.content.category.index');
 
         $this->assertDatabaseHas(ContentCategory::class, $category);
     }
@@ -75,7 +75,7 @@ class CategoryTest extends TestCase
 
             ->actingAs($user)
             ->post('/dashboard/content/category', $category)
-            ->assertSuccessful();
+            ->assertRedirectToRoute('dashboard.content.category.index');
 
         $this->assertDatabaseHas(ContentCategory::class, $category);
     }

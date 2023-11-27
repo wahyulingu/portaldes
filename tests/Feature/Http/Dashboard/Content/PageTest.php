@@ -50,7 +50,7 @@ class PageTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('create.content.page'));
 
-        $page = [
+        $contentPage = [
             'title' => $this->faker->words(3, true),
             'description' => $this->faker->words(8, true),
             'body' => $this->faker->paragraphs(8, true),
@@ -59,10 +59,10 @@ class PageTest extends TestCase
         $this
 
             ->actingAs($user)
-            ->post('/dashboard/content/page', $page)
+            ->post('/dashboard/content/page', $contentPage)
             ->assertRedirectToRoute('dashboard.content.page.index');
 
-        $this->assertDatabaseHas(ContentPage::class, $page);
+        $this->assertDatabaseHas(ContentPage::class, $contentPage);
     }
 
     public function testCanStoreCategorizedPage(): void
@@ -71,7 +71,7 @@ class PageTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('create.content.page'));
 
-        $page = [
+        $contentPage = [
             'title' => $this->faker->words(3, true),
             'description' => $this->faker->words(8, true),
             'body' => $this->faker->paragraphs(8, true),
@@ -81,10 +81,10 @@ class PageTest extends TestCase
         $this
 
             ->actingAs($user)
-            ->post('/dashboard/content/page', $page)
+            ->post('/dashboard/content/page', $contentPage)
             ->assertRedirectToRoute('dashboard.content.page.index');
 
-        $this->assertDatabaseHas(ContentPage::class, $page);
+        $this->assertDatabaseHas(ContentPage::class, $contentPage);
     }
 
     public function testCanStoreThumbnailedPage(): void
@@ -98,7 +98,7 @@ class PageTest extends TestCase
 
         $thumbnail = UploadedFile::fake()->image('thumbnail.jpg');
 
-        $page = [
+        $contentPage = [
             'title' => $this->faker->words(3, true),
             'description' => $this->faker->words(8, true),
             'body' => $this->faker->paragraphs(8, true),
@@ -108,7 +108,7 @@ class PageTest extends TestCase
 
             ->actingAs($user)
             ->post('/dashboard/content/page', [
-                ...$page,
+                ...$contentPage,
                 'thumbnail' => $thumbnail,
             ])
 
@@ -116,7 +116,7 @@ class PageTest extends TestCase
 
         $fakeStorage->assertExists($thumbnail->hashName('content/thumbnails'));
 
-        $this->assertDatabaseHas(ContentPage::class, $page);
+        $this->assertDatabaseHas(ContentPage::class, $contentPage);
     }
 
     public function testCanStoreStatusedPage(): void
@@ -125,7 +125,7 @@ class PageTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('create.content.page'));
 
-        $page = [
+        $contentPage = [
             'title' => $this->faker->words(3, true),
             'description' => $this->faker->words(8, true),
             'body' => $this->faker->paragraphs(8, true),
@@ -135,11 +135,11 @@ class PageTest extends TestCase
         $this
 
             ->actingAs($user)
-            ->post('/dashboard/content/page', $page)
+            ->post('/dashboard/content/page', $contentPage)
 
             ->assertRedirectToRoute('dashboard.content.page.index');
 
-        $this->assertDatabaseHas(ContentPage::class, $page);
+        $this->assertDatabaseHas(ContentPage::class, $contentPage);
     }
 
     public function testOnlyAuthorizedUserCanStoreNewPage(): void
@@ -182,12 +182,12 @@ class PageTest extends TestCase
         /**
          * @var ContentPage
          */
-        $page = ContentPage::factory()->create();
+        $contentPage = ContentPage::factory()->create();
 
         $this
 
             ->actingAs($user)
-            ->get(sprintf('/dashboard/content/page?keyword=%s', substr($page->description, 8, 24)))
+            ->get(sprintf('/dashboard/content/page?keyword=%s', substr($contentPage->description, 8, 24)))
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Dashboard/Content/Page/Index')
@@ -214,19 +214,19 @@ class PageTest extends TestCase
         /**
          * @var ContentPage
          */
-        $page = ContentPage::factory()->create();
+        $contentPage = ContentPage::factory()->create();
 
         $user->givePermissionTo(Permission::findOrCreate('update.content.page'));
 
         $this
 
             ->actingAs($user)
-            ->get(sprintf('/dashboard/content/page/%s/edit', $page->getKey()))
+            ->get(sprintf('/dashboard/content/page/%s/edit', $contentPage->getKey()))
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Dashboard/Content/Page/Edit')
                 ->has('page', fn (AssertableInertia $pages) => $pages
-                    ->where('id', $page->getKey())
+                    ->where('id', $contentPage->getKey())
                     ->etc()));
     }
 
@@ -245,7 +245,7 @@ class PageTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('update.content.page'));
 
-        $page = ContentPage::factory()->create();
+        $contentPage = ContentPage::factory()->create();
 
         $newData = [
             'title' => $this->faker->words(3, true),
@@ -256,22 +256,22 @@ class PageTest extends TestCase
         $this
 
             ->actingAs($user)
-            ->patch(sprintf('/dashboard/content/page/%s', $page->getKey()), $newData)
-            ->assertRedirectToRoute('dashboard.content.page.show', $page->getKey());
+            ->patch(sprintf('/dashboard/content/page/%s', $contentPage->getKey()), $newData)
+            ->assertRedirectToRoute('dashboard.content.page.show', $contentPage->getKey());
 
-        $this->assertDatabaseHas(ContentPage::class, [...$newData, 'id' => $page->getKey()]);
+        $this->assertDatabaseHas(ContentPage::class, [...$newData, 'id' => $contentPage->getKey()]);
     }
 
     public function testOnlyAuthorizedUserCanUpdateSelectedPage(): void
     {
         $user = User::factory()->create();
 
-        $page = ContentPage::factory()->create();
+        $contentPage = ContentPage::factory()->create();
 
         $this
 
             ->actingAs($user)
-            ->patch(sprintf('/dashboard/content/page/%s', $page->getKey()))
+            ->patch(sprintf('/dashboard/content/page/%s', $contentPage->getKey()))
             ->assertForbidden();
     }
 
@@ -281,17 +281,17 @@ class PageTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('view.content.page'));
 
-        $page = ContentPage::factory()->create();
+        $contentPage = ContentPage::factory()->create();
 
         $this
 
             ->actingAs($user)
-            ->get(sprintf('/dashboard/content/page/%s', $page->getKey()))
+            ->get(sprintf('/dashboard/content/page/%s', $contentPage->getKey()))
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Dashboard/Content/Page/Show')
                 ->has('page', fn (AssertableInertia $renderedPage) => $renderedPage
-                    ->where('id', $page->getKey())
+                    ->where('id', $contentPage->getKey())
                     ->etc()));
     }
 
@@ -299,12 +299,12 @@ class PageTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $page = ContentPage::factory()->create();
+        $contentPage = ContentPage::factory()->create();
 
         $this
 
             ->actingAs($user)
-            ->get(sprintf('/dashboard/content/page/%s', $page->getKey()))
+            ->get(sprintf('/dashboard/content/page/%s', $contentPage->getKey()))
             ->assertForbidden();
     }
 
@@ -314,27 +314,27 @@ class PageTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('delete.content.page'));
 
-        $page = ContentPage::factory()->create();
+        $contentPage = ContentPage::factory()->create();
 
         $this
 
             ->actingAs($user)
-            ->delete(sprintf('/dashboard/content/page/%s', $page->getKey()))
+            ->delete(sprintf('/dashboard/content/page/%s', $contentPage->getKey()))
             ->assertRedirectToRoute('dashboard.content.page.index');
 
-        $this->assertNull($page->fresh());
+        $this->assertNull($contentPage->fresh());
     }
 
     public function testOnlyAuthorizedUserCanDestroySelectedPage(): void
     {
         $user = User::factory()->create();
 
-        $page = ContentPage::factory()->create();
+        $contentPage = ContentPage::factory()->create();
 
         $this
 
             ->actingAs($user)
-            ->delete(sprintf('/dashboard/content/page/%s', $page->getKey()))
+            ->delete(sprintf('/dashboard/content/page/%s', $contentPage->getKey()))
             ->assertForbidden();
     }
 }

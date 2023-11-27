@@ -3,10 +3,12 @@
 namespace App\Actions\Content\Category;
 
 use App\Abstractions\Action\Action;
+use App\Contracts\Action\RuledActionContract;
 use App\Models\Content\ContentCategory;
 use App\Repositories\Content\ContentCategoryRepository;
+use Illuminate\Validation\Rule;
 
-class CategoryDeleteAction extends Action
+class CategoryDeleteAction extends Action implements RuledActionContract
 {
     protected ContentCategory $category;
 
@@ -14,13 +16,13 @@ class CategoryDeleteAction extends Action
     {
     }
 
-    public function prepare(ContentCategory $category): self
+    public function rules(array $payload): array
     {
-        return tap($this, fn (self $action) => $action->category = $category);
+        return ['id' => ['required', Rule::exists(ContentCategory::class)]];
     }
 
     protected function handler(array $validatedPayload = [], array $payload = []): bool
     {
-        return $this->contentCategoryRepository->delete($this->category->getKey());
+        return $this->contentCategoryRepository->delete($validatedPayload['id']);
     }
 }

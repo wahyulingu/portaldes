@@ -9,7 +9,7 @@ abstract class Action
 {
     abstract protected function handler(array $validatedPayload = [], array $payload = []);
 
-    final public function execute(array $payload = [], array|bool $skipRules = [])
+    final public function execute(array $payload = [], array|true $skipRules = [])
     {
         $validatedPayload = $payload;
 
