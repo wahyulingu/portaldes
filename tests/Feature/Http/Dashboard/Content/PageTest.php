@@ -2,11 +2,15 @@
 
 namespace Tests\Feature\Http\Dashboard\Content;
 
+use App\Enumerations\Moderation;
 use App\Models\Content\ContentCategory;
 use App\Models\Content\ContentPage;
 use App\Models\User;
+use App\Repositories\FileRepository;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Inertia\Testing\AssertableInertia;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
@@ -56,7 +60,7 @@ class PageTest extends TestCase
 
             ->actingAs($user)
             ->post('/dashboard/content/page', $page)
-            ->assertSuccessful();
+            ->assertRedirectToRoute('dashboard.content.page.index');
 
         $this->assertDatabaseHas(ContentPage::class, $page);
     }
@@ -78,12 +82,67 @@ class PageTest extends TestCase
 
             ->actingAs($user)
             ->post('/dashboard/content/page', $page)
-            ->assertSuccessful();
+            ->assertRedirectToRoute('dashboard.content.page.index');
 
         $this->assertDatabaseHas(ContentPage::class, $page);
     }
 
-    public function testOnlyAuthorizedUserCanStoreNewPageOrSubpage(): void
+    public function testCanStoreThumbnailedPage(): void
+    {
+        $user = User::factory()->create();
+
+        $user->givePermissionTo(Permission::findOrCreate('create.content.page'));
+
+        /** @var FilesystemAdapter */
+        $fakeStorage = app(FileRepository::class)->fake();
+
+        $thumbnail = UploadedFile::fake()->image('thumbnail.jpg');
+
+        $page = [
+            'title' => $this->faker->words(3, true),
+            'description' => $this->faker->words(8, true),
+            'body' => $this->faker->paragraphs(8, true),
+        ];
+
+        $this
+
+            ->actingAs($user)
+            ->post('/dashboard/content/page', [
+                ...$page,
+                'thumbnail' => $thumbnail,
+            ])
+
+            ->assertRedirectToRoute('dashboard.content.page.index');
+
+        $fakeStorage->assertExists($thumbnail->hashName('content/thumbnails'));
+
+        $this->assertDatabaseHas(ContentPage::class, $page);
+    }
+
+    public function testCanStoreStatusedPage(): void
+    {
+        $user = User::factory()->create();
+
+        $user->givePermissionTo(Permission::findOrCreate('create.content.page'));
+
+        $page = [
+            'title' => $this->faker->words(3, true),
+            'description' => $this->faker->words(8, true),
+            'body' => $this->faker->paragraphs(8, true),
+            'status' => Moderation::draft->name,
+        ];
+
+        $this
+
+            ->actingAs($user)
+            ->post('/dashboard/content/page', $page)
+
+            ->assertRedirectToRoute('dashboard.content.page.index');
+
+        $this->assertDatabaseHas(ContentPage::class, $page);
+    }
+
+    public function testOnlyAuthorizedUserCanStoreNewPage(): void
     {
         $this
 
@@ -164,7 +223,7 @@ class PageTest extends TestCase
             ->actingAs($user)
             ->get(sprintf('/dashboard/content/page/%s/edit', $page->getKey()))
             ->assertOk()
-            ->assertInertia(fn (AssertableInertia $renderedPage) => $renderedPage
+            ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Dashboard/Content/Page/Edit')
                 ->has('page', fn (AssertableInertia $pages) => $pages
                     ->where('id', $page->getKey())
@@ -198,7 +257,7 @@ class PageTest extends TestCase
 
             ->actingAs($user)
             ->patch(sprintf('/dashboard/content/page/%s', $page->getKey()), $newData)
-            ->assertSuccessful();
+            ->assertRedirectToRoute('dashboard.content.page.show', $page->getKey());
 
         $this->assertDatabaseHas(ContentPage::class, [...$newData, 'id' => $page->getKey()]);
     }
@@ -229,7 +288,7 @@ class PageTest extends TestCase
             ->actingAs($user)
             ->get(sprintf('/dashboard/content/page/%s', $page->getKey()))
             ->assertOk()
-            ->assertInertia(fn (AssertableInertia $renderedPage) => $renderedPage
+            ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Dashboard/Content/Page/Show')
                 ->has('page', fn (AssertableInertia $renderedPage) => $renderedPage
                     ->where('id', $page->getKey())
@@ -261,7 +320,7 @@ class PageTest extends TestCase
 
             ->actingAs($user)
             ->delete(sprintf('/dashboard/content/page/%s', $page->getKey()))
-            ->assertOk();
+            ->assertRedirectToRoute('dashboard.content.page.index');
 
         $this->assertNull($page->fresh());
     }
