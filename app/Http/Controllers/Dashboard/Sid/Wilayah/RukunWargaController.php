@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard\Sid\Wilayah;
 
 use App\Actions\Sid\Wilayah\RukunWarga\RukunWargaDeleteAction;
-use App\Actions\Sid\Wilayah\RukunWarga\RukunWargaIndexAction;
+use App\Actions\Sid\Wilayah\RukunWarga\RukunWargaPaginateAction;
 use App\Actions\Sid\Wilayah\RukunWarga\RukunWargaStoreAction;
 use App\Actions\Sid\Wilayah\RukunWarga\RukunWargaUpdateAction;
 use App\Http\Controllers\Controller;
@@ -23,7 +23,7 @@ class RukunWargaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, RukunWargaIndexAction $index)
+    public function index(Request $request, RukunWargaPaginateAction $index)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 

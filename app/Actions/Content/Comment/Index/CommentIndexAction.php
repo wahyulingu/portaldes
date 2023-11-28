@@ -14,6 +14,10 @@ class CommentIndexAction extends ContentIndexAction
 
     protected function filters(array $payload = []): array
     {
+        if (!empty($payload['status'])) {
+            return collect($payload)->only('status');
+        }
+
         return [];
     }
 }

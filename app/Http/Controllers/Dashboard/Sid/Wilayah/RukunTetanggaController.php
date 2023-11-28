@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard\Sid\Wilayah;
 
 use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaDeleteAction;
-use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaIndexAction;
+use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaPaginateAction;
 use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaStoreAction;
 use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaUpdateAction;
 use App\Http\Controllers\Controller;
@@ -23,7 +23,7 @@ class RukunTetanggaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, RukunTetanggaIndexAction $index)
+    public function index(Request $request, RukunTetanggaPaginateAction $index)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 

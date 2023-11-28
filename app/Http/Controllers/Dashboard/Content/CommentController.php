@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Dashboard\Content;
 
+use App\Actions\Content\Comment\CommentDeleteAction;
 use App\Actions\Content\Comment\CommentUpdateAction;
-use App\Actions\Content\Comment\Index\CommentIndexAction;
+use App\Actions\Content\Comment\Index\CommentPaginateAction;
 use App\Http\Controllers\Controller;
 use App\Models\Content\ContentComment;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, CommentIndexAction $index)
+    public function index(Request $request, CommentPaginateAction $index)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 
@@ -28,8 +29,12 @@ class CommentController extends Controller
             $payload['keyword'] = $keyword;
         }
 
-        return Inertia::render('Dashboard/Content/Category/Index', [
-            'categories' => $index->execute($payload),
+        if ($status = $request->get('status')) {
+            $payload['status'] = $status;
+        }
+
+        return Inertia::render('Dashboard/Content/Comment/Index', [
+            'comments' => $index->execute($payload),
         ]);
     }
 
@@ -62,14 +67,24 @@ class CommentController extends Controller
      */
     public function update(Request $request, ContentComment $comment, CommentUpdateAction $update)
     {
-        return Response::make($update->prepare($comment)->execute($request->all()));
+        $update->prepare($comment)->execute($request->all());
+
+        return Response::redirectToRoute('dashboard.content.comment.show', $comment->getKey())
+
+            ->with('flash', compact('comment'))
+            ->banner(sprintf('Comment updated'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ContentComment $comment)
+    public function destroy(ContentComment $comment, CommentDeleteAction $commentDeleteAction)
     {
-        return Response::make($comment->delete());
+        $commentDeleteAction->execute($comment->only('id'), skipRules: true);
+
+        return Response::redirectToRoute('dashboard.content.comment.index')
+
+            ->with('flash', compact('comment'))
+            ->dangerBanner(sprintf('Destroyed comment "%s"', $comment->name));
     }
 }

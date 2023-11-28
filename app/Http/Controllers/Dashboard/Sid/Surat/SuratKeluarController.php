@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\Sid\Surat;
 
-use App\Actions\Sid\Surat\Keluar\SuratKeluarIndexAction;
+use App\Actions\Sid\Surat\Keluar\SuratKeluarPaginateAction;
 use App\Actions\Sid\Surat\Keluar\SuratKeluarStoreAction;
 use App\Actions\Sid\Surat\Keluar\SuratKeluarUpdateAction;
 use App\Http\Controllers\Controller;
@@ -23,7 +23,7 @@ class SuratKeluarController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, SuratKeluarIndexAction $suratKeluarIndexAction)
+    public function index(Request $request, SuratKeluarPaginateAction $suratKeluarIndexAction)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard\Sid;
 
 use App\Actions\Sid\Keluarga\KeluargaDeleteAction;
-use App\Actions\Sid\Keluarga\KeluargaIndexAction;
+use App\Actions\Sid\Keluarga\KeluargaPaginateAction;
 use App\Actions\Sid\Keluarga\KeluargaStoreAction;
 use App\Actions\Sid\Keluarga\KeluargaUpdateAction;
 use App\Http\Controllers\Controller;
@@ -23,7 +23,7 @@ class KeluargaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, KeluargaIndexAction $index)
+    public function index(Request $request, KeluargaPaginateAction $index)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard\Sid\Wilayah;
 
 use App\Actions\Sid\Wilayah\Lingkungan\LingkunganDeleteAction;
-use App\Actions\Sid\Wilayah\Lingkungan\LingkunganIndexAction;
+use App\Actions\Sid\Wilayah\Lingkungan\LingkunganPaginateAction;
 use App\Actions\Sid\Wilayah\Lingkungan\LingkunganStoreAction;
 use App\Actions\Sid\Wilayah\Lingkungan\LingkunganUpdateAction;
 use App\Http\Controllers\Controller;
@@ -23,7 +23,7 @@ class LingkunganController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, LingkunganIndexAction $index)
+    public function index(Request $request, LingkunganPaginateAction $index)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 

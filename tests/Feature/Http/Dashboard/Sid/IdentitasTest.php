@@ -66,14 +66,17 @@ class IdentitasTest extends TestCase
             'email' => $this->faker->email,
             'website' => $this->faker->domainName,
             'kode_desa' => $this->faker->randomDigitNotNull,
-            'nama_kepala_desa' => $this->faker->name,
             'kodepos' => $this->faker->randomDigitNotNull,
             'nama_kecamatan' => $this->faker->city,
             'kode_kecamatan' => $this->faker->randomDigitNotNull,
-            'nama_kepala_camat' => $this->faker->name,
             'nama_kabupaten' => $this->faker->city,
             'kode_kabupaten' => $this->faker->randomDigitNotNull,
-            'provinsi' => $this->faker->randomDigitNotNull,
+            'nama_kades' => $this->faker->name,
+            'nama_camat' => $this->faker->name,
+            'nama_bupati' => $this->faker->name,
+            'nama_provinsi' => $this->faker->city,
+            'nama_gubernur' => $this->faker->name,
+            'kode_provinsi' => $this->faker->randomDigitNotNull,
         ];
 
         $this
@@ -82,7 +85,7 @@ class IdentitasTest extends TestCase
             ->patch(sprintf('/dashboard/sid/identitas'), [...$data, ...compact('logo', 'stamp')])
             ->assertRedirectToRoute('dashboard.sid.identitas.show');
 
-        $actualIdentitas = app(MetaRepository::class)->findBySlug('sid-identitas');
+        $actualIdentitas = app(MetaRepository::class)->findBySlug('sid-identitas')->fresh();
 
         /**
          * @var MediaPictureRepository

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard\Sid\Surat;
 
 use App\Actions\Sid\Surat\SuratDeleteAction;
-use App\Actions\Sid\Surat\SuratIndexAction;
+use App\Actions\Sid\Surat\SuratPaginateAction;
 use App\Http\Controllers\Controller;
 use App\Models\Sid\Surat\SidSurat;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -21,7 +21,7 @@ class SuratController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, SuratIndexAction $index)
+    public function index(Request $request, SuratPaginateAction $index)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 
