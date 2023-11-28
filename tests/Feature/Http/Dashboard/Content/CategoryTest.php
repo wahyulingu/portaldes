@@ -140,12 +140,26 @@ class CategoryTest extends TestCase
         $this->assertDatabaseHas(ContentCategory::class, $subcategory);
     }
 
-    public function testOnlyAuthorizedUserCanStoreNewCategoryOrSubcategory(): void
+    public function testOnlyAuthorizedUserCanStoreNewCategory(): void
     {
         $this
 
             ->actingAs(User::factory()->create())
             ->post('/dashboard/content/category')
+            ->assertForbidden();
+    }
+
+    public function testOnlyAuthorizedUserCanStoreNewSubcategory(): void
+    {
+        /**
+         * @var ContentCategory
+         */
+        $category = ContentCategory::factory()->create();
+
+        $this
+
+            ->actingAs(User::factory()->create())
+            ->post(route('dashboard.content.category.subcategory.store', $category->getKey(), absolute: false))
             ->assertForbidden();
     }
 
