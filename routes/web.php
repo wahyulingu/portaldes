@@ -33,6 +33,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             Route::resource('category', Content\CategoryController::class);
             Route::resource('comment', Content\CommentController::class);
             Route::resource('page', Content\PageController::class);
+
+            Route::resource('category.subcategory', Content\SubcategoryController::class)->only('create', 'store');
         });
 
         Route::name('sid.')->prefix('sid')->group(function () {
