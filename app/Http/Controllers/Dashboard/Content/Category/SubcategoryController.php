@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard\Content;
+namespace App\Http\Controllers\Dashboard\Content\Category;
 
 use App\Actions\Content\Category\CategoryStoreAction;
 use App\Http\Controllers\Controller;

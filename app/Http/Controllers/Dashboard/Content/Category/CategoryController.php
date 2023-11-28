@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard\Content;
+namespace App\Http\Controllers\Dashboard\Content\Category;
 
 use App\Actions\Content\Category\CategoryChildsPaginateAction;
 use App\Actions\Content\Category\CategoryDeleteAction;
