@@ -39,6 +39,52 @@ class CategoryTest extends TestCase
             ->assertForbidden();
     }
 
+    public function testCreateScreenOfSubcategoriesCanBeRendered(): void
+    {
+        $user = User::factory()->create();
+
+        /**
+         * @var ContentCategory
+         */
+        $category = ContentCategory::factory()->create();
+
+        $user->givePermissionTo(Permission::findOrCreate('create.content.category'));
+
+        $this
+
+            ->actingAs($user)
+
+            ->get(route(
+                'dashboard.content.category.subcategory.create',
+                $category->getKey(),
+                absolute: false
+            ))
+
+            ->assertOk()
+            ->assertInertia(fn (AssertableInertia $page) => $page
+                ->component('Dashboard/Content/Category/Create'));
+    }
+
+    public function testOnlyAuthorizedUserCanAccessCreateScreenOfSubcategories(): void
+    {
+        /**
+         * @var ContentCategory
+         */
+        $category = ContentCategory::factory()->create();
+
+        $this
+
+            ->actingAs(User::factory()->create())
+
+            ->get(route(
+                'dashboard.content.category.subcategory.create',
+                $category->getKey(),
+                absolute: false
+            ))
+
+            ->assertForbidden();
+    }
+
     public function testCanStoreNewCategory(): void
     {
         $user = User::factory()->create();
@@ -61,23 +107,37 @@ class CategoryTest extends TestCase
 
     public function testCanStoreNewSubcategory(): void
     {
+        /**
+         * @var ContentCategory
+         */
+        $category = ContentCategory::factory()->create();
+
         $user = User::factory()->create();
 
         $user->givePermissionTo(Permission::findOrCreate('create.content.category'));
 
-        $category = [
+        $subcategory = [
             'name' => $this->faker->words(3, true),
             'description' => $this->faker->words(8, true),
-            'parent_id' => ContentCategory::factory()->create()->getKey(),
         ];
 
         $this
 
             ->actingAs($user)
-            ->post('/dashboard/content/category', $category)
-            ->assertRedirectToRoute('dashboard.content.category.index');
 
-        $this->assertDatabaseHas(ContentCategory::class, $category);
+            ->post(
+                uri: route(
+                    'dashboard.content.category.subcategory.store',
+                    $category->getKey(),
+                    absolute: false
+                ),
+
+                data: $subcategory
+            )
+
+            ->assertRedirectToRoute('dashboard.content.category.show', $category->getKey());
+
+        $this->assertDatabaseHas(ContentCategory::class, $subcategory);
     }
 
     public function testOnlyAuthorizedUserCanStoreNewCategoryOrSubcategory(): void
