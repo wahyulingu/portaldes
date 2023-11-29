@@ -4,12 +4,14 @@ namespace App\Models\Sid;
 
 use App\Enumerations;
 use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
+use App\Traits\Model\Relations\Sid\MorphOneSidPhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SidPenduduk extends Model
 {
     use HasFactory;
+    use MorphOneSidPhoto;
 
     protected $casts = [
         'kelamin' => Enumerations\Medis\JenisKelamin::class,
