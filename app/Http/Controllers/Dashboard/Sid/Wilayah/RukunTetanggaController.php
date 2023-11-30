@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Dashboard\Sid\Wilayah;
 
+use App\Actions\Sid\Penduduk\PendudukIndexAction;
 use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaDeleteAction;
 use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaPaginateAction;
 use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaStoreAction;
 use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaUpdateAction;
+use App\Actions\Sid\Wilayah\RukunWarga\RukunWargaIndexAction;
 use App\Http\Controllers\Controller;
 use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -43,9 +45,15 @@ class RukunTetanggaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(PendudukIndexAction $pendudukIndexAction, RukunWargaIndexAction $rukunWargaIndexAction)
     {
-        return Inertia::render('Dashboard/Sid/Wilayah/RukunTetangga/Create');
+        $penduduk = $pendudukIndexAction->execute();
+        $rukunWarga = $rukunWargaIndexAction->execute();
+
+        return Inertia::render(
+            'Dashboard/Sid/Wilayah/RukunTetangga/Create',
+            compact('penduduk', 'rukunWarga')
+        );
     }
 
     /**
@@ -74,9 +82,18 @@ class RukunTetanggaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SidWilayahRukunTetangga $rukun_tetangga)
-    {
-        return Inertia::render('Dashboard/Sid/Wilayah/RukunTetangga/Edit', compact('rukun_tetangga'));
+    public function edit(
+        SidWilayahRukunTetangga $rukun_tetangga,
+        PendudukIndexAction $pendudukIndexAction,
+        RukunWargaIndexAction $rukunWargaIndexAction
+    ) {
+        $penduduk = $pendudukIndexAction->execute();
+        $rukunWarga = $rukunWargaIndexAction->execute();
+
+        return Inertia::render(
+            'Dashboard/Sid/Wilayah/RukunTetangga/Edit',
+            compact('rukun_tetangga', 'penduduk', 'rukunWarga')
+        );
     }
 
     /**
