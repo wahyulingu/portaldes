@@ -10,7 +10,6 @@ use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaUpdateAction;
 use App\Actions\Sid\Wilayah\RukunWarga\RukunWargaIndexAction;
 use App\Http\Controllers\Controller;
 use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
@@ -33,11 +32,10 @@ class RukunTetanggaController extends Controller
             $payload['keyword'] = $keyword;
         }
 
-        $rukun_tetangga = $index->execute($payload);
+        $rukun_tetangga = $index
 
-        if ($rukun_tetangga instanceof LengthAwarePaginator) {
-            $rukun_tetangga->appends($request->query());
-        }
+            ->execute($payload)
+            ->appends($request->query());
 
         return Inertia::render('Dashboard/Sid/Wilayah/RukunTetangga/Index', compact('rukun_tetangga'));
     }
