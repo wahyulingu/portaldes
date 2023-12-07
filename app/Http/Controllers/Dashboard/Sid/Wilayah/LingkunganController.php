@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Dashboard\Sid\Wilayah;
 
+use App\Actions\Sid\Penduduk\PendudukIndexAction;
 use App\Actions\Sid\Wilayah\Lingkungan\LingkunganDeleteAction;
-use App\Actions\Sid\Wilayah\Lingkungan\LingkunganIndexAction;
+use App\Actions\Sid\Wilayah\Lingkungan\LingkunganPaginateAction;
 use App\Actions\Sid\Wilayah\Lingkungan\LingkunganStoreAction;
 use App\Actions\Sid\Wilayah\Lingkungan\LingkunganUpdateAction;
 use App\Http\Controllers\Controller;
@@ -23,7 +24,7 @@ class LingkunganController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, LingkunganIndexAction $index)
+    public function index(Request $request, LingkunganPaginateAction $index)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 
@@ -43,9 +44,11 @@ class LingkunganController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(PendudukIndexAction $pendudukIndexAction)
     {
-        return Inertia::render('Dashboard/Sid/Wilayah/Lingkungan/Create');
+        $penduduk = $pendudukIndexAction->execute();
+
+        return Inertia::render('Dashboard/Sid/Wilayah/Lingkungan/Create', compact('penduduk'));
     }
 
     /**
@@ -74,9 +77,11 @@ class LingkunganController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SidWilayahLingkungan $lingkungan)
+    public function edit(SidWilayahLingkungan $lingkungan, PendudukIndexAction $pendudukIndexAction)
     {
-        return Inertia::render('Dashboard/Sid/Wilayah/Lingkungan/Edit', compact('lingkungan'));
+        $penduduk = $pendudukIndexAction->execute();
+
+        return Inertia::render('Dashboard/Sid/Wilayah/Lingkungan/Edit', compact('lingkungan', 'penduduk'));
     }
 
     /**

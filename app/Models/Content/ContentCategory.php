@@ -25,11 +25,16 @@ class ContentCategory extends ContentModel
 
     public function articles(): MorphToMany
     {
-        return $this->morphedByMany(ContentArticle::class, 'content_model_has_categories');
+        return $this->modelHasCategories(ContentArticle::class);
     }
 
     public function pages(): MorphToMany
     {
-        return $this->morphedByMany(ContentPage::class, 'content_model_has_categories');
+        return $this->modelHasCategories(ContentPage::class);
+    }
+
+    protected function modelHasCategories($model): MorphToMany
+    {
+        return $this->morphedByMany($model, 'content_model_has_categories');
     }
 }

@@ -16,7 +16,7 @@ return new class() extends Migration {
         Schema::create('sid_pamong_profile', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('nipd');
+            $table->foreignId('nipd');
 
             $table->foreignId('foto_id')->nullable();
 

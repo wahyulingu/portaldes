@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 trait MorphToManyCategories
 {
     /**
-     * A model may have multiple files.
+     * A model may have multiple categories.
      */
     public function categories(): MorphToMany
     {

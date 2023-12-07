@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\Dashboard\Sid\Wilayah;
 
 use App\Models\Sid\SidPenduduk;
 use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
+use App\Models\Sid\Wilayah\SidWilayahRukunWarga;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -22,13 +23,18 @@ class RukunTetanggaTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('create.sid.wilayah.rukunTetangga'));
 
+        SidPenduduk::factory(24)->create();
+        SidWilayahRukunWarga::factory(24)->create();
+
         $this
 
             ->actingAs($user)
             ->get('/dashboard/sid/wilayah/rukun-tetangga/create')
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
-                ->component('Dashboard/Sid/Wilayah/RukunTetangga/Create'));
+                ->component('Dashboard/Sid/Wilayah/RukunTetangga/Create')
+                ->has('rukunWarga', SidWilayahRukunWarga::count())
+                ->has('penduduk', SidPenduduk::count()));
     }
 
     public function testOnlyAuthorizedUserCanAccessCreateScreenOfRukunTetangga(): void
@@ -139,6 +145,9 @@ class RukunTetanggaTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('update.sid.wilayah.rukunTetangga'));
 
+        SidPenduduk::factory(24)->create();
+        SidWilayahRukunWarga::factory(24)->create();
+
         $this
 
             ->actingAs($user)
@@ -148,7 +157,9 @@ class RukunTetanggaTest extends TestCase
                 ->component('Dashboard/Sid/Wilayah/RukunTetangga/Edit')
                 ->has('rukun_tetangga', fn (AssertableInertia $data) => $data
                     ->where($rukunTetangga->getKeyName(), $rukunTetangga->getKey())
-                    ->etc()));
+                    ->etc())
+                ->has('rukunWarga', SidWilayahRukunWarga::count())
+                ->has('penduduk', SidPenduduk::count()));
     }
 
     public function testOnlyAuthorizedUserCanAccessEditScreenOfSelectedRukunTetangga(): void

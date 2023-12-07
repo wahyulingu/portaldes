@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Dashboard\Sid\Wilayah;
 
+use App\Actions\Sid\Penduduk\PendudukIndexAction;
 use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaDeleteAction;
-use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaIndexAction;
+use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaPaginateAction;
 use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaStoreAction;
 use App\Actions\Sid\Wilayah\RukunTetangga\RukunTetanggaUpdateAction;
+use App\Actions\Sid\Wilayah\RukunWarga\RukunWargaIndexAction;
 use App\Http\Controllers\Controller;
 use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
@@ -23,7 +24,7 @@ class RukunTetanggaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, RukunTetanggaIndexAction $index)
+    public function index(Request $request, RukunTetanggaPaginateAction $index)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 
@@ -31,11 +32,10 @@ class RukunTetanggaController extends Controller
             $payload['keyword'] = $keyword;
         }
 
-        $rukun_tetangga = $index->execute($payload);
+        $rukun_tetangga = $index
 
-        if ($rukun_tetangga instanceof LengthAwarePaginator) {
-            $rukun_tetangga->appends($request->query());
-        }
+            ->execute($payload)
+            ->appends($request->query());
 
         return Inertia::render('Dashboard/Sid/Wilayah/RukunTetangga/Index', compact('rukun_tetangga'));
     }
@@ -43,9 +43,15 @@ class RukunTetanggaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(PendudukIndexAction $pendudukIndexAction, RukunWargaIndexAction $rukunWargaIndexAction)
     {
-        return Inertia::render('Dashboard/Sid/Wilayah/RukunTetangga/Create');
+        $penduduk = $pendudukIndexAction->execute();
+        $rukunWarga = $rukunWargaIndexAction->execute();
+
+        return Inertia::render(
+            'Dashboard/Sid/Wilayah/RukunTetangga/Create',
+            compact('penduduk', 'rukunWarga')
+        );
     }
 
     /**
@@ -74,9 +80,18 @@ class RukunTetanggaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SidWilayahRukunTetangga $rukun_tetangga)
-    {
-        return Inertia::render('Dashboard/Sid/Wilayah/RukunTetangga/Edit', compact('rukun_tetangga'));
+    public function edit(
+        SidWilayahRukunTetangga $rukun_tetangga,
+        PendudukIndexAction $pendudukIndexAction,
+        RukunWargaIndexAction $rukunWargaIndexAction
+    ) {
+        $penduduk = $pendudukIndexAction->execute();
+        $rukunWarga = $rukunWargaIndexAction->execute();
+
+        return Inertia::render(
+            'Dashboard/Sid/Wilayah/RukunTetangga/Edit',
+            compact('rukun_tetangga', 'penduduk', 'rukunWarga')
+        );
     }
 
     /**

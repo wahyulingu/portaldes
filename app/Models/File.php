@@ -14,7 +14,7 @@ class File extends Model
     use HasFactory;
     use HasRepository;
 
-    protected $fillable = ['name', 'original_name', 'description', 'path'];
+    protected $fillable = ['name', 'original_name', 'description', 'path', 'fileable_id', 'fileable_type'];
 
     protected $appends = ['url'];
 

@@ -23,13 +23,18 @@ class RukunWargaTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('create.sid.wilayah.rukunWarga'));
 
+        SidPenduduk::factory(24)->create();
+        SidWilayahLingkungan::factory(24)->create();
+
         $this
 
             ->actingAs($user)
             ->get('/dashboard/sid/wilayah/rukun-warga/create')
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
-                ->component('Dashboard/Sid/Wilayah/RukunWarga/Create'));
+                ->component('Dashboard/Sid/Wilayah/RukunWarga/Create')
+                ->has('lingkungan', SidWilayahLingkungan::count())
+                ->has('penduduk', SidPenduduk::count()));
     }
 
     public function testOnlyAuthorizedUserCanAccessCreateScreenOfRukunWarga(): void
@@ -140,6 +145,9 @@ class RukunWargaTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('update.sid.wilayah.rukunWarga'));
 
+        SidPenduduk::factory(24)->create();
+        SidWilayahLingkungan::factory(24)->create();
+
         $this
 
             ->actingAs($user)
@@ -149,7 +157,9 @@ class RukunWargaTest extends TestCase
                 ->component('Dashboard/Sid/Wilayah/RukunWarga/Edit')
                 ->has('rukun_warga', fn (AssertableInertia $data) => $data
                     ->where($rukunWarga->getKeyName(), $rukunWarga->getKey())
-                    ->etc()));
+                    ->etc())
+                    ->has('lingkungan', SidWilayahLingkungan::count())
+                    ->has('penduduk', SidPenduduk::count()));
     }
 
     public function testOnlyAuthorizedUserCanAccessEditScreenOfSelectedRukunWarga(): void

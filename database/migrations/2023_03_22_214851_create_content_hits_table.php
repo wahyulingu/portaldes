@@ -13,7 +13,7 @@ return new class() extends Migration {
         Schema::create('content_hits', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('content_id');
+            $table->foreignId('content_id');
             $table->string('content_type');
             $table->text('payload');
         });

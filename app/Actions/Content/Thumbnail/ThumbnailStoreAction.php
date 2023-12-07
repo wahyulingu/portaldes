@@ -3,19 +3,20 @@
 namespace App\Actions\Content\Thumbnail;
 
 use App\Abstractions\Action\Action;
+use App\Abstractions\Model\ContentModel;
 use App\Actions\Media\Picture\PictureStoreAction;
 use App\Contracts\Action\RuledActionContract;
-use App\Contracts\Model\HasThumbnail;
 use App\Models\Content\ContentThumbnail;
+use App\Models\Media\MediaPicture;
 use App\Repositories\Content\ContentThumbnailRepository;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @extends Action<ContentThumbnail>
  */
 class ThumbnailStoreAction extends Action implements RuledActionContract
 {
-    protected HasThumbnail&Model $content;
+    protected ContentModel $content;
 
     public function __construct(
         protected ContentThumbnailRepository $contentThumbnailRepository,
@@ -23,31 +24,40 @@ class ThumbnailStoreAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function prepare(HasThumbnail&Model $content)
+    public function prepare(ContentModel $content): self
     {
-        $this->content = $content;
-
-        return $this;
+        return tap($this, fn (self $action) => $action->content = $content);
     }
 
     public function rules(array $payload): array
     {
-        return ['image' => ['required', 'mimes:jpg,jpeg,png', 'max:1024']];
+        return ['thumbnail' => ['required', 'mimes:jpg,jpeg,png', 'max:2048']];
     }
 
     protected function handler(array $validatedPayload = [], array $payload = [])
     {
-        $thumbnail = $this->contentThumbnailRepository->create($this->content);
+        return DB::transaction(
+            function () use ($validatedPayload) {
+                /**
+                 * @var MediaPicture
+                 */
+                $picture = $this->pictureStoreAction->execute(
+                    payload: [
+                        'image' => $validatedPayload['thumbnail'],
+                        'name' => $validatedPayload['thumbnail']->getClientOriginalName(),
+                        'path' => 'content/thumbnails',
+                        'description' => 'auto-generated model for media thumbnail picture',
+                    ],
 
-        $pictureData = [
-            ...$validatedPayload,
-            'name' => sprintf('model %s[%s] picture', $thumbnail::class, $thumbnail->getKey()),
-            'path' => 'content/thumbnails',
-            'description' => 'auto-generated model for content thumbnail picture',
-        ];
+                    skipRules: true
+                );
 
-        $this->pictureStoreAction->prepare($thumbnail)->execute($pictureData);
-
-        return $thumbnail;
+                return $this->contentThumbnailRepository->store([
+                    'picture_id' => $picture->getKey(),
+                    'content_id' => $this->content->getKey(),
+                    'content_type' => $this->content::class,
+                ]);
+            }
+        );
     }
 }

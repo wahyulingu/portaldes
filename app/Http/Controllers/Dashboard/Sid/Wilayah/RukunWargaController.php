@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard\Sid\Wilayah;
 
+use App\Actions\Sid\Penduduk\PendudukIndexAction;
+use App\Actions\Sid\Wilayah\Lingkungan\LingkunganIndexAction;
 use App\Actions\Sid\Wilayah\RukunWarga\RukunWargaDeleteAction;
-use App\Actions\Sid\Wilayah\RukunWarga\RukunWargaIndexAction;
+use App\Actions\Sid\Wilayah\RukunWarga\RukunWargaPaginateAction;
 use App\Actions\Sid\Wilayah\RukunWarga\RukunWargaStoreAction;
 use App\Actions\Sid\Wilayah\RukunWarga\RukunWargaUpdateAction;
 use App\Http\Controllers\Controller;
@@ -23,7 +25,7 @@ class RukunWargaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, RukunWargaIndexAction $index)
+    public function index(Request $request, RukunWargaPaginateAction $index)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 
@@ -43,9 +45,12 @@ class RukunWargaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(PendudukIndexAction $pendudukIndexAction, LingkunganIndexAction $lingkunganIndexAction)
     {
-        return Inertia::render('Dashboard/Sid/Wilayah/RukunWarga/Create');
+        $penduduk = $pendudukIndexAction->execute();
+        $lingkungan = $lingkunganIndexAction->execute();
+
+        return Inertia::render('Dashboard/Sid/Wilayah/RukunWarga/Create', compact('penduduk', 'lingkungan'));
     }
 
     /**
@@ -74,9 +79,18 @@ class RukunWargaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SidWilayahRukunWarga $rukun_warga)
-    {
-        return Inertia::render('Dashboard/Sid/Wilayah/RukunWarga/Edit', compact('rukun_warga'));
+    public function edit(
+        SidWilayahRukunWarga $rukun_warga,
+        PendudukIndexAction $pendudukIndexAction,
+        LingkunganIndexAction $lingkunganIndexAction
+    ) {
+        $penduduk = $pendudukIndexAction->execute();
+        $lingkungan = $lingkunganIndexAction->execute();
+
+        return Inertia::render(
+            'Dashboard/Sid/Wilayah/RukunWarga/Edit',
+            compact('rukun_warga', 'penduduk', 'lingkungan')
+        );
     }
 
     /**

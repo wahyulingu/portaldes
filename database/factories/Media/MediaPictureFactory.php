@@ -17,8 +17,6 @@ class MediaPictureFactory extends Factory
     public function definition(): array
     {
         return [
-            'mediable_id' => 0,
-            'mediable_type' => static::class,
             'name' => $this->faker->words(6, true),
             'description' => $this->faker->paragraph(),
         ];

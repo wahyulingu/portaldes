@@ -3,7 +3,7 @@
 namespace App\Abstractions\Action;
 
 use App\Abstractions\Repository\Repository;
-use App\Contracts\Action\PaginatedActionContract;
+use App\Contracts\Action\PaginatedIndexContract;
 use App\Contracts\Action\RuledActionContract;
 
 abstract class IndexAction extends Action implements RuledActionContract
@@ -22,14 +22,17 @@ abstract class IndexAction extends Action implements RuledActionContract
             'relationsCount' => 'nullable|array',
         ];
 
-        if ($this instanceof PaginatedActionContract) {
+        if ($this instanceof PaginatedIndexContract) {
             return [...$rules, 'pageName' => 'nullable|string'];
         }
 
         return [...$rules, 'offset' => 'nullable|numeric'];
     }
 
-    abstract protected function filters(array $payload = []): array;
+    protected function filters(array $payload = []): array
+    {
+        return [];
+    }
 
     protected function handler(array $validatedPayload = [], array $payload = [])
     {
@@ -47,7 +50,7 @@ abstract class IndexAction extends Action implements RuledActionContract
             $this->repository->withCount($validatedPayload['relationsCount']);
         }
 
-        if ($this instanceof PaginatedActionContract) {
+        if ($this instanceof PaginatedIndexContract) {
             return $this
 
                 ->repository

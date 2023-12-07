@@ -2,11 +2,15 @@
 
 namespace Tests\Feature\Http\Dashboard\Content;
 
+use App\Enumerations\Moderation;
 use App\Models\Content\ContentArticle;
 use App\Models\Content\ContentCategory;
 use App\Models\User;
+use App\Repositories\FileRepository;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Inertia\Testing\AssertableInertia;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
@@ -56,7 +60,7 @@ class ArticleTest extends TestCase
 
             ->actingAs($user)
             ->post('/dashboard/content/article', $article)
-            ->assertSuccessful();
+            ->assertRedirectToRoute('dashboard.content.article.index');
 
         $this->assertDatabaseHas(ContentArticle::class, $article);
     }
@@ -78,12 +82,67 @@ class ArticleTest extends TestCase
 
             ->actingAs($user)
             ->post('/dashboard/content/article', $article)
-            ->assertSuccessful();
+            ->assertRedirectToRoute('dashboard.content.article.index');
 
         $this->assertDatabaseHas(ContentArticle::class, $article);
     }
 
-    public function testOnlyAuthorizedUserCanStoreNewArticleOrSubarticle(): void
+    public function testCanStoreThumbnailedArticle(): void
+    {
+        $user = User::factory()->create();
+
+        $user->givePermissionTo(Permission::findOrCreate('create.content.article'));
+
+        /** @var FilesystemAdapter */
+        $fakeStorage = app(FileRepository::class)->fake();
+
+        $thumbnail = UploadedFile::fake()->image('thumbnail.jpg');
+
+        $article = [
+            'title' => $this->faker->words(3, true),
+            'description' => $this->faker->words(8, true),
+            'body' => $this->faker->paragraphs(8, true),
+        ];
+
+        $this
+
+            ->actingAs($user)
+            ->post('/dashboard/content/article', [
+                ...$article,
+                'thumbnail' => $thumbnail,
+            ])
+
+            ->assertRedirectToRoute('dashboard.content.article.index');
+
+        $fakeStorage->assertExists($thumbnail->hashName('content/thumbnails'));
+
+        $this->assertDatabaseHas(ContentArticle::class, $article);
+    }
+
+    public function testCanStoreStatusedArticle(): void
+    {
+        $user = User::factory()->create();
+
+        $user->givePermissionTo(Permission::findOrCreate('create.content.article'));
+
+        $article = [
+            'title' => $this->faker->words(3, true),
+            'description' => $this->faker->words(8, true),
+            'body' => $this->faker->paragraphs(8, true),
+            'status' => Moderation::draft->name,
+        ];
+
+        $this
+
+            ->actingAs($user)
+            ->post('/dashboard/content/article', $article)
+
+            ->assertRedirectToRoute('dashboard.content.article.index');
+
+        $this->assertDatabaseHas(ContentArticle::class, $article);
+    }
+
+    public function testOnlyAuthorizedUserCanStoreNewArticle(): void
     {
         $this
 

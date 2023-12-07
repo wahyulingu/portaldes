@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Dashboard\Content;
 
-use App\Actions\Content\Page\Index\PageIndexAction;
+use App\Actions\Content\Page\PageDeleteAction;
+use App\Actions\Content\Page\PagePaginateAction;
 use App\Actions\Content\Page\PageStoreAction;
 use App\Actions\Content\Page\PageUpdateAction;
 use App\Http\Controllers\Controller;
@@ -21,7 +22,7 @@ class PageController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, PageIndexAction $index)
+    public function index(Request $request, PagePaginateAction $pagePaginateAction)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 
@@ -29,8 +30,8 @@ class PageController extends Controller
             $payload['keyword'] = $keyword;
         }
 
-        return Inertia::render('Dashboard/Content/Category/Index', [
-            'categories' => $index->execute($payload),
+        return Inertia::render('Dashboard/Content/Page/Index', [
+            'pages' => $pagePaginateAction->execute($payload),
         ]);
     }
 
@@ -47,12 +48,12 @@ class PageController extends Controller
      */
     public function store(Request $request, PageStoreAction $store)
     {
-        $page = $store->prepare($request->user())->execute($request->all());
+        $page = $store->execute([...$request->all(), 'user_id' => $request->user()->getKey()]);
 
-        return Response::redirectTo(route('dashboard.sid.wilayah.page.index'), 201)
+        return Response::redirectToRoute('dashboard.content.page.index')
 
-        ->with('flash', compact('page'))
-        ->banner(sprintf('Lingkungan Created', $page->title));
+            ->with('flash', compact('page'))
+            ->banner(sprintf('Lingkungan Created', $page->title));
     }
 
     /**
@@ -76,14 +77,24 @@ class PageController extends Controller
      */
     public function update(Request $request, ContentPage $page, PageUpdateAction $update)
     {
-        return Response::make($update->prepare($page)->execute($request->all()));
+        $update->prepare($page)->execute($request->all());
+
+        return Response::redirectToRoute('dashboard.content.page.show', $page->getKey())
+
+            ->with('flash', compact('page'))
+            ->banner(sprintf('Lingkungan Created', $page->title));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ContentPage $page)
+    public function destroy(ContentPage $page, PageDeleteAction $pageDeleteAction)
     {
-        return Response::make($page->delete());
+        $pageDeleteAction->prepare($page)->execute();
+
+        return Response::redirectToRoute('dashboard.content.page.index')
+
+            ->with('flash', compact('page'))
+            ->banner(sprintf('Lingkungan Created', $page->title));
     }
 }

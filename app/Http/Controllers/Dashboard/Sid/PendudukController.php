@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard\Sid;
 
 use App\Actions\Sid\Penduduk\PendudukDeleteAction;
-use App\Actions\Sid\Penduduk\PendudukIndexAction;
+use App\Actions\Sid\Penduduk\PendudukPaginateAction;
 use App\Actions\Sid\Penduduk\PendudukStoreAction;
 use App\Actions\Sid\Penduduk\PendudukUpdateAction;
 use App\Http\Controllers\Controller;
@@ -23,7 +23,7 @@ class PendudukController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, PendudukIndexAction $index)
+    public function index(Request $request, PendudukPaginateAction $index)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 

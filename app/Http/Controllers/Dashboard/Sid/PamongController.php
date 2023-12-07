@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard\Sid;
 
 use App\Actions\Sid\Pamong\PamongDeleteAction;
-use App\Actions\Sid\Pamong\PamongIndexAction;
+use App\Actions\Sid\Pamong\PamongPaginateAction;
 use App\Actions\Sid\Pamong\PamongStoreAction;
 use App\Actions\Sid\Pamong\PamongUpdateAction;
 use App\Http\Controllers\Controller;
@@ -23,7 +23,7 @@ class PamongController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, PamongIndexAction $index)
+    public function index(Request $request, PamongPaginateAction $index)
     {
         $payload = ['limit' => $request->get('limit', 8)];
 

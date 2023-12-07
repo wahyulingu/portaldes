@@ -3,12 +3,10 @@
 namespace App\Repositories;
 
 use App\Abstractions\Repository\Repository;
-use App\Contracts\Model\HasFile;
 use App\Models\File;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class FileRepository extends Repository
@@ -42,16 +40,14 @@ class FileRepository extends Repository
     /**
      * Creates a file and returns it.
      */
-    public function create(Model&HasFile $fileable, array $attributes): File
+    public function create(array $attributes): ?File
     {
-        $file = $attributes['file'] ?? null;
+        if (@$attributes['file'] instanceof UploadedFile) {
+            $attributes['path'] = $this->upload($attributes['file'], $attributes['path'] ?? 'files');
+            $attributes['original_name'] = $attributes['file']->getClientOriginalName();
 
-        if ($file instanceof UploadedFile) {
-            $attributes['path'] = $this->upload($file, $attributes['path'] ?? 'files');
-            $attributes['original_name'] = $file->getClientOriginalName();
+            return $this->store($attributes);
         }
-
-        return $fileable->file()->create($attributes);
     }
 
     /**
@@ -59,21 +55,20 @@ class FileRepository extends Repository
      */
     public function update($key, array $attributes): bool
     {
-        $file = $attributes['file'] ?? null;
+        return DB::transaction(function () use ($attributes, $key) {
+            if (@$attributes['file'] instanceof UploadedFile) {
+                $attributes['path'] = $this->upload($attributes['file'], $attributes['path'] ?? 'files');
+                $attributes['original_name'] = $attributes['file']->getClientOriginalName();
 
-        if ($file instanceof UploadedFile) {
-            $attributes['path'] = $this->upload($file, $attributes['path'] ?? 'files');
+                $oldFile = $this->find($key, 'path')->path;
+            }
 
-            $oldFile = $this->find($key, 'path')->path;
-        }
-
-        $success = parent::update($key, $attributes);
-
-        if ($oldFile && $success) {
-            $this->filesystemAdapter()->delete($oldFile);
-        }
-
-        return $success;
+            return tap(parent::update($key, $attributes), function (bool $success) use ($oldFile) {
+                if ($oldFile && $success) {
+                    $this->filesystemAdapter()->delete($oldFile);
+                }
+            });
+        });
     }
 
     public function fake($fileDisk = '')

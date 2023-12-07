@@ -9,18 +9,24 @@ abstract class Action
 {
     abstract protected function handler(array $validatedPayload = [], array $payload = []);
 
-    final public function execute(array $payload = [])
+    final public function execute(array $payload = [], array|true $skipRules = [])
     {
-        $validatedPayload = [];
+        $validatedPayload = $payload;
 
-        if ($this instanceof RuledActionContract) {
-            $validatedPayload = Validator::make($payload, $this->rules($payload))->validate();
+        if ($this instanceof RuledActionContract && true !== $skipRules) {
+            $rules = $this->rules($payload);
+
+            foreach ($skipRules as $rule) {
+                unset($rules[$rule]);
+            }
+
+            $validatedPayload = Validator::make($payload, $rules)->validate();
         }
 
         return $this->handler($validatedPayload, $payload);
     }
 
-    final public static function handle(array $payload = [], callable $before = null)
+    final public static function handle(array $payload = [], array|bool $skipRules = [], callable $before = null)
     {
         /**
          * @var self
@@ -31,6 +37,6 @@ abstract class Action
             $before($action);
         }
 
-        return $action->execute($payload);
+        return $action->execute($payload, $skipRules);
     }
 }

@@ -24,6 +24,7 @@
         }
     },
     "include": [
+        "./resources/ts/**/*",
         "./resources/ts/**/*.ts",
         "./resources/ts/**/*.d.ts",
         "./resources/ts/**/*.interface.ts",

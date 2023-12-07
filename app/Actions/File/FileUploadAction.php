@@ -8,27 +8,16 @@ namespace App\Actions\File;
 
 use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
-use App\Contracts\Model\HasFile;
 use App\Models\File;
 use App\Repositories\FileRepository;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * Summary of Upload.
  */
 class FileUploadAction extends Action implements RuledActionContract
 {
-    protected Model&HasFile $fileable;
-
     public function __construct(protected FileRepository $fileRepository)
     {
-    }
-
-    public function prepare(HasFile&Model $fileable)
-    {
-        $this->fileable = $fileable;
-
-        return $this;
     }
 
     /**
@@ -49,6 +38,6 @@ class FileUploadAction extends Action implements RuledActionContract
      */
     protected function handler(array $validatedPayload = [], array $payload = []): File
     {
-        return $this->fileRepository->create($this->fileable, $validatedPayload);
+        return $this->fileRepository->create($validatedPayload);
     }
 }

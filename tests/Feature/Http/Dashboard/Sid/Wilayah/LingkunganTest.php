@@ -22,13 +22,16 @@ class LingkunganTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('create.sid.wilayah.lingkungan'));
 
+        SidPenduduk::factory(24)->create();
+
         $this
 
             ->actingAs($user)
             ->get('/dashboard/sid/wilayah/lingkungan/create')
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
-                ->component('Dashboard/Sid/Wilayah/Lingkungan/Create'));
+                ->component('Dashboard/Sid/Wilayah/Lingkungan/Create')
+                ->has('penduduk', SidPenduduk::count()));
     }
 
     public function testOnlyAuthorizedUserCanAccessCreateScreenOfLingkungan(): void
@@ -137,6 +140,8 @@ class LingkunganTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('update.sid.wilayah.lingkungan'));
 
+        SidPenduduk::factory(24)->create();
+
         $this
 
             ->actingAs($user)
@@ -146,7 +151,8 @@ class LingkunganTest extends TestCase
                 ->component('Dashboard/Sid/Wilayah/Lingkungan/Edit')
                 ->has('lingkungan', fn (AssertableInertia $data) => $data
                     ->where($lingkungan->getKeyName(), $lingkungan->getKey())
-                    ->etc()));
+                    ->etc())
+                ->has('penduduk', SidPenduduk::count()));
     }
 
     public function testOnlyAuthorizedUserCanAccessEditScreenOfSelectedLingkungan(): void

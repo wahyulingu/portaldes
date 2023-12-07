@@ -3,10 +3,12 @@
 namespace App\Actions\Content\Comment;
 
 use App\Abstractions\Action\Action;
+use App\Contracts\Action\RuledActionContract;
 use App\Models\Content\ContentComment;
 use App\Repositories\Content\ContentCommentRepository;
+use Illuminate\Validation\Rule;
 
-class CommentDeleteAction extends Action
+class CommentDeleteAction extends Action implements RuledActionContract
 {
     protected ContentComment $comment;
 
@@ -14,13 +16,13 @@ class CommentDeleteAction extends Action
     {
     }
 
-    public function prepare(ContentComment $comment)
+    public function rules(array $payload): array
     {
-        return tap($this, fn (self $action) => $action->comment = $comment);
+        return ['id' => ['required', Rule::exists(ContentComment::class)]];
     }
 
     protected function handler(array $validatedPayload = [], array $payload = []): bool
     {
-        return $this->contentCommentRepository->delete($this->comment->getKey());
+        return $this->contentCommentRepository->delete($validatedPayload['id']);
     }
 }

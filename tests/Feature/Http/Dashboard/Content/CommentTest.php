@@ -62,6 +62,31 @@ class CommentTest extends TestCase
                     ->etc()));
     }
 
+    public function testCommentsCanIndexByStatus(): void
+    {
+        $user = User::factory()->create();
+
+        $user->givePermissionTo(Permission::findOrCreate('viewAny.content.comment'));
+
+        /**
+         * @var ContentComment
+         */
+        $comment = ContentComment::factory()->create();
+
+        $this
+
+            ->actingAs($user)
+            ->get(sprintf('/dashboard/content/comment?status=%s', $comment->status->name))
+            ->assertOk()
+            ->assertInertia(fn (AssertableInertia $page) => $page
+                ->component('Dashboard/Content/Comment/Index')
+                ->has('comments', fn (AssertableInertia $comments) => $comments
+                    ->has('data', 1, fn (AssertableInertia $data) => $data
+                        ->etc())
+                    ->where('total', 1)
+                    ->etc()));
+    }
+
     public function testOnlyAuthorizedUserCanAccessIndexScreenOfComments(): void
     {
         $this
@@ -118,8 +143,8 @@ class CommentTest extends TestCase
         $this
 
             ->actingAs($user)
-            ->patch(sprintf('/dashboard/content/comment/%s', $comment->getKey()), $newData)
-            ->assertSuccessful();
+            ->patch(route('dashboard.content.comment.update', $comment->getKey(), absolute: false), $newData)
+            ->assertRedirectToRoute('dashboard.content.comment.show', $comment);
 
         $this->assertDatabaseHas(ContentComment::class, [...$newData, 'id' => $comment->getKey()]);
     }
@@ -181,8 +206,8 @@ class CommentTest extends TestCase
         $this
 
             ->actingAs($user)
-            ->delete(sprintf('/dashboard/content/comment/%s', $comment->getKey()))
-            ->assertOk();
+            ->delete(route('dashboard.content.comment.destroy', $comment->getKey(), absolute: false))
+            ->assertRedirectToRoute('dashboard.content.comment.index');
 
         $this->assertNull($comment->fresh());
     }

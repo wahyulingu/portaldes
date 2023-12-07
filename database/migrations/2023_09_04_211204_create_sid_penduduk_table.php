@@ -16,6 +16,7 @@ return new class() extends Migration {
         Schema::create('sid_penduduk', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignId('rukun_tetangga_id')->nullable();
             $table->foreignId('foto_id')->nullable();
             $table->foreignId('user_id')->nullable();
 
