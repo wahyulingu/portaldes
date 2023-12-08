@@ -62,6 +62,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             Route::resource('surat', Surat\SuratController::class)->only(['index', 'destroy']);
             Route::resource('keluarga', Sid\KeluargaController::class);
             Route::resource('pamong', Sid\PamongController::class);
+
             Route::resource('penduduk', Sid\Penduduk\PendudukController::class);
 
             Route::name('wilayah.')->prefix('wilayah')->group(function () {
