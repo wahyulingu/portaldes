@@ -125,7 +125,7 @@ class CategoryController extends Controller
      */
     public function destroy(ContentCategory $category, CategoryDeleteAction $categoryDeleteAction)
     {
-        $categoryDeleteAction->execute($category->only('id'), skipRules: true);
+        $categoryDeleteAction->skipAllRules()->execute($category->only('id'));
 
         return Response::redirectToRoute('dashboard.content.category.index')
 

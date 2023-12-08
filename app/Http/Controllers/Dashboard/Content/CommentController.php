@@ -80,7 +80,7 @@ class CommentController extends Controller
      */
     public function destroy(ContentComment $comment, CommentDeleteAction $commentDeleteAction)
     {
-        $commentDeleteAction->execute($comment->only('id'), skipRules: true);
+        $commentDeleteAction->skipAllRules()->execute($comment->only('id'));
 
         return Response::redirectToRoute('dashboard.content.comment.index')
 
