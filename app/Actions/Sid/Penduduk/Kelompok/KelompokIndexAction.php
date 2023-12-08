@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Actions\Sid\Penduduk;
+namespace App\Actions\Sid\Penduduk\Kelompok;
 
 use App\Abstractions\Action\IndexAction;
-use App\Repositories\Sid\Penduduk\SidPendudukRepository;
+use App\Contracts\Action\RuledActionContract;
+use App\Repositories\Sid\Penduduk\Kelompok\SidPendudukKelompokRepository;
 
-class PendudukIndexAction extends IndexAction
+class KelompokIndexAction extends IndexAction implements RuledActionContract
 {
-    public function __construct(SidPendudukRepository $repository)
+    public function __construct(SidPendudukKelompokRepository $repository)
     {
         parent::__construct($repository);
     }

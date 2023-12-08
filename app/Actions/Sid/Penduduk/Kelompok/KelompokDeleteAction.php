@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Actions\Sid\Penduduk;
+namespace App\Actions\Sid\Penduduk\Kelompok;
 
 use App\Abstractions\Action\Action;
-use App\Models\Sid\Penduduk\SidPenduduk;
-use App\Repositories\Sid\Penduduk\SidPendudukRepository;
+use App\Models\Sid\Penduduk\Kelompok\SidPendudukKelompok;
+use App\Repositories\Sid\Penduduk\Kelompok\SidPendudukKelompokRepository;
 
-class PendudukDeleteAction extends Action
+class KelompokDeleteAction extends Action
 {
-    protected SidPenduduk $penduduk;
+    protected SidPendudukKelompok $kelompok;
 
-    public function __construct(protected readonly SidPendudukRepository $sidPendudukRepository)
+    public function __construct(protected readonly SidPendudukKelompokRepository $sidKelompokRepository)
     {
     }
 
-    public function prepare(SidPenduduk $penduduk): self
+    public function prepare(SidPendudukKelompok $kelompok): self
     {
-        return tap($this, fn (self $action) => $action->penduduk = $penduduk);
+        return tap($this, fn (self $action) => $action->kelompok = $kelompok);
     }
 
     protected function handler(array $validatedPayload = [], array $payload = []): bool
     {
-        return $this->sidPendudukRepository->delete($this->penduduk->getKey());
+        return $this->sidKelompokRepository->delete($this->kelompok->getKey());
     }
 }

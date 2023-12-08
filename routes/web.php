@@ -48,11 +48,16 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
                 Route::resource('surat-keluar', Surat\SuratKeluarController::class);
             });
 
-            Route::resource('surat', Surat\SuratController::class)->only(['index', 'destroy']);
+            Route::name('penduduk.')->prefix('penduduk')->group(function () {
+                Route::name('kelompok.')->prefix('kelompok')->group(function () {
+                    Route::resource('kategori', Sid\Penduduk\Kelompok\KategoriController::class);
+                });
+            });
 
+            Route::resource('surat', Surat\SuratController::class)->only(['index', 'destroy']);
             Route::resource('keluarga', Sid\KeluargaController::class);
             Route::resource('pamong', Sid\PamongController::class);
-            Route::resource('penduduk', Sid\PendudukController::class);
+            Route::resource('penduduk', Sid\Penduduk\PendudukController::class);
 
             Route::name('wilayah.')->prefix('wilayah')->group(function () {
                 Route::resource('lingkungan', Sid\Wilayah\LingkunganController::class);

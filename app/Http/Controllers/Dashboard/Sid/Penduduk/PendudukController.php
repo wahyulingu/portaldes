@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard\Sid;
+namespace App\Http\Controllers\Dashboard\Sid\Penduduk;
 
 use App\Actions\Sid\Penduduk\PendudukDeleteAction;
 use App\Actions\Sid\Penduduk\PendudukPaginateAction;

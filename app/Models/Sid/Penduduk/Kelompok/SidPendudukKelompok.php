@@ -19,6 +19,6 @@ class SidPendudukKelompok extends Model
 
     public function kategori(): BelongsTo
     {
-        return $this->belongsTo(SidPendudukKelompokKategori::class);
+        return $this->belongsTo(SidPendudukKelompokKategori::class, 'kategori_id');
     }
 }

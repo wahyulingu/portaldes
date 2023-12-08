@@ -14,6 +14,6 @@ class SidPendudukKelompokKategori extends Model
 
     public function kelompok(): HasMany
     {
-        return $this->hasMany(SidPendudukKelompok::class, 'kategori_id');
+        return $this->hasMany(SidPendudukKelompok::class);
     }
 }

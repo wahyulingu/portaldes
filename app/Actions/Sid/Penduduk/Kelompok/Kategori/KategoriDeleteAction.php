@@ -10,7 +10,7 @@ class KategoriDeleteAction extends Action
 {
     protected SidPendudukKelompokKategori $kategori;
 
-    public function __construct(protected readonly SidPendudukKelompokKategoriRepository $sidKategoriRepository)
+    public function __construct(protected readonly SidPendudukKelompokKategoriRepository $sidKelompokKategoriRepository)
     {
     }
 
@@ -21,6 +21,6 @@ class KategoriDeleteAction extends Action
 
     protected function handler(array $validatedPayload = [], array $payload = []): bool
     {
-        return $this->sidKategoriRepository->delete($this->kategori->getKey());
+        return $this->sidKelompokKategoriRepository->delete($this->kategori->getKey());
     }
 }
