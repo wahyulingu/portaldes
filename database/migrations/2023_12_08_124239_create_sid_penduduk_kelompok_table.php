@@ -10,9 +10,16 @@ return new class() extends Migration {
      */
     public function up(): void
     {
-        Schema::create('sid_penduduk_kelompok_kategori', function (Blueprint $table) {
+        Schema::create('sid_penduduk_kelompok', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+
+            $table->foreignId('kategori_id');
+            $table->foreignId('ketua_id');
+
+            $table->string('nama');
+            $table->string('keterangan');
+            $table->string('kode');
         });
     }
 
@@ -21,6 +28,6 @@ return new class() extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('sid_penduduk_kelompok_kategori');
+        Schema::dropIfExists('sid_penduduk_kelompok');
     }
 };

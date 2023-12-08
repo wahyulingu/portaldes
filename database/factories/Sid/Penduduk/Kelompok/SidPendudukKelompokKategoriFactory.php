@@ -17,7 +17,8 @@ class SidPendudukKelompokKategoriFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nama' => $this->faker->words(2, true),
+            'keterangan' => $this->faker->paragraph,
         ];
     }
 }

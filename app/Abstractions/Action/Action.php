@@ -27,7 +27,7 @@ abstract class Action
     {
         $validatedPayload = $payload;
 
-        if ($this instanceof RuledActionContract && !$this->skipRules) {
+        if ($this instanceof RuledActionContract && true !== $this->skipRules) {
             $rules = $this->rules($payload);
 
             foreach ($this->skipedRules as $rule) {

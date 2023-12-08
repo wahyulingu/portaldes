@@ -3,9 +3,10 @@
 namespace App\Actions\Sid\Penduduk\Kelompok;
 
 use App\Abstractions\Action\IndexAction;
+use App\Contracts\Action\RuledActionContract;
 use App\Repositories\Sid\Penduduk\Kelompok\SidPendudukKelompokKategoriRepository;
 
-class KategoriIndexAction extends IndexAction
+class KategoriIndexAction extends IndexAction implements RuledActionContract
 {
     public function __construct(SidPendudukKelompokKategoriRepository $repository)
     {
