@@ -38,10 +38,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         });
 
         Route::name('sid.')->prefix('sid')->group(function () {
-            Route::name('identitas.')->prefix('identitas')->group(function () {
-                Route::get('/', [Sid\IdentitasController::class, 'show'])->name('show');
-                Route::patch('/', [Sid\IdentitasController::class, 'update'])->name('update');
-                Route::get('edit', [Sid\IdentitasController::class, 'edit'])->name('edit');
+            Route::name('identitas.')->group(function () {
+                Route::get('identitas', [Sid\IdentitasController::class, 'show'])->name('show');
+                Route::patch('identitas', [Sid\IdentitasController::class, 'update'])->name('update');
+
+                Route::prefix('identitas')->group(function () {
+                    Route::get('edit', [Sid\IdentitasController::class, 'edit'])->name('edit');
+                });
             });
 
             Route::name('surat.')->prefix('surat')->group(function () {
@@ -49,6 +52,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             });
 
             Route::name('penduduk.')->prefix('penduduk')->group(function () {
+                Route::resource('kelompok', Sid\Penduduk\Kelompok\KelompokController::class);
+
                 Route::name('kelompok.')->prefix('kelompok')->group(function () {
                     Route::resource('kategori', Sid\Penduduk\Kelompok\KategoriController::class);
                 });

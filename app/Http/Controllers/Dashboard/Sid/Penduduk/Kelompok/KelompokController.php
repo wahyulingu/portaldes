@@ -7,7 +7,7 @@ use App\Actions\Sid\Penduduk\Kelompok\KelompokPaginateAction;
 use App\Actions\Sid\Penduduk\Kelompok\KelompokStoreAction;
 use App\Actions\Sid\Penduduk\Kelompok\KelompokUpdateAction;
 use App\Http\Controllers\Controller;
-use App\Models\Sid\Penduduk\Kelompok\SidPendudukKelompokKelompok;
+use App\Models\Sid\Penduduk\Kelompok\SidPendudukKelompok;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Response;
@@ -17,7 +17,7 @@ class KelompokController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(SidPendudukKelompokKelompok::class, 'kelompok');
+        $this->authorizeResource(SidPendudukKelompok::class, 'kelompok');
     }
 
     /**
@@ -59,7 +59,7 @@ class KelompokController extends Controller
     public function store(Request $request, KelompokStoreAction $kelompokStoreAction)
     {
         /**
-         * @var SidPendudukKelompokKelompok
+         * @var SidPendudukKelompok
          */
         $kelompok = $kelompokStoreAction->execute($request->all());
 
@@ -74,7 +74,7 @@ class KelompokController extends Controller
      */
     public function show(
         Request $request,
-        SidPendudukKelompokKelompok $kelompok
+        SidPendudukKelompok $kelompok
     ) {
         $childsPayload = [
             'limit' => $request->get('limit', 8),
@@ -91,7 +91,7 @@ class KelompokController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SidPendudukKelompokKelompok $kelompok)
+    public function edit(SidPendudukKelompok $kelompok)
     {
         return Inertia::render('Dashboard/Sid/Penduduk/Kelompok/Kelompok/Edit', compact('kelompok'));
     }
@@ -99,7 +99,7 @@ class KelompokController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SidPendudukKelompokKelompok $kelompok, KelompokUpdateAction $kelompokUpdateAction)
+    public function update(Request $request, SidPendudukKelompok $kelompok, KelompokUpdateAction $kelompokUpdateAction)
     {
         $kelompokUpdateAction->prepare($kelompok)->execute($request->all());
 
@@ -112,7 +112,7 @@ class KelompokController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SidPendudukKelompokKelompok $kelompok, KelompokDeleteAction $kelompokDeleteAction)
+    public function destroy(SidPendudukKelompok $kelompok, KelompokDeleteAction $kelompokDeleteAction)
     {
         $kelompokDeleteAction->skipAllRules()->execute($kelompok->only('id'));
 
