@@ -2,7 +2,7 @@
 
 namespace App\Models\Sid\Pamong;
 
-use App\Models\Sid\SidPenduduk;
+use App\Models\Sid\Penduduk\SidPenduduk;
 use App\Traits\Model\HasRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

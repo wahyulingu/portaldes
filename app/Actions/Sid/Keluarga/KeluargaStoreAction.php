@@ -10,8 +10,8 @@ use App\Enumerations\Penduduk\HubunganKeluarga;
 use App\Enumerations\Penduduk\Status\Sosial;
 use App\Models\Sid\SidKeluarga;
 use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
+use App\Repositories\Sid\Penduduk\SidPendudukRepository;
 use App\Repositories\Sid\SidKeluargaRepository;
-use App\Repositories\Sid\SidPendudukRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 

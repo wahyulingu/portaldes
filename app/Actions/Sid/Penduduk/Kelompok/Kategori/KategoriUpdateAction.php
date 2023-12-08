@@ -1,44 +1,44 @@
 <?php
 
-namespace App\Actions\Sid\Penduduk;
+namespace App\Actions\Sid\Penduduk\Kelompok;
 
 use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
+use App\Enumerations\Kategori;
 use App\Enumerations\Medis;
 use App\Enumerations\Pendidikan;
-use App\Enumerations\Penduduk;
-use App\Models\Sid\Penduduk\SidPenduduk;
+use App\Models\Sid\Penduduk\Kelompok\SidPendudukKelompokKategori;
 use Illuminate\Validation\Rule;
 
 /**
- * @extends Action<SidPenduduk>
+ * @extends Action<SidPendudukKelompokKategori>
  */
-class PendudukUpdateAction extends Action implements RuledActionContract
+class KategoriUpdateAction extends Action implements RuledActionContract
 {
-    protected SidPenduduk $penduduk;
+    protected SidPendudukKelompokKategori $kategori;
 
-    public function prepare(SidPenduduk $penduduk)
+    public function prepare(SidPendudukKelompokKategori $kategori)
     {
-        return tap($this, fn (self $action) => $action->penduduk = $penduduk);
+        return tap($this, fn (self $action) => $action->kategori = $kategori);
     }
 
     public function rules(array $payload): array
     {
         return [
-            'nik' => ['sometimes', 'string', 'regex:/^[0-9]{16}$/', Rule::unique(SidPenduduk::class)],
+            'nik' => ['sometimes', 'string', 'regex:/^[0-9]{16}$/', Rule::unique(SidPendudukKelompokKategori::class)],
             'nomor_kartu_keluarga' => ['sometimes', 'string', 'regex:/^[0-9]{16}$/'],
             'nama' => 'sometimes|string|max:32',
-            'ktp' => ['sometimes', Rule::enum(Penduduk\Status\Ktp::class)],
-            'hubungan_keluarga' => ['sometimes', Rule::enum(Penduduk\HubunganKeluarga::class)],
+            'ktp' => ['sometimes', Rule::enum(Kategori\Status\Ktp::class)],
+            'hubungan_keluarga' => ['sometimes', Rule::enum(Kategori\HubunganKeluarga::class)],
             'kelamin' => ['sometimes', Rule::enum(Medis\JenisKelamin::class)],
             'tempat_lahir' => 'sometimes|string',
             'tanggal_lahir' => 'sometimes|string',
-            'status_penduduk' => ['sometimes', Rule::enum(Penduduk\Status::class)],
-            'agama' => ['sometimes', Rule::enum(Penduduk\Agama::class)],
+            'status_kategori' => ['sometimes', Rule::enum(Kategori\Status::class)],
+            'agama' => ['sometimes', Rule::enum(Kategori\Agama::class)],
             'pendidikan_kk' => ['sometimes', Rule::enum(Pendidikan\Pendidikan::class)],
-            'pekerjaan' => ['sometimes', Rule::enum(Penduduk\Pekerjaan::class)],
-            'kewarganegaraan' => ['sometimes', Rule::enum(Penduduk\WargaNegara::class)],
-            'status_kawin' => ['sometimes', Rule::enum(Penduduk\Status\Perkawinan::class)],
+            'pekerjaan' => ['sometimes', Rule::enum(Kategori\Pekerjaan::class)],
+            'kewarganegaraan' => ['sometimes', Rule::enum(Kategori\WargaNegara::class)],
+            'status_kawin' => ['sometimes', Rule::enum(Kategori\Status\Perkawinan::class)],
             'nomor_kartu_keluarga' => 'sometimes|string|size:16',
             'nomor_kartu_keluarga_sebelumnya' => 'sometimes|string|size:16',
             'pendidikan_tempuh' => ['sometimes', Rule::enum(Pendidikan\Tempuh::class)],
@@ -62,7 +62,7 @@ class PendudukUpdateAction extends Action implements RuledActionContract
             'telepon' => 'sometimes',
             'alamat_sebelumnya' => 'sometimes',
             'alamat_sekarang' => 'sometimes',
-            'status_ktp' => ['sometimes', Rule::enum(Penduduk\Status\Ktp::class)],
+            'status_ktp' => ['sometimes', Rule::enum(Kategori\Status\Ktp::class)],
             'waktu_lahir' => 'sometimes',
             'tempat_dilahirkan' => ['sometimes', Rule::enum(Medis\Kelahiran\Tempat::class)],
             'jenis_kelahiran' => ['sometimes', Rule::enum(Medis\Kelahiran\Jenis::class)],
@@ -71,13 +71,13 @@ class PendudukUpdateAction extends Action implements RuledActionContract
             'berat_lahir' => 'sometimes|numeric',
             'panjang_lahir' => 'sometimes|numeric',
             'tag_id_ktp' => 'sometimes',
-            'status_dasar' => ['sometimes', Rule::enum(Penduduk\Status\Dasar::class)],
+            'status_dasar' => ['sometimes', Rule::enum(Kategori\Status\Dasar::class)],
             'foto' => 'sometimes|file|image|max:2048',
         ];
     }
 
     protected function handler(array $validatedPayload = [], array $payload = [])
     {
-        return $this->penduduk->update($validatedPayload);
+        return $this->kategori->update($validatedPayload);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Policies\Sid;
 
-use App\Models\Sid\SidPenduduk;
+use App\Models\Sid\Penduduk\SidPenduduk;
 use App\Models\User;
 
 class PendudukPolicy

@@ -7,7 +7,7 @@ use App\Actions\Sid\Penduduk\PendudukPaginateAction;
 use App\Actions\Sid\Penduduk\PendudukStoreAction;
 use App\Actions\Sid\Penduduk\PendudukUpdateAction;
 use App\Http\Controllers\Controller;
-use App\Models\Sid\SidPenduduk;
+use App\Models\Sid\Penduduk\SidPenduduk;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;

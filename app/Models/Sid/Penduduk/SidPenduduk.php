@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Sid;
+namespace App\Models\Sid\Penduduk;
 
 use App\Enumerations;
 use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;

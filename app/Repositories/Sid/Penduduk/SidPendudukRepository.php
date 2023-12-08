@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Sid;
+namespace App\Repositories\Sid\Penduduk;
 
 use App\Abstractions\Repository\SidRepository;
-use App\Models\Sid\SidPenduduk;
+use App\Models\Sid\Penduduk\SidPenduduk;
 
 class SidPendudukRepository extends SidRepository
 {

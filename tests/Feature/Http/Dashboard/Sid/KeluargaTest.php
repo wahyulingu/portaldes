@@ -14,7 +14,7 @@ use App\Enumerations\Penduduk\Status\Perkawinan;
 use App\Enumerations\Penduduk\Status\Sosial;
 use App\Enumerations\Penduduk\WargaNegara;
 use App\Models\Sid\SidKeluarga;
-use App\Models\Sid\SidPenduduk;
+use App\Models\Sid\Penduduk\SidPenduduk;
 use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories\Sid;
+namespace Database\Factories\Sid\Penduduk;
 
 use App\Enumerations\Medis\Cacat;
 use App\Enumerations\Medis\GolonganDarah;
@@ -25,7 +25,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Sid\SidPenduduk>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Sid\Penduduk\SidPenduduk>
  */
 class SidPendudukFactory extends Factory
 {

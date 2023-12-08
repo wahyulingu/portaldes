@@ -12,7 +12,7 @@ use App\Enumerations\Penduduk\Status;
 use App\Enumerations\Penduduk\Status\Ktp;
 use App\Enumerations\Penduduk\Status\Perkawinan;
 use App\Enumerations\Penduduk\WargaNegara;
-use App\Models\Sid\SidPenduduk;
+use App\Models\Sid\Penduduk\SidPenduduk;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;

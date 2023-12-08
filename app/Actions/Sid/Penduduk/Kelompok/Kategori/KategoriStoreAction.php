@@ -1,42 +1,42 @@
 <?php
 
-namespace App\Actions\Sid\Penduduk;
+namespace App\Actions\Sid\Penduduk\Kelompok;
 
 use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
+use App\Enumerations\Kategori;
 use App\Enumerations\Medis;
 use App\Enumerations\Pendidikan;
-use App\Enumerations\Penduduk;
-use App\Models\Sid\Penduduk\SidPenduduk;
-use App\Repositories\Sid\Penduduk\SidPendudukRepository;
+use App\Models\Sid\Penduduk\Kelompok\SidPendudukKelompokKategori;
+use App\Repositories\Sid\Penduduk\Kelompok\SidPendudukKelompokKategoriRepository;
 use Illuminate\Validation\Rule;
 
 /**
- * @extends Action<SidPenduduk>
+ * @extends Action<SidPendudukKelompokKategori>
  */
-class PendudukStoreAction extends Action implements RuledActionContract
+class KategoriStoreAction extends Action implements RuledActionContract
 {
-    public function __construct(protected SidPendudukRepository $sidPendudukRepository)
+    public function __construct(protected SidPendudukKelompokKategoriRepository $sidKategoriRepository)
     {
     }
 
     public function rules(array $payload): array
     {
         return [
-            'nik' => ['required', 'string', 'regex:/^[0-9]{16}$/', Rule::unique(SidPenduduk::class)],
+            'nik' => ['required', 'string', 'regex:/^[0-9]{16}$/', Rule::unique(SidPendudukKelompokKategori::class)],
             'nomor_kartu_keluarga' => ['required', 'string', 'regex:/^[0-9]{16}$/'],
             'nama' => 'required|string|max:32',
-            'ktp' => ['required', Rule::enum(Penduduk\Status\Ktp::class)],
-            'hubungan_keluarga' => ['required', Rule::enum(Penduduk\HubunganKeluarga::class)],
+            'ktp' => ['required', Rule::enum(Kategori\Status\Ktp::class)],
+            'hubungan_keluarga' => ['required', Rule::enum(Kategori\HubunganKeluarga::class)],
             'kelamin' => ['required', Rule::enum(Medis\JenisKelamin::class)],
             'tempat_lahir' => 'required|string',
             'tanggal_lahir' => 'required|string',
-            'status_penduduk' => ['required', Rule::enum(Penduduk\Status::class)],
-            'agama' => ['required', Rule::enum(Penduduk\Agama::class)],
+            'status_kategori' => ['required', Rule::enum(Kategori\Status::class)],
+            'agama' => ['required', Rule::enum(Kategori\Agama::class)],
             'pendidikan_kk' => ['required', Rule::enum(Pendidikan\Pendidikan::class)],
-            'pekerjaan' => ['required', Rule::enum(Penduduk\Pekerjaan::class)],
-            'kewarganegaraan' => ['required', Rule::enum(Penduduk\WargaNegara::class)],
-            'status_kawin' => ['required', Rule::enum(Penduduk\Status\Perkawinan::class)],
+            'pekerjaan' => ['required', Rule::enum(Kategori\Pekerjaan::class)],
+            'kewarganegaraan' => ['required', Rule::enum(Kategori\WargaNegara::class)],
+            'status_kawin' => ['required', Rule::enum(Kategori\Status\Perkawinan::class)],
             'nomor_kartu_keluarga' => 'nullable|string|size:16',
             'nomor_kartu_keluarga_sebelumnya' => 'nullable|string|size:16',
             'pendidikan_tempuh' => ['nullable', Rule::enum(Pendidikan\Tempuh::class)],
@@ -60,7 +60,7 @@ class PendudukStoreAction extends Action implements RuledActionContract
             'telepon' => 'nullable',
             'alamat_sebelumnya' => 'nullable',
             'alamat_sekarang' => 'nullable',
-            'status_ktp' => ['nullable', Rule::enum(Penduduk\Status\Ktp::class)],
+            'status_ktp' => ['nullable', Rule::enum(Kategori\Status\Ktp::class)],
             'waktu_lahir' => 'nullable',
             'tempat_dilahirkan' => ['nullable', Rule::enum(Medis\Kelahiran\Tempat::class)],
             'jenis_kelahiran' => ['nullable', Rule::enum(Medis\Kelahiran\Jenis::class)],
@@ -69,13 +69,13 @@ class PendudukStoreAction extends Action implements RuledActionContract
             'berat_lahir' => 'nullable|numeric',
             'panjang_lahir' => 'nullable|numeric',
             'tag_id_ktp' => 'nullable',
-            'status_dasar' => ['nullable', Rule::enum(Penduduk\Status\Dasar::class)],
+            'status_dasar' => ['nullable', Rule::enum(Kategori\Status\Dasar::class)],
             'foto' => 'nullable|file|image|max:2048',
         ];
     }
 
     protected function handler(array $validatedPayload = [], array $payload = [])
     {
-        return $this->sidPendudukRepository->store($validatedPayload);
+        return $this->sidKategoriRepository->store($validatedPayload);
     }
 }

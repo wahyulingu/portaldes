@@ -2,7 +2,7 @@
 
 namespace Database\Factories\Sid\Wilayah;
 
-use App\Models\Sid\SidPenduduk;
+use App\Models\Sid\Penduduk\SidPenduduk;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

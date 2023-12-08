@@ -7,7 +7,7 @@ use App\Actions\Sid\Pamong\Profile\ProfileUpdateAction;
 use App\Actions\Sid\Penduduk\PendudukUpdateAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Pamong\SidPamong;
-use App\Models\Sid\SidPenduduk;
+use App\Models\Sid\Penduduk\SidPenduduk;
 use App\Repositories\Sid\Pamong\SidPamongRepository;
 use Illuminate\Support\Facades\DB;
 

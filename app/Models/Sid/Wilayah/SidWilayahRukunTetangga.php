@@ -2,8 +2,8 @@
 
 namespace App\Models\Sid\Wilayah;
 
+use App\Models\Sid\Penduduk\SidPenduduk;
 use App\Models\Sid\SidKeluarga;
-use App\Models\Sid\SidPenduduk;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
