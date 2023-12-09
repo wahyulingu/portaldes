@@ -6,7 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Actions\Sid\Surat\SuratStoreAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Enumerations\Moderation;
-use App\Models\Sid\Penduduk\SidPenduduk;
+use App\Models\Sid\SidPenduduk;
 use App\Models\Sid\Surat\SidSurat;
 use App\Models\Sid\Surat\SidSuratWarga;
 use App\Repositories\Sid\Surat\SidSuratWargaRepository;

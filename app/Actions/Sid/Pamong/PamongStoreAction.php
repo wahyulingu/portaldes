@@ -7,9 +7,9 @@ use App\Actions\Sid\Pamong\Profile\ProfileStoreAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Pamong\SidPamong;
 use App\Models\Sid\Pamong\SidPamongProfile;
-use App\Models\Sid\Penduduk\SidPenduduk;
+use App\Models\Sid\SidPenduduk;
 use App\Repositories\Sid\Pamong\SidPamongRepository;
-use App\Repositories\Sid\Penduduk\SidPendudukRepository;
+use App\Repositories\Sid\SidPendudukRepository;
 use Illuminate\Support\Facades\DB;
 
 /**

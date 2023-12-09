@@ -6,10 +6,11 @@ use App\Models\Content\ContentArticle;
 use App\Models\Content\ContentCategory;
 use App\Models\Content\ContentComment;
 use App\Models\Content\ContentPage;
+use App\Models\Sid\Kelompok\SidKelompok;
+use App\Models\Sid\Kelompok\SidKelompokKategori;
 use App\Models\Sid\Pamong\SidPamong;
-use App\Models\Sid\Penduduk\Kelompok\SidPendudukKelompokKategori;
-use App\Models\Sid\Penduduk\SidPenduduk;
 use App\Models\Sid\SidKeluarga;
+use App\Models\Sid\SidPenduduk;
 use App\Models\Sid\Surat\SidSurat;
 use App\Models\Sid\Surat\SidSuratKeluar;
 use App\Models\Sid\Wilayah\SidWilayahLingkungan;
@@ -21,10 +22,11 @@ use App\Policies\Content\ArticlePolicy;
 use App\Policies\Content\CategoryPolicy;
 use App\Policies\Content\CommentPolicy;
 use App\Policies\Content\PagePolicy;
+use App\Policies\Sid\Kelompok\KategoriPolicy;
+use App\Policies\Sid\Kelompok\KelompokPolicy;
 use App\Policies\Sid\KeluargaPolicy;
 use App\Policies\Sid\PamongPolicy;
-use App\Policies\Sid\Penduduk\Kelompok\KategoriPolicy;
-use App\Policies\Sid\Penduduk\PendudukPolicy;
+use App\Policies\Sid\PendudukPolicy;
 use App\Policies\Sid\Surat\SuratKeluarPolicy;
 use App\Policies\Sid\Surat\SuratPolicy;
 use App\Policies\Sid\Wilayah\LingkunganPolicy;
@@ -55,7 +57,8 @@ class AuthServiceProvider extends ServiceProvider
         SidSurat::class => SuratPolicy::class,
         SidSuratKeluar::class => SuratKeluarPolicy::class,
 
-        SidPendudukKelompokKategori::class => KategoriPolicy::class,
+        SidKelompokKategori::class => KategoriPolicy::class,
+        SidKelompok::class => KelompokPolicy::class,
 
         SidWilayahLingkungan::class => LingkunganPolicy::class,
         SidWilayahRukunWarga::class => RukunWargaPolicy::class,

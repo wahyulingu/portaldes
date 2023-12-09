@@ -3,8 +3,8 @@
 namespace App\Actions\Sid\Penduduk;
 
 use App\Abstractions\Action\Action;
-use App\Models\Sid\Penduduk\SidPenduduk;
-use App\Repositories\Sid\Penduduk\SidPendudukRepository;
+use App\Models\Sid\SidPenduduk;
+use App\Repositories\Sid\SidPendudukRepository;
 
 class PendudukDeleteAction extends Action
 {

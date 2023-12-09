@@ -7,7 +7,7 @@ use App\Enumerations\Pendidikan\Pendidikan;
 use App\Enumerations\Penduduk\Agama;
 use App\Models\Sid\Pamong\SidPamong;
 use App\Models\Sid\Pamong\SidPamongProfile;
-use App\Models\Sid\Penduduk\SidPenduduk;
+use App\Models\Sid\SidPenduduk;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;

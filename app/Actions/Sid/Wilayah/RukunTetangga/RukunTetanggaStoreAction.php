@@ -4,7 +4,7 @@ namespace App\Actions\Sid\Wilayah\RukunTetangga;
 
 use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
-use App\Models\Sid\Penduduk\SidPenduduk;
+use App\Models\Sid\SidPenduduk;
 use App\Models\Sid\Wilayah\SidWilayahRukunWarga;
 use App\Models\Sid\WilayahRukunTetangga;
 use App\Repositories\Sid\Wilayah\SidWilayahRukunTetanggaRepository;

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\Dashboard\Sid\Wilayah;
 
-use App\Models\Sid\Penduduk\SidPenduduk;
+use App\Models\Sid\SidPenduduk;
 use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
 use App\Models\Sid\Wilayah\SidWilayahRukunWarga;
 use App\Models\User;

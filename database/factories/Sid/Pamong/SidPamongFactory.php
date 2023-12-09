@@ -3,7 +3,7 @@
 namespace Database\Factories\Sid\Pamong;
 
 use App\Models\Sid\Pamong\SidPamongProfile;
-use App\Models\Sid\Penduduk\SidPenduduk;
+use App\Models\Sid\SidPenduduk;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

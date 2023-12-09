@@ -3,7 +3,7 @@
 namespace App\Actions\Sid\Penduduk;
 
 use App\Abstractions\Action\IndexAction;
-use App\Repositories\Sid\Penduduk\SidPendudukRepository;
+use App\Repositories\Sid\SidPendudukRepository;
 
 class PendudukIndexAction extends IndexAction
 {

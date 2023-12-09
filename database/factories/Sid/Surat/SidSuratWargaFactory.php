@@ -3,7 +3,7 @@
 namespace Database\Factories\Sid\Surat;
 
 use App\Enumerations\Moderation;
-use App\Models\Sid\Penduduk\SidPenduduk;
+use App\Models\Sid\SidPenduduk;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

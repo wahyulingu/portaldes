@@ -2,7 +2,7 @@
 
 namespace App\Traits\Model\Relations\Sid;
 
-use App\Models\Sid\Penduduk\SidPenduduk;
+use App\Models\Sid\SidPenduduk;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait MorphToManySidPenduduk

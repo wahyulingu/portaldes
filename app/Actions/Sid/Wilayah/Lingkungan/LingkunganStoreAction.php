@@ -4,7 +4,7 @@ namespace App\Actions\Sid\Wilayah\Lingkungan;
 
 use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
-use App\Models\Sid\Penduduk\SidPenduduk;
+use App\Models\Sid\SidPenduduk;
 use App\Models\Sid\WilayahLingkungan;
 use App\Repositories\Sid\Wilayah\SidWilayahLingkunganRepository;
 use Illuminate\Validation\Rule;

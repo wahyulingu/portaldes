@@ -7,8 +7,8 @@ use App\Contracts\Action\RuledActionContract;
 use App\Enumerations\Medis;
 use App\Enumerations\Pendidikan;
 use App\Enumerations\Penduduk;
-use App\Models\Sid\Penduduk\SidPenduduk;
-use App\Repositories\Sid\Penduduk\SidPendudukRepository;
+use App\Models\Sid\SidPenduduk;
+use App\Repositories\Sid\SidPendudukRepository;
 use Illuminate\Validation\Rule;
 
 /**
