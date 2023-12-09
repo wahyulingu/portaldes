@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Dashboard\Sid;
+namespace Tests\Feature\Http\Dashboard\Sid\Penduduk;
 
 use App\Enumerations\Medis\JenisKelamin;
 use App\Enumerations\Pendidikan\Pendidikan;

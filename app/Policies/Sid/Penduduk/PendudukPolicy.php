@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies\Sid;
+namespace App\Policies\Sid\Penduduk;
 
 use App\Models\Sid\Penduduk\SidPenduduk;
 use App\Models\User;

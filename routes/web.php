@@ -52,11 +52,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             });
 
             Route::name('penduduk.')->prefix('penduduk')->group(function () {
-                Route::resource('kelompok', Sid\Penduduk\Kelompok\KelompokController::class);
-
                 Route::name('kelompok.')->prefix('kelompok')->group(function () {
                     Route::resource('kategori', Sid\Penduduk\Kelompok\KategoriController::class);
                 });
+
+                Route::resource('kelompok', Sid\Penduduk\Kelompok\KelompokController::class);
             });
 
             Route::resource('surat', Surat\SuratController::class)->only(['index', 'destroy']);

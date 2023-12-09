@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard\Sid\Penduduk\Kelompok;
 
-use App\Actions\Sid\Penduduk\Kelompok\KategoriDeleteAction;
-use App\Actions\Sid\Penduduk\Kelompok\KategoriPaginateAction;
-use App\Actions\Sid\Penduduk\Kelompok\KategoriStoreAction;
-use App\Actions\Sid\Penduduk\Kelompok\KategoriUpdateAction;
+use App\Actions\Sid\Penduduk\Kelompok\Kategori\KategoriDeleteAction;
+use App\Actions\Sid\Penduduk\Kelompok\Kategori\KategoriPaginateAction;
+use App\Actions\Sid\Penduduk\Kelompok\Kategori\KategoriStoreAction;
+use App\Actions\Sid\Penduduk\Kelompok\Kategori\KategoriUpdateAction;
 use App\Http\Controllers\Controller;
 use App\Models\Sid\Penduduk\Kelompok\SidPendudukKelompokKategori;
 use Illuminate\Http\Request;
@@ -27,7 +27,7 @@ class KategoriController extends Controller
     {
         $payload = [
             'limit' => $request->get('limit', 8),
-            'relationsCount' => ['articles', 'pages', 'childs'],
+            'relationsCount' => ['kelompok'],
         ];
 
         if (!empty($keyword = $request->get('keyword'))) {
@@ -78,7 +78,7 @@ class KategoriController extends Controller
     ) {
         $childsPayload = [
             'limit' => $request->get('limit', 8),
-            'relationsCount' => ['articles', 'pages', 'childs'],
+            'relationsCount' => ['kelompok'],
         ];
 
         if (!empty($keyword = $request->get('keyword'))) {
@@ -114,7 +114,7 @@ class KategoriController extends Controller
      */
     public function destroy(SidPendudukKelompokKategori $kategori, KategoriDeleteAction $kategoriDeleteAction)
     {
-        $kategoriDeleteAction->skipAllRules()->execute($kategori->only('id'));
+        $kategoriDeleteAction->prepare($kategori)->execute($kategori->only('id'));
 
         return Response::redirectToRoute('dashboard.sid.penduduk.kelompok.kategori.index')
 

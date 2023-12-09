@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Sid\Penduduk\Kelompok;
+namespace App\Actions\Sid\Penduduk\Kelompok\Kategori;
 
 use App\Contracts\Action\PaginatedIndexContract;
 

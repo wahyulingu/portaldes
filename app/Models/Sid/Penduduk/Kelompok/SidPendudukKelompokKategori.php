@@ -12,8 +12,10 @@ class SidPendudukKelompokKategori extends Model
 
     protected $table = 'sid_penduduk_kelompok_kategori';
 
+    protected $fillable = ['nama', 'keterangan'];
+
     public function kelompok(): HasMany
     {
-        return $this->hasMany(SidPendudukKelompok::class);
+        return $this->hasMany(SidPendudukKelompok::class, 'kategori_id');
     }
 }
