@@ -125,6 +125,37 @@ return new class() extends Migration {
 
             $table->timestamps();
         });
+
+        Schema::create('model_has_sid_penduduk', function (Blueprint $table) {
+            $table->foreignId('sid_penduduk_id');
+            $table->foreignId('model_has_sid_penduduk_id');
+
+            $table->string('model_has_sid_penduduk_type');
+
+            $table->index(
+                [
+                    'model_has_sid_penduduk_id',
+                    'model_has_sid_penduduk_type',
+                ],
+
+                'model_has_sid_penduduk_index'
+            );
+
+            $table->foreign('sid_penduduk_id')
+                ->references('id') // sid_penduduk id
+                ->on('sid_penduduk')
+                ->onDelete('cascade');
+
+            $table->primary(
+                [
+                    'sid_penduduk_id',
+                    'model_has_sid_penduduk_id',
+                    'model_has_sid_penduduk_type',
+                ],
+
+                'model_has_sid_penduduk_primary'
+            );
+        });
     }
 
     /**
@@ -133,5 +164,6 @@ return new class() extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('sid_penduduk');
+        Schema::dropIfExists('model_has_sid_penduduk');
     }
 };

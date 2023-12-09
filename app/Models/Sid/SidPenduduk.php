@@ -3,10 +3,12 @@
 namespace App\Models\Sid;
 
 use App\Enumerations;
+use App\Models\Sid\Kelompok\SidPendudukKelompok;
 use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
 use App\Traits\Model\Relations\Sid\MorphOneSidPhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class SidPenduduk extends Model
 {
@@ -48,5 +50,15 @@ class SidPenduduk extends Model
     public function rukunTetangga()
     {
         return $this->belongsTo(SidWilayahRukunTetangga::class);
+    }
+
+    public function kelompok(): MorphToMany
+    {
+        return $this->modelHasSidPenduduk(SidPendudukKelompok::class);
+    }
+
+    protected function modelHasSidPenduduk($model): MorphToMany
+    {
+        return $this->morphedByMany($model, 'model_has_sid_penduduk', 'model_has_sid_penduduk');
     }
 }

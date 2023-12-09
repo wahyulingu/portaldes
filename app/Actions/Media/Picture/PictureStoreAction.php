@@ -35,6 +35,7 @@ class PictureStoreAction extends Action implements RuledActionContract
         return DB::transaction(
             fn () => tap(
                 $this->mediaPictureRepository->store($validatedPayload),
+
                 function (MediaPicture $picture) use ($validatedPayload) {
                     $fileData = [
                         'file' => $validatedPayload['image'],
@@ -45,7 +46,16 @@ class PictureStoreAction extends Action implements RuledActionContract
                         'description' => 'auto-generated model for media picture file',
                     ];
 
-                    $picture->file()->save($this->fileUploadAction->execute($fileData, skipRules: true));
+                    $file = $this
+
+                        ->fileUploadAction
+                        ->skipAllRules()
+                        ->execute($fileData);
+
+                    $picture
+
+                        ->file()
+                        ->save($file);
                 }
             )
         );

@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Enumerations\Penduduk;
+
+use App\Models\Sid\Kelompok\SidPendudukKelompok;
+use App\Models\Sid\SidKeluarga;
+use App\Models\Sid\SidPenduduk;
+use App\Traits\Enum\Finder;
+
+enum TargetBantuan: string
+{
+    use Finder;
+
+    case penduduk = SidPenduduk::class;
+    case keluarga = SidKeluarga::class;
+    case kelompok = SidPendudukKelompok::class;
+}

@@ -32,14 +32,13 @@ class SubcategoryController extends Controller
         /**
          * @var ContentCategory
          */
-        $subcategory = $categoryStoreAction->execute(
-            payload: [
+        $subcategory = $categoryStoreAction
+
+            ->skipRules(['parent_id'])
+            ->execute([
                 ...$request->all(),
                 'parent_id' => $category->getKey(),
-            ],
-
-            skipRules: ['parent_id']
-        );
+            ]);
 
         return Response::redirectToRoute('dashboard.content.category.show', $category->getKey())
 
