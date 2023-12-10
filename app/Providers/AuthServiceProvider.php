@@ -9,6 +9,7 @@ use App\Models\Content\ContentPage;
 use App\Models\Sid\Kelompok\SidKelompok;
 use App\Models\Sid\Kelompok\SidKelompokKategori;
 use App\Models\Sid\Pamong\SidPamong;
+use App\Models\Sid\SidBantuan;
 use App\Models\Sid\SidKeluarga;
 use App\Models\Sid\SidPenduduk;
 use App\Models\Sid\Surat\SidSurat;
@@ -22,6 +23,7 @@ use App\Policies\Content\ArticlePolicy;
 use App\Policies\Content\CategoryPolicy;
 use App\Policies\Content\CommentPolicy;
 use App\Policies\Content\PagePolicy;
+use App\Policies\Sid\BantuanPolicy;
 use App\Policies\Sid\Kelompok\KategoriPolicy;
 use App\Policies\Sid\Kelompok\KelompokPolicy;
 use App\Policies\Sid\KeluargaPolicy;
@@ -51,6 +53,7 @@ class AuthServiceProvider extends ServiceProvider
         ContentComment::class => CommentPolicy::class,
         ContentPage::class => PagePolicy::class,
 
+        SidBantuan::class => BantuanPolicy::class,
         SidKeluarga::class => KeluargaPolicy::class,
         SidPamong::class => PamongPolicy::class,
         SidPenduduk::class => PendudukPolicy::class,

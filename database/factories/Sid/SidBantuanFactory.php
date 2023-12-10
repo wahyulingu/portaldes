@@ -1,13 +1,14 @@
 <?php
 
-namespace Database\Factories\Sid\Penduduk;
+namespace Database\Factories\Sid;
 
+use App\Enumerations\SasaranBantuan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Sid\SidPendudukBantuan>
  */
-class SidPendudukBantuanFactory extends Factory
+class SidBantuanFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,6 +18,10 @@ class SidPendudukBantuanFactory extends Factory
     public function definition(): array
     {
         return [
+            'awal' => $this->faker->date,
+            'nama' => $this->faker->words(3, asText: true),
+            'keterangan' => $this->faker->paragraph,
+            'sasaran' => SasaranBantuan::values()->random(),
         ];
     }
 }
