@@ -64,7 +64,7 @@ class PetaAreaFactory extends Factory
         ];
 
         return [
-            'ketegori_id' => PetaKategori::factory()->garis(),
+            'kategori_id' => PetaKategori::factory()->area(),
             'picture_id' => PetaPicture::factory(),
             'nama' => $this->faker->word,
             'keterangan' => $this->faker->paragraph,

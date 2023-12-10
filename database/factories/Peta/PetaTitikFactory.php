@@ -19,7 +19,7 @@ class PetaTitikFactory extends Factory
     public function definition(): array
     {
         return [
-            'kategori_id' => PetaKategori::factory()->garis(),
+            'kategori_id' => PetaKategori::factory()->titik(),
             'picture_id' => PetaPicture::factory(),
             'nama' => $this->faker->word,
             'keterangan' => $this->faker->paragraph,
