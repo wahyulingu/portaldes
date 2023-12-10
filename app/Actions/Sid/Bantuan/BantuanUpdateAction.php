@@ -27,11 +27,11 @@ class BantuanUpdateAction extends Action implements RuledActionContract
     public function rules(array $payload): array
     {
         return [
-            'rukun_tetangga_id' => ['sometimes', 'integer', Rule::exists(SidWilayahRukunTetangga::class, 'id')],
-            'nik' => ['sometimes', 'string', 'regex:/^[0-9]{16}$/'],
-            'nomor_kartu_bantuan' => ['sometimes', 'string', 'regex:/^[0-9]{16}$/'],
-            'alamat' => 'sometimes|string',
-            'sosial' => ['sometimes', Rule::enum(Sosial::class)],
+            'awal' => 'sometimes|date',
+            'akhir' => 'sometimes|date',
+            'nama' => 'sometimes|string',
+            'keterangan' => 'sometimes|string',
+            'sasaran' => ['sometimes', Rule::enum(SasaranBantuan::class)],
         ];
     }
 

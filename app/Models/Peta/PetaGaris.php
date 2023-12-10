@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Models\Peta;
+
+use App\Traits\Model\Relations\Peta\MorphToManyKategori;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class PetaGaris extends Model
+{
+    use HasFactory;
+    use MorphToManyKategori;
+
+    protected $casts = ['path' => 'array'];
+
+    protected $table = 'peta_garis';
+}
