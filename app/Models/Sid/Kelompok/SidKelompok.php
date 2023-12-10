@@ -3,6 +3,7 @@
 namespace App\Models\Sid\Kelompok;
 
 use App\Traits\Model\Relations\Sid\BelongsToSidPendudukAsKetua;
+use App\Traits\Model\Relations\Sid\MorphToManySidBantuan;
 use App\Traits\Model\Relations\Sid\MorphToManySidPenduduk;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,7 @@ class SidKelompok extends Model
 {
     use HasFactory;
     use MorphToManySidPenduduk;
+    use MorphToManySidBantuan;
     use BelongsToSidPendudukAsKetua;
 
     protected $guarded = ['id'];

@@ -58,6 +58,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             Route::resource('kelompok', Sid\Kelompok\KelompokController::class);
 
             Route::resource('surat', Surat\SuratController::class)->only(['index', 'destroy']);
+            Route::resource('bantuan', Sid\BantuanController::class);
             Route::resource('keluarga', Sid\KeluargaController::class);
             Route::resource('pamong', Sid\PamongController::class);
             Route::resource('penduduk', Sid\PendudukController::class);

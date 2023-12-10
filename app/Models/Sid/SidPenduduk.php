@@ -6,6 +6,7 @@ use App\Enumerations;
 use App\Models\Sid\Kelompok\SidPendudukKelompok;
 use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
 use App\Traits\Model\Relations\Sid\MorphOneSidPhoto;
+use App\Traits\Model\Relations\Sid\MorphToManySidBantuan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 class SidPenduduk extends Model
 {
     use HasFactory;
+    use MorphToManySidBantuan;
     use MorphOneSidPhoto;
 
     protected $casts = [

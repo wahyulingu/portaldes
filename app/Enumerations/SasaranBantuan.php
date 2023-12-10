@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Enumerations\Penduduk;
+namespace App\Enumerations;
 
 use App\Models\Sid\Kelompok\SidPendudukKelompok;
 use App\Models\Sid\SidKeluarga;
 use App\Models\Sid\SidPenduduk;
 use App\Traits\Enum\Finder;
 
-enum TargetBantuan: string
+enum SasaranBantuan: string
 {
     use Finder;
 
