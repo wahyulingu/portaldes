@@ -10,4 +10,6 @@ class PetaTitik extends Model
 {
     use HasFactory;
     use MorphToManyKategori;
+
+    protected $table = 'peta_titik';
 }

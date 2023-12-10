@@ -18,7 +18,7 @@ class PetaWarnaFactory extends Factory
     {
         return [
             'nama' => $this->faker->word,
-            'kode' => rand(111111, 999999),
+            'kode' => '#'.rand(111111, 999999),
         ];
     }
 }

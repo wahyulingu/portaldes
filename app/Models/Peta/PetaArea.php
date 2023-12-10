@@ -10,4 +10,8 @@ class PetaArea extends Model
 {
     use HasFactory;
     use MorphToManyKategori;
+
+    protected $casts = ['path' => 'array'];
+
+    protected $table = 'peta_area';
 }

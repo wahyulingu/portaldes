@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Peta;
 
+use App\Models\Media\MediaPicture;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class PetaPictureFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'picture_id' => MediaPicture::factory(),
+            'nama' => $this->faker->word,
+            'keterangan' => $this->faker->paragraph,
         ];
     }
 }

@@ -19,8 +19,8 @@ return new class() extends Migration {
 
             $table->string('nama');
             $table->string('keterangan');
-            $table->float('lat');
-            $table->float('lng');
+            $table->string('lat');
+            $table->string('lng');
         });
     }
 

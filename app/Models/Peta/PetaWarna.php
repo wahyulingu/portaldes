@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class PetaWarna extends Model
 {
     use HasFactory;
+
+    protected $table = 'peta_warna';
 }
