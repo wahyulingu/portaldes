@@ -2,19 +2,8 @@
 
 namespace Tests\Feature\Http\Dashboard\Sid;
 
-use App\Enumerations\Medis\JenisKelamin;
-use App\Enumerations\Pendidikan\Pendidikan;
-use App\Enumerations\Pendidikan\Tempuh;
-use App\Enumerations\Penduduk\Agama;
-use App\Enumerations\Penduduk\Pekerjaan;
-use App\Enumerations\Penduduk\Status;
-use App\Enumerations\Penduduk\Status\Ktp;
-use App\Enumerations\Penduduk\Status\Perkawinan;
-use App\Enumerations\Penduduk\Status\Sosial;
-use App\Enumerations\Penduduk\WargaNegara;
+use App\Enumerations\SasaranBantuan;
 use App\Models\Sid\SidBantuan;
-use App\Models\Sid\SidPenduduk;
-use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -54,60 +43,15 @@ class BantuanTest extends TestCase
     public function testCanStoreNewBantuan(): void
     {
         $user = User::factory()->create();
-        $rukunTetangga = SidWilayahRukunTetangga::factory()->create();
 
         $user->givePermissionTo(Permission::findOrCreate('create.sid.bantuan'));
 
         $bantuan = [
-            'rukun_tetangga_id' => $rukunTetangga->getKey(),
-            'alamat' => $this->faker->address,
-            'sosial' => Sosial::random()->value,
-            'nomor_kartu_bantuan' => strval(mt_rand(1000000000000000, 9999999999999999)),
-        ];
-
-        $kepalaBantuan = [
-            'nik' => strval(mt_rand(1000000000000000, 9999999999999999)),
-            'nama' => $this->faker->name,
-            'ktp' => Ktp::random()->value,
-            'kelamin' => JenisKelamin::random()->value,
-            'tempat_lahir' => $this->faker->city,
-            'tanggal_lahir' => $this->faker->date,
-            'status_penduduk' => Status::random()->value,
-            'agama' => Agama::random()->value,
-            'pendidikan_kk' => Pendidikan::random()->value,
-            'pendidikan_tempuh' => Tempuh::random()->value,
-            'pekerjaan' => Pekerjaan::random()->value,
-            'kewarganegaraan' => WargaNegara::random()->value,
-            'status_kawin' => Perkawinan::random()->value,
-        ];
-
-        $this
-
-            ->actingAs($user)
-            ->post('/dashboard/sid/bantuan', [...$bantuan, ...$kepalaBantuan])
-            ->assertSuccessful();
-
-        $this->assertDatabaseHas(SidBantuan::class, $bantuan);
-        $this->assertDatabaseHas(SidPenduduk::class, [
-            'nik' => $kepalaBantuan['nik'],
-            'nomor_kartu_bantuan' => $bantuan['nomor_kartu_bantuan'],
-        ]);
-    }
-
-    public function testCanStoreNewBantuanWithExistingPendudukAsKepalaBantuan(): void
-    {
-        $user = User::factory()->create();
-        $penduduk = SidPenduduk::factory()->create();
-        $rukunTetangga = SidWilayahRukunTetangga::factory()->create();
-
-        $user->givePermissionTo(Permission::findOrCreate('create.sid.bantuan'));
-
-        $bantuan = [
-            'rukun_tetangga_id' => $rukunTetangga->getKey(),
-            'alamat' => $this->faker->address,
-            'sosial' => Sosial::random()->value,
-            'nomor_kartu_bantuan' => strval(mt_rand(1000000000000000, 9999999999999999)),
-            'nik' => strval($penduduk->nik),
+            'awal' => $this->faker->date,
+            'akhir' => $this->faker->date,
+            'nama' => $this->faker->words(asText: true),
+            'keterangan' => $this->faker->paragraph,
+            'sasaran' => SasaranBantuan::penduduk->value,
         ];
 
         $this
@@ -116,13 +60,7 @@ class BantuanTest extends TestCase
             ->post('/dashboard/sid/bantuan', $bantuan)
             ->assertSuccessful();
 
-        unset($bantuan['nik']);
         $this->assertDatabaseHas(SidBantuan::class, $bantuan);
-        $this->assertDatabaseHas(SidPenduduk::class, [
-            'nik' => strval($penduduk->nik),
-            'nomor_kartu_bantuan' => $bantuan['nomor_kartu_bantuan'],
-            ]
-        );
     }
 
     public function testOnlyAuthorizedUserCanStoreNewBantuan(): void
@@ -230,7 +168,7 @@ class BantuanTest extends TestCase
 
         $bantuan = SidBantuan::factory()->create();
 
-        $newData = ['alamat' => $this->faker->address];
+        $newData = ['keterangan' => $this->faker->paragraph];
 
         $this
 

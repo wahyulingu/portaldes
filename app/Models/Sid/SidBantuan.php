@@ -18,6 +18,8 @@ class SidBantuan extends Model
         'sasaran' => SasaranBantuan::class,
     ];
 
+    protected $fillable = ['awal', 'akhir', 'nama', 'keterangan', 'sasaran'];
+
     protected $table = 'sid_bantuan';
 
     public function penduduk(): MorphToMany
