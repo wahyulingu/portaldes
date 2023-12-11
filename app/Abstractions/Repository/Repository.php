@@ -340,6 +340,19 @@ abstract class Repository
         return $this;
     }
 
+    protected function filterLikeSolver($filter, Builder $builder)
+    {
+        return collect($filter)->each(function ($value, string $key) use ($builder) {
+            if (($explodedKey = collect(explode('|', $key)))->count() > 1) {
+                return $this->filterOrSolver($explodedKey->map(fn ($key) => ['like' => [$key => $value]]),
+                    $builder
+                );
+            }
+
+            $builder->where($key, 'LIKE', $value);
+        });
+    }
+
     protected function filterSolver(SupportCollection $filters, Builder $builder = null)
     {
         if (empty($builder)) {
@@ -362,11 +375,11 @@ abstract class Repository
                     return $this->filterOrSolver($value, $builder);
                 }
                 if ('like' == Str::lower($key)) {
-                    return collect($value)->each(fn ($value, string $key) => $builder->where($key, 'LIKE', $value));
+                    return $this->filterLikeSolver($value, $builder);
                 }
 
                 if (($explodedKey = collect(explode('|', $key)))->count() > 1) {
-                    return $this->filterOrSolver($explodedKey->mapWithKeys(fn ($key) => [$key => $value]), $builder);
+                    return $this->filterOrSolver($explodedKey->map(fn ($key) => [$key => $value]), $builder);
                 }
 
                 if ($value instanceof Model) {
