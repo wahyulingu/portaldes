@@ -4,6 +4,7 @@ namespace App\Actions\Meta;
 
 use App\Abstractions\Action\IndexAction;
 use App\Repositories\MetaRepository;
+use Illuminate\Support\Collection;
 
 class MetaIndexAction extends IndexAction
 {

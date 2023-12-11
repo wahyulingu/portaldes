@@ -57,7 +57,7 @@ class PageStoreAction extends Action implements RuledActionContract
         return tap(
             $this->contentPageRepository->store($validatedPayload),
             function (ContentPage $content) use ($validatedPayload) {
-                if (isset($validatedPayload['thumbnail'])) {
+                if ($validatedPayload->has('thumbnail')) {
                     $this
 
                         ->thumbnailStoreAction

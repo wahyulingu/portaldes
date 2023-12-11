@@ -8,7 +8,6 @@ use App\Actions\Media\Picture\PictureUpdateAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Content\ContentThumbnail;
 use App\Repositories\Content\ContentThumbnailRepository;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 
 /**
@@ -19,9 +18,9 @@ class ThumbnailUpdateAction extends Action implements RuledActionContract
     protected ContentThumbnail $thumbnail;
 
     public function __construct(
-        protected ContentThumbnailRepository $contentThumbnailRepository,
-        protected PictureStoreAction $pictureStoreAction,
-        protected PictureUpdateAction $pictureUpdateAction
+        readonly protected ContentThumbnailRepository $contentThumbnailRepository,
+        readonly protected PictureStoreAction $pictureStoreAction,
+        readonly protected PictureUpdateAction $pictureUpdateAction
     ) {
     }
 
@@ -39,28 +38,39 @@ class ThumbnailUpdateAction extends Action implements RuledActionContract
 
     protected function handler(Collection $validatedPayload, Collection $payload)
     {
-        $this->updatePicture($validatedPayload['image'], 'content/thumbnails');
-    }
+        if ($validatedPayload->has('image')) {
+            if ($this->thumbnail->picture()->exists()) {
+                $this
+                    ->pictureUpdateAction
+                    ->prepare($this->thumbnail->picture)
+                    ->execute($validatedPayload->only('image'));
+            } else {
+                /**
+                 * @var MediaPicture
+                 */
+                $picture = $this->pictureStoreAction->skipAllRules()->execute([
+                    'name' => sprintf('picture model for peta thumbnail %s', $validatedPayload->get('nama')),
+                    'description' => sprintf('auto generated picture model for peta thumbnail %s', $validatedPayload->get('nama')),
+                    'image' => $validatedPayload->get('image'),
+                    'path' => $validatedPayload->get('path', 'content/thumbnail'),
+                ]);
 
-    protected function updatePicture(UploadedFile $image, string $path)
-    {
-        if ($this->thumbnail->picture()->exists()) {
-            return $this
+                $validatedPayload->put('picture_id', $picture->getKey());
+            }
 
-                ->pictureUpdateAction
-                ->prepare($this->thumbnail->picture)
-                ->execute(compact('image', 'path'));
+            $validatedPayload->forget('image');
+        }
+
+        if ($validatedPayload->empty()) {
+            return true;
         }
 
         return $this
 
-            ->pictureStoreAction
-            ->prepare($this->thumbnail)
-            ->execute(payload: [
-                ...compact('image', 'path'),
-
-                'name' => sprintf('model %s[%s] media picture', $this->thumbnail::class, $this->thumbnail->getKey()),
-                'description' => 'auto-generated model content thumbnail media picture',
-            ]);
+            ->contentThumbnailRepository
+            ->update(
+                $this->thumbnail->getKey(),
+                $validatedPayload->toArray()
+            );
     }
 }

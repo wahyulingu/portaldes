@@ -46,8 +46,8 @@ class ThumbnailStoreAction extends Action implements RuledActionContract
 
                 ->skipAllRules()
                 ->execute([
-                        'image' => $validatedPayload['thumbnail'],
-                        'name' => $validatedPayload['thumbnail']->getClientOriginalName(),
+                        'image' => $validatedPayload->get('thumbnail'),
+                        'name' => $validatedPayload->get('thumbnail')->getClientOriginalName(),
                         'path' => 'content/thumbnails',
                         'description' => 'auto-generated model for media thumbnail picture',
                     ]);

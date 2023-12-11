@@ -5,6 +5,7 @@ namespace App\Actions\Peta\Gambar;
 use App\Abstractions\Action\Action;
 use App\Models\Peta\PetaGambar;
 use App\Repositories\Peta\PetaGambarRepository;
+use Illuminate\Support\Collection;
 
 class GambarDeleteAction extends Action
 {

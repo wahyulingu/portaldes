@@ -45,10 +45,10 @@ class PageUpdateAction extends Action implements RuledActionContract
 
     protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
-        if (isset($validatedPayload['thumbnail'])) {
-            $this->updateThumbnail($validatedPayload['thumbnail']);
+        if ($validatedPayload->has('thumbnail')) {
+            $this->updateThumbnail($validatedPayload->get('thumbnail'));
 
-            unset($validatedPayload['thumbnail']);
+            $validatedPayload->forget('thumbnail');
         }
 
         if (empty($validatedPayload)) {

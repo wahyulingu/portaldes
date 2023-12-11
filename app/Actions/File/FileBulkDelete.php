@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Models\File;
 use App\Repositories\FileRepository;
 use App\Traits\Action\SetCollection;
+use Illuminate\Support\Collection;
 
 class FileBulkDelete extends Action
 {

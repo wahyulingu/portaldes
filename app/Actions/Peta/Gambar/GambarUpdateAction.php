@@ -12,6 +12,7 @@ use App\Models\Peta\PetaCategory;
 use App\Models\Peta\PetaGambar;
 use App\Repositories\Peta\PetaGambarRepository;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class GambarUpdateAction extends Action implements RuledActionContract

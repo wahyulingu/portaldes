@@ -5,6 +5,7 @@ namespace App\Actions\Meta;
 use App\Abstractions\Action\Action;
 use App\Models\Meta;
 use App\Repositories\MetaRepository;
+use Illuminate\Support\Collection;
 
 class MetaDeleteAction extends Action
 {

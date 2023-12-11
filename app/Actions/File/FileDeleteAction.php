@@ -5,6 +5,7 @@ namespace App\Actions\File;
 use App\Abstractions\Action\Action;
 use App\Models\File;
 use App\Repositories\FileRepository;
+use Illuminate\Support\Collection;
 
 class FileDeleteAction extends Action
 {

@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Meta;
 use App\Repositories\MetaRepository;
+use Illuminate\Support\Collection;
 
 /**
  * @extends Action<Meta>

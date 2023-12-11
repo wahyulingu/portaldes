@@ -9,6 +9,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Media\MediaPicture;
 use App\Repositories\Media\MediaPictureRepository;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 
 /**
  * @extends Action<MediaPicture>
@@ -41,8 +42,8 @@ class PictureUpdateAction extends Action implements RuledActionContract
 
     protected function handler(Collection $validatedPayload, Collection $payload)
     {
-        if (isset($validatedPayload['image'])) {
-            $this->updateFile($validatedPayload['image'], @$validatedPayload['path'] ?: 'media/pictures');
+        if ($validatedPayload->has('image')) {
+            $this->updateFile($validatedPayload->get('image'), $validatedPayload->get('path', 'media/pictures'));
         }
 
         return $this->mediaPictureRepository->update($this->picture->getKey(), $validatedPayload);

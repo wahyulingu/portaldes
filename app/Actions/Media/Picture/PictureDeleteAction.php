@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Actions\File\FileDeleteAction;
 use App\Models\Media\MediaPicture;
 use App\Repositories\Media\MediaPictureRepository;
+use Illuminate\Support\Collection;
 
 class PictureDeleteAction extends Action
 {

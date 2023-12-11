@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\File;
 use App\Repositories\FileRepository;
+use Illuminate\Support\Collection;
 
 class FileUpdateAction extends Action implements RuledActionContract
 {
