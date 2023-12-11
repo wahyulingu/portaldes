@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Surat\SidSurat;
 use App\Repositories\Sid\Surat\SidSuratRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**

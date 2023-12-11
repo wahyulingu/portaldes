@@ -18,7 +18,7 @@ class BantuanIndexAction extends IndexAction
         $filters = [];
 
         if ($payload->has('keyword')) {
-            $filters['anggota.nama:|anggota.nik:|nomor_kartu_bantuan:'] = '%'.$payload('keyword').'%';
+            $filters['penduduk.nama:|penduduk.nik:|ketua.nama:'] = '%'.$payload->get('keyword').'%';
         }
 
         return $filters;

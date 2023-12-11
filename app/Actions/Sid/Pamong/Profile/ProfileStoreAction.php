@@ -9,6 +9,7 @@ use App\Enumerations\Pendidikan\Pendidikan;
 use App\Enumerations\Penduduk\Agama;
 use App\Models\Sid\Pamong\SidPamongProfile;
 use App\Repositories\Sid\Pamong\SidPamongProfileRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**

@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Pamong\SidPamongProfile;
 use App\Repositories\Sid\Pamong\SidPamongProfileRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**

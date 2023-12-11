@@ -33,7 +33,7 @@ abstract class Action
 
             collect($this->skipedRules)->each(fn (string $rule) => $rules->pull($rule));
 
-            $validatedPayload = Validator::make($payload->toArray(), $rules)->validate();
+            $validatedPayload = Validator::make($payload->toArray(), $rules->toArray())->validate();
         }
 
         return $this->handler(collect(@$validatedPayload ?: $payload), $payload);
