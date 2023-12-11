@@ -7,6 +7,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Enumerations\Moderation;
 use App\Models\Content\ContentCategory;
 use App\Repositories\Content\ContentCategoryRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -18,7 +19,7 @@ class CategoryStoreAction extends Action implements RuledActionContract
     {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'name' => ['required', 'string', 'max:255'],

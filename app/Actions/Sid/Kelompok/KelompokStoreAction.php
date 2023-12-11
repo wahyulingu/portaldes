@@ -19,7 +19,7 @@ class KelompokStoreAction extends Action implements RuledActionContract
     {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'kategori_id' => ['required', 'integer', Rule::exists(SidKelompokKategori::class, 'id')],

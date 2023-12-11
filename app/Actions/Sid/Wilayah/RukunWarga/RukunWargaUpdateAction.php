@@ -20,7 +20,7 @@ class RukunWargaUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->rukunWarga = $rukunWarga);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'lingkungan_id' => ['sometimes', 'integer', Rule::exists(SidWilayahLingkungan::class, 'id')],

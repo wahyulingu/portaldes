@@ -23,7 +23,7 @@ class FileUploadAction extends Action implements RuledActionContract
     /**
      * Summary of rules.
      */
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'file' => ['required', 'file'],

@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Content\ContentComment;
 use App\Repositories\Content\ContentCommentRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class CommentDeleteAction extends Action implements RuledActionContract
@@ -16,7 +17,7 @@ class CommentDeleteAction extends Action implements RuledActionContract
     {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return ['id' => ['required', Rule::exists(ContentComment::class)]];
     }

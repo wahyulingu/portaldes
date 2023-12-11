@@ -19,7 +19,7 @@ class KelompokUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->kelompok = $kelompok);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'kategori_id' => ['sometimes', 'integer', Rule::exists(SidKelompokKategori::class, 'id')],

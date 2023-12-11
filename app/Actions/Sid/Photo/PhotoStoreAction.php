@@ -29,7 +29,7 @@ class PhotoStoreAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->content = $content);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return ['thumbnail' => ['required', 'mimes:jpg,jpeg,png', 'max:2048']];
     }

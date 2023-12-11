@@ -29,7 +29,7 @@ class GarisUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->garis = $garis);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'title' => ['sometimes', 'string', 'max:255'],

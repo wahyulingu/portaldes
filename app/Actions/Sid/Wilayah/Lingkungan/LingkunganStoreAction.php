@@ -18,7 +18,7 @@ class LingkunganStoreAction extends Action implements RuledActionContract
     {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'ketua_id' => ['required', 'integer', Rule::exists(SidPenduduk::class, 'id')],

@@ -24,7 +24,7 @@ class BantuanUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->bantuan = $bantuan);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'awal' => 'sometimes|date',

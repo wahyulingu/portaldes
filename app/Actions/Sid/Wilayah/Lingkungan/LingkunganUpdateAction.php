@@ -20,7 +20,7 @@ class LingkunganUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->lingkungan = $lingkungan);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'ketua_id' => ['sometimes', 'integer', Rule::exists(SidPenduduk::class, 'id')],

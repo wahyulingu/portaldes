@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Actions\Content\Thumbnail\ThumbnailDeleteAction;
 use App\Models\Content\ContentArticle;
 use App\Repositories\Content\ContentArticleRepository;
+use Illuminate\Support\Collection;
 
 class ArticleDeleteAction extends Action
 {

@@ -21,7 +21,7 @@ class ProfileStoreAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'nik' => ['required', 'string', 'regex:/^[0-9]{16}$/'],

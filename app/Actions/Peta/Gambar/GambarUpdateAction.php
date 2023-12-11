@@ -30,7 +30,7 @@ class GambarUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->gambar = $gambar);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'title' => ['sometimes', 'string', 'max:255'],

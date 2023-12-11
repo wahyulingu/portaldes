@@ -31,7 +31,7 @@ class PhotoUpdateAction extends Action implements RuledActionContract
         return $this;
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return ['image' => ['required', 'mimes:jpg,jpeg,png', 'max:1024']];
     }

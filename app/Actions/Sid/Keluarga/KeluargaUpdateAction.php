@@ -24,7 +24,7 @@ class KeluargaUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->keluarga = $keluarga);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'rukun_tetangga_id' => ['sometimes', 'integer', Rule::exists(SidWilayahRukunTetangga::class, 'id')],

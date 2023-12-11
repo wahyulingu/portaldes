@@ -23,7 +23,7 @@ class AreaStoreAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'title' => ['required', 'string', 'max:255'],

@@ -19,7 +19,7 @@ class RukunTetanggaStoreAction extends Action implements RuledActionContract
     {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'rukun_warga_id' => ['required', 'integer', Rule::exists(SidWilayahRukunWarga::class, 'id')],

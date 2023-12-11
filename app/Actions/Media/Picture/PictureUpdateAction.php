@@ -29,7 +29,7 @@ class PictureUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->picture = $picture);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'name' => ['sometimes', 'string', 'max:255'],

@@ -21,7 +21,7 @@ class WarnaUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->warna = $warna);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'nama' => ['sometimes', 'string', 'max:255'],

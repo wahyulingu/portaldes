@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Actions\Media\Picture\PictureDeleteAction;
 use App\Models\Content\ContentThumbnail;
 use App\Repositories\Content\ContentThumbnailRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class ThumbnailDeleteAction extends Action

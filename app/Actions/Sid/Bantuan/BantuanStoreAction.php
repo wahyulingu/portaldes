@@ -18,7 +18,7 @@ class BantuanStoreAction extends Action implements RuledActionContract
     {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'awal' => 'required|date',

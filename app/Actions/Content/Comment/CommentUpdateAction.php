@@ -7,6 +7,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Enumerations\Moderation;
 use App\Models\Content\ContentComment;
 use App\Repositories\Content\ContentCommentRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class CommentUpdateAction extends Action implements RuledActionContract
@@ -22,7 +23,7 @@ class CommentUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->comment = $comment);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'body' => ['sometimes', 'string', 'max:255'],

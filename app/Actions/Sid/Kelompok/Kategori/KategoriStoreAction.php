@@ -16,7 +16,7 @@ class KategoriStoreAction extends Action implements RuledActionContract
     {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'nama' => 'required|string',

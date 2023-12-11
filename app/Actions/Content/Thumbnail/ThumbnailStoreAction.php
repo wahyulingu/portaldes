@@ -9,6 +9,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Content\ContentThumbnail;
 use App\Models\Media\MediaPicture;
 use App\Repositories\Content\ContentThumbnailRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -29,7 +30,7 @@ class ThumbnailStoreAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->content = $content);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return ['thumbnail' => ['required', 'mimes:jpg,jpeg,png', 'max:2048']];
     }

@@ -11,6 +11,7 @@ use App\Models\Content\ContentArticle;
 use App\Models\Content\ContentCategory;
 use App\Repositories\Content\ContentArticleRepository;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class ArticleUpdateAction extends Action implements RuledActionContract
@@ -29,7 +30,7 @@ class ArticleUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->article = $article);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'title' => ['sometimes', 'string', 'max:255'],

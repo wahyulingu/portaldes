@@ -200,8 +200,12 @@ abstract class Repository
         return $this->model()::create($attributes);
     }
 
-    public function update($key, array $attributes): bool
+    public function update($key, SupportCollection|array $attributes): bool
     {
+        if ($attributes instanceof SupportCollection) {
+            return $this->model()::find($key)->update($attributes->toArray());
+        }
+
         return $this->model()::find($key)->update($attributes);
     }
 

@@ -24,7 +24,7 @@ class SuratWargaStoreAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'penduduk_id' => [

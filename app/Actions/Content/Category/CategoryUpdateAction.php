@@ -7,6 +7,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Enumerations\Moderation;
 use App\Models\Content\ContentCategory;
 use App\Repositories\Content\ContentCategoryRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class CategoryUpdateAction extends Action implements RuledActionContract
@@ -22,7 +23,7 @@ class CategoryUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->category = $category);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'name' => ['sometimes', 'string', 'max:255'],
