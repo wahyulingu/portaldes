@@ -4,6 +4,6 @@ namespace App\Repositories\Peta;
 
 use App\Abstractions\Repository\PetaRepository;
 
-class PetaPictureRepository extends PetaRepository
+class PetaGambarRepository extends PetaRepository
 {
 }

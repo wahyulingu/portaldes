@@ -15,7 +15,6 @@ return new class() extends Migration {
             $table->timestamps();
 
             $table->foreignId('kategori_id');
-            $table->foreignId('picture_id');
 
             $table->string('nama');
             $table->string('keterangan');

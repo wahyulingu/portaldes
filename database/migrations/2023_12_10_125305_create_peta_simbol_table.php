@@ -13,9 +13,8 @@ return new class() extends Migration {
         Schema::create('peta_simbol', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-
-            $table->foreignId('picture_id');
             $table->string('nama');
+            $table->string('keterangan');
         });
     }
 

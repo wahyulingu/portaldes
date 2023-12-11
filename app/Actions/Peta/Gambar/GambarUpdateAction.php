@@ -68,7 +68,7 @@ class GambarUpdateAction extends Action implements RuledActionContract
         return $this
 
             ->gambarStoreAction
-            ->prepare($this->gambar)
+            // ->prepare($this->gambar)
             ->execute(compact('image'));
     }
 }

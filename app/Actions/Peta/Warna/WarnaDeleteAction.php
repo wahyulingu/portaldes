@@ -12,7 +12,6 @@ class WarnaDeleteAction extends Action
 
     public function __construct(
         protected readonly PetaWarnaRepository $petaWarnaRepository,
-        protected readonly GambarDeleteAction $gambarDeleteAction,
     ) {
     }
 
@@ -25,13 +24,6 @@ class WarnaDeleteAction extends Action
 
     protected function handler(array $validatedPayload = [], array $payload = []): bool
     {
-        if ($this->warna->gambar()->exists()) {
-            $this
-                ->gambarDeleteAction
-                ->prepare($this->warna->gambar)
-                ->execute();
-        }
-
         return $this->petaWarnaRepository->delete($this->warna->getKey());
     }
 }

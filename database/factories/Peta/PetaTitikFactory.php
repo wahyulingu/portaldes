@@ -3,7 +3,6 @@
 namespace Database\Factories\Peta;
 
 use App\Models\Peta\PetaKategori;
-use App\Models\Peta\PetaPicture;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +19,6 @@ class PetaTitikFactory extends Factory
     {
         return [
             'kategori_id' => PetaKategori::factory()->titik(),
-            'picture_id' => PetaPicture::factory(),
             'nama' => $this->faker->word,
             'keterangan' => $this->faker->paragraph,
             'lat' => $this->faker->latitude,

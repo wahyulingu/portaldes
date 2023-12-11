@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Peta\PetaPicture>
  */
-class PetaPictureFactory extends Factory
+class PetaGambarFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +18,7 @@ class PetaPictureFactory extends Factory
     public function definition(): array
     {
         return [
-            'picture_id' => MediaPicture::factory(),
+            'media_id' => MediaPicture::factory(),
             'nama' => $this->faker->word,
             'keterangan' => $this->faker->paragraph,
         ];

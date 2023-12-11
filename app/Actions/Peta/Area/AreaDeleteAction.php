@@ -3,6 +3,7 @@
 namespace App\Actions\Peta\Area;
 
 use App\Abstractions\Action\Action;
+use App\Actions\Peta\Gambar\GambarDeleteAction;
 use App\Models\Peta\PetaArea;
 use App\Repositories\Peta\PetaAreaRepository;
 

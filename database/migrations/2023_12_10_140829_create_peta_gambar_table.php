@@ -10,12 +10,16 @@ return new class() extends Migration {
      */
     public function up(): void
     {
-        Schema::create('peta_picture', function (Blueprint $table) {
+        Schema::create('peta_gambar', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('picture_id');
+
             $table->string('nama');
             $table->string('keterangan');
+            $table->string('peta_type');
+
+            $table->foreignId('peta_id');
+            $table->foreignId('media_id');
         });
     }
 
@@ -24,6 +28,6 @@ return new class() extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('peta_picture');
+        Schema::dropIfExists('peta_gambar');
     }
 };
