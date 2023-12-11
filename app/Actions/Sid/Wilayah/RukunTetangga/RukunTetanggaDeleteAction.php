@@ -19,7 +19,7 @@ class RukunTetanggaDeleteAction extends Action
         return tap($this, fn (self $action) => $action->rukunTetangga = $rukunTetangga);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return $this->sidWilayahRukunTetanggaRepository->delete($this->rukunTetangga->getKey());
     }

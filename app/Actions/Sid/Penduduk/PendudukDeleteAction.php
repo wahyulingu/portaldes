@@ -19,7 +19,7 @@ class PendudukDeleteAction extends Action
         return tap($this, fn (self $action) => $action->penduduk = $penduduk);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return $this->sidPendudukRepository->delete($this->penduduk->getKey());
     }

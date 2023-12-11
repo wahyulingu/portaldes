@@ -21,7 +21,7 @@ class CategoryDeleteAction extends Action implements RuledActionContract
         return ['id' => ['required', Rule::exists(ContentCategory::class)]];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return $this->contentCategoryRepository->delete($validatedPayload['id']);
     }

@@ -14,7 +14,7 @@ class IdentitasFetchAction extends Action
     ) {
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         $identitas = [
             'nama_desa' => '',

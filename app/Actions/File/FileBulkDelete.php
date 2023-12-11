@@ -15,7 +15,7 @@ class FileBulkDelete extends Action
     {
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return tap(
             File::whereIn('id', $this->collection->map(

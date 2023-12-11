@@ -19,7 +19,7 @@ return new class() extends Migration {
             $table->string('peta_type');
 
             $table->foreignId('peta_id');
-            $table->foreignId('media_id');
+            $table->foreignId('picture_id');
         });
     }
 

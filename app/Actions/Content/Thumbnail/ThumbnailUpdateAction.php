@@ -36,7 +36,7 @@ class ThumbnailUpdateAction extends Action implements RuledActionContract
         return ['image' => ['required', 'mimes:jpg,jpeg,png', 'max:1024']];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         $this->updatePicture($validatedPayload['image'], 'content/thumbnails');
     }

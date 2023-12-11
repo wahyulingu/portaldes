@@ -58,7 +58,7 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return DB::transaction(function () use ($validatedPayload) {
             $meta = $this->metaRepository->findBySlug('sid-identitas');

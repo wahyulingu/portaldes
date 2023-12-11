@@ -21,7 +21,7 @@ class FileDeleteAction extends Action
         return $this;
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return tap(
             $this->fileRepository->delete($this->file->getKey()),

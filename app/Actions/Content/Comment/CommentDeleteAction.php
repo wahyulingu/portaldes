@@ -21,7 +21,7 @@ class CommentDeleteAction extends Action implements RuledActionContract
         return ['id' => ['required', Rule::exists(ContentComment::class)]];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return $this->contentCommentRepository->delete($validatedPayload['id']);
     }

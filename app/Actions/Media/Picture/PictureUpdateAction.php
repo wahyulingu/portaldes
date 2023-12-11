@@ -24,7 +24,7 @@ class PictureUpdateAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function prepare(MediaPicture $picture)
+    public function prepare(MediaPicture $picture): self
     {
         return tap($this, fn (self $action) => $action->picture = $picture);
     }
@@ -39,7 +39,7 @@ class PictureUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         if (isset($validatedPayload['image'])) {
             $this->updateFile($validatedPayload['image'], @$validatedPayload['path'] ?: 'media/pictures');

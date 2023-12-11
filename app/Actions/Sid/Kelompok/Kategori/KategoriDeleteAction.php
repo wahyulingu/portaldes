@@ -19,7 +19,7 @@ class KategoriDeleteAction extends Action
         return tap($this, fn (self $action) => $action->kategori = $kategori);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return $this->sidKelompokKategoriRepository->delete($this->kategori->getKey());
     }

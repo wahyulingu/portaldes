@@ -11,7 +11,7 @@ class ProfileIndexAction extends IndexAction
     {
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         $filters = [];
 

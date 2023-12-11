@@ -42,7 +42,7 @@ class PamongUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return DB::transaction(function () use ($validatedPayload, $payload) {
             if ($this->pamong->profile instanceof SidPenduduk) {

@@ -34,7 +34,7 @@ class ThumbnailStoreAction extends Action implements RuledActionContract
         return ['thumbnail' => ['required', 'mimes:jpg,jpeg,png', 'max:2048']];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return DB::transaction(
             function () use ($validatedPayload) {

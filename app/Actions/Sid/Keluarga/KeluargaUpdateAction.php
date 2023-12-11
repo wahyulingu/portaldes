@@ -35,7 +35,7 @@ class KeluargaUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->sidKeluargaRepository->update($this->keluarga->getKey(), $validatedPayload);
     }

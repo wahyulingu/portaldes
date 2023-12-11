@@ -42,7 +42,7 @@ class ProfileUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->sidPamongRepository->update($this->pamong->getKey(), $validatedPayload);
     }

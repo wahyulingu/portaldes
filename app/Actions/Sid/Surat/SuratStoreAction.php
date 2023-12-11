@@ -69,7 +69,7 @@ class SuratStoreAction extends Action implements RuledActionContract
         return $rules;
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->sidSuratRepository->store($validatedPayload);
     }

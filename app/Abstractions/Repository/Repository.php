@@ -8,6 +8,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Str;
 
 /**
@@ -190,8 +191,12 @@ abstract class Repository
     /**
      * @return TModel
      */
-    public function store(array $attributes)
+    public function store(SupportCollection|array $attributes)
     {
+        if ($attributes instanceof SupportCollection) {
+            return $this->model()::create($attributes->toArray());
+        }
+
         return $this->model()::create($attributes);
     }
 

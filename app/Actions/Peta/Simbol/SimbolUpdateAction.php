@@ -42,7 +42,7 @@ class SimbolUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         if (isset($validatedPayload['gambar'])) {
             $this->updateGambar($validatedPayload['gambar']);

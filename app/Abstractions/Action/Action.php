@@ -3,6 +3,7 @@
 namespace App\Abstractions\Action;
 
 use App\Contracts\Action\RuledActionContract;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 
 abstract class Action
@@ -11,7 +12,7 @@ abstract class Action
 
     private bool $skipRules = false;
 
-    abstract protected function handler(array $validatedPayload = [], array $payload = []);
+    abstract protected function handler(Collection $validatedPayload, Collection $payload);
 
     final public function skipRules(array $rules): self
     {
@@ -23,24 +24,22 @@ abstract class Action
         return tap($this, fn () => $this->skipRules = true);
     }
 
-    final public function execute(array $payload = [])
+    final public function execute(Collection|array $payload = [])
     {
-        $validatedPayload = $payload;
+        $payload = collect($payload);
 
         if ($this instanceof RuledActionContract && true !== $this->skipRules) {
-            $rules = $this->rules($payload);
+            $rules = collect($this->rules($payload));
 
-            foreach ($this->skipedRules as $rule) {
-                unset($rules[$rule]);
-            }
+            collect($this->skipedRules)->each(fn (string $rule) => $rules->pull($rule));
 
-            $validatedPayload = Validator::make($payload, $rules)->validate();
+            $validatedPayload = Validator::make($payload->toArray(), $rules)->validate();
         }
 
-        return $this->handler($validatedPayload, $payload);
+        return $this->handler(collect(@$validatedPayload ?: $payload), $payload);
     }
 
-    final public static function handle(array $payload = [], callable $before = null)
+    final public static function handle(Collection|array $payload = [], callable $before = null)
     {
         /**
          * @var self

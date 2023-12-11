@@ -51,7 +51,7 @@ class ArticleStoreAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return tap(
             $this->contentArticleRepository->store($validatedPayload),

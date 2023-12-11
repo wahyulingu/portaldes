@@ -19,7 +19,7 @@ class RukunWargaDeleteAction extends Action
         return tap($this, fn (self $action) => $action->rukunWarga = $rukunWarga);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return $this->sidWilayahRukunWargaRepository->delete($this->rukunWarga->getKey());
     }

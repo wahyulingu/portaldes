@@ -36,7 +36,7 @@ class FileUploadAction extends Action implements RuledActionContract
     /**
      * Summary of handler.
      */
-    protected function handler(array $validatedPayload = [], array $payload = []): File
+    protected function handler(Collection $validatedPayload, Collection $payload): File
     {
         return $this->fileRepository->create($validatedPayload);
     }

@@ -19,7 +19,7 @@ class KeluargaDeleteAction extends Action
         return tap($this, fn (self $action) => $action->keluarga = $keluarga);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return $this->sidKeluargaRepository->delete($this->keluarga->getKey());
     }

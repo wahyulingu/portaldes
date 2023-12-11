@@ -28,7 +28,7 @@ class LingkunganUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->lingkungan->update($validatedPayload);
     }
