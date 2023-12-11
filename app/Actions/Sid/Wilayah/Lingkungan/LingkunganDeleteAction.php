@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Wilayah\Lingkungan;
 use App\Abstractions\Action\Action;
 use App\Models\Sid\Wilayah\SidWilayahLingkungan;
 use App\Repositories\Sid\Wilayah\SidWilayahLingkunganRepository;
+use Illuminate\Support\Collection;
 
 class LingkunganDeleteAction extends Action
 {

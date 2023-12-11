@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Wilayah\SidWilayahRukunWarga;
 use App\Models\Sid\WilayahRukunWarga;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -31,6 +32,6 @@ class RukunWargaUpdateAction extends Action implements RuledActionContract
 
     protected function handler(Collection $validatedPayload, Collection $payload)
     {
-        return $this->rukunWarga->update($validatedPayload);
+        return $this->rukunWarga->update($validatedPayload->toArray());
     }
 }

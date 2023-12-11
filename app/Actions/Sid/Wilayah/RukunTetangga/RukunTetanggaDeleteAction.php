@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Wilayah\RukunTetangga;
 use App\Abstractions\Action\Action;
 use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
 use App\Repositories\Sid\Wilayah\SidWilayahRukunTetanggaRepository;
+use Illuminate\Support\Collection;
 
 class RukunTetanggaDeleteAction extends Action
 {

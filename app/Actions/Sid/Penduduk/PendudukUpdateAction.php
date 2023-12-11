@@ -8,6 +8,7 @@ use App\Enumerations\Medis;
 use App\Enumerations\Pendidikan;
 use App\Enumerations\Penduduk;
 use App\Models\Sid\SidPenduduk;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -78,6 +79,6 @@ class PendudukUpdateAction extends Action implements RuledActionContract
 
     protected function handler(Collection $validatedPayload, Collection $payload)
     {
-        return $this->penduduk->update($validatedPayload);
+        return $this->penduduk->update($validatedPayload->toArray());
     }
 }

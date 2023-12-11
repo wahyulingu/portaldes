@@ -9,6 +9,7 @@ use App\Enumerations\Pendidikan;
 use App\Enumerations\Penduduk;
 use App\Models\Sid\SidPenduduk;
 use App\Repositories\Sid\SidPendudukRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**

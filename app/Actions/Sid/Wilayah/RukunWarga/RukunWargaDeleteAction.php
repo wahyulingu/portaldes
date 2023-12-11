@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Wilayah\RukunWarga;
 use App\Abstractions\Action\Action;
 use App\Models\Sid\Wilayah\SidWilayahRukunWarga;
 use App\Repositories\Sid\Wilayah\SidWilayahRukunWargaRepository;
+use Illuminate\Support\Collection;
 
 class RukunWargaDeleteAction extends Action
 {

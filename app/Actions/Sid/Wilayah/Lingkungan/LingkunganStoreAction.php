@@ -7,6 +7,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\SidPenduduk;
 use App\Models\Sid\WilayahLingkungan;
 use App\Repositories\Sid\Wilayah\SidWilayahLingkunganRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**

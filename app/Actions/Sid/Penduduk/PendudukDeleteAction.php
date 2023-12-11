@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Penduduk;
 use App\Abstractions\Action\Action;
 use App\Models\Sid\SidPenduduk;
 use App\Repositories\Sid\SidPendudukRepository;
+use Illuminate\Support\Collection;
 
 class PendudukDeleteAction extends Action
 {
