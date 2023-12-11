@@ -362,20 +362,19 @@ abstract class Repository
                 )
             );
         } else {
-            $filters->each(function ($value, string $key) use ($builder) {
+            $solver = collect([
+                'has' => fn ($value, Builder $builder) => $this->filterHasSolver($value, $builder),
+                'or' => fn ($value, Builder $builder) => $this->filterOrSolver($value, $builder),
+                'like' => fn ($value, Builder $builder) => $this->filterLikeSolver($value, $builder),
+            ]);
+
+            $filters->each(function ($value, string $key) use ($builder, $solver) {
                 if (intval($key) == $key) {
                     return $this->filterSolver(collect($value), $builder);
                 }
 
-                if ('has' == Str::lower($key)) {
-                    return $this->filterHasSolver($value, $builder);
-                }
-
-                if ('or' == Str::lower($key)) {
-                    return $this->filterOrSolver($value, $builder);
-                }
-                if ('like' == Str::lower($key)) {
-                    return $this->filterLikeSolver($value, $builder);
+                if ($solver->has($key)) {
+                    return call_user_func($solver->get($key), $value, $builder);
                 }
 
                 if (($explodedKey = collect(explode('|', $key)))->count() > 1) {
