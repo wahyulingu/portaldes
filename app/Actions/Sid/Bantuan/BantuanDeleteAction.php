@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Bantuan;
 use App\Abstractions\Action\Action;
 use App\Models\Sid\SidBantuan;
 use App\Repositories\Sid\SidBantuanRepository;
+use Illuminate\Support\Collection;
 
 class BantuanDeleteAction extends Action
 {

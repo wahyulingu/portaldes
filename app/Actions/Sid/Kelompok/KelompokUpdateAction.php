@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Kelompok;
 use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Kelompok\SidKelompok;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -32,6 +33,6 @@ class KelompokUpdateAction extends Action implements RuledActionContract
 
     protected function handler(Collection $validatedPayload, Collection $payload)
     {
-        return $this->kelompok->update($validatedPayload);
+        return $this->kelompok->update($validatedPayload->toArray());
     }
 }

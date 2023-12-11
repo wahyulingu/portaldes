@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Pamong;
 use App\Abstractions\Action\Action;
 use App\Models\Sid\Pamong\SidPamong;
 use App\Repositories\Sid\Pamong\SidPamongRepository;
+use Illuminate\Support\Collection;
 
 class PamongDeleteAction extends Action
 {

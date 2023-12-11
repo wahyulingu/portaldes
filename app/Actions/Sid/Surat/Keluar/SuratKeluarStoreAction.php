@@ -9,6 +9,7 @@ use App\Models\Sid\Surat\SidSurat;
 use App\Models\Sid\Surat\SidSuratKeluar;
 use App\Models\Sid\Surat\SidSuratKlasifikasi;
 use App\Repositories\Sid\Surat\SidSuratKeluarRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 

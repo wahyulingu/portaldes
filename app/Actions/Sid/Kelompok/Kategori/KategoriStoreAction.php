@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Kelompok\SidKelompokKategori;
 use App\Repositories\Sid\Kelompok\SidKelompokKategoriRepository;
+use Illuminate\Support\Collection;
 
 /**
  * @extends Action<SidKelompokKategori>

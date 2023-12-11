@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Surat;
 use App\Abstractions\Action\Action;
 use App\Models\Sid\Surat\SidSurat;
 use App\Repositories\Sid\Surat\SidSuratRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class SuratDeleteAction extends Action

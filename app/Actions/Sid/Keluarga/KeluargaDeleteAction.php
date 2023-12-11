@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Keluarga;
 use App\Abstractions\Action\Action;
 use App\Models\Sid\SidKeluarga;
 use App\Repositories\Sid\SidKeluargaRepository;
+use Illuminate\Support\Collection;
 
 class KeluargaDeleteAction extends Action
 {

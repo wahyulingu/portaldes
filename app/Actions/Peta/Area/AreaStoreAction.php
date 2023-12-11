@@ -9,6 +9,7 @@ use App\Models\Peta\PetaArea;
 use App\Models\Peta\PetaCategory;
 use App\Models\User;
 use App\Repositories\Peta\PetaAreaRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**

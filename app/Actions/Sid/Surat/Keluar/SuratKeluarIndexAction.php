@@ -4,6 +4,7 @@ namespace App\Actions\Sid\Surat\Keluar;
 
 use App\Abstractions\Action\IndexAction;
 use App\Repositories\Sid\Surat\SidSuratKeluarRepository;
+use Illuminate\Support\Collection;
 
 class SuratKeluarIndexAction extends IndexAction
 {
@@ -12,12 +13,12 @@ class SuratKeluarIndexAction extends IndexAction
         parent::__construct($repository);
     }
 
-    protected function filters(array $payload = []): array
+    protected function filters(Collection $payload): array
     {
         $filters = [];
 
-        if (!empty($validatedPayload['keyword'])) {
-            $filters['klasifikasi.nama|tujuan|short_desc|penduduk.nama:|penduduk.nik:|penduduk.nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
+        if ($payload->has('keyword')) {
+            $filters['klasifikasi.nama|tujuan|short_desc|penduduk.nama:|penduduk.nik:|penduduk.nomor_kartu_keluarga:'] = '%'.$payload->get('keyword', '').'%';
         }
 
         return $filters;

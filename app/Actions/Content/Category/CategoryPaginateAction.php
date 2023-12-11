@@ -5,6 +5,7 @@ namespace App\Actions\Content\Category;
 use App\Abstractions\Action\Content\ContentIndexAction;
 use App\Contracts\Action\PaginatedIndexContract;
 use App\Repositories\Content\ContentCategoryRepository;
+use Illuminate\Support\Collection;
 
 class CategoryPaginateAction extends ContentIndexAction implements PaginatedIndexContract
 {
@@ -13,12 +14,12 @@ class CategoryPaginateAction extends ContentIndexAction implements PaginatedInde
         parent::__construct($repository);
     }
 
-    protected function filters(array $payload = []): array
+    protected function filters(Collection $payload): array
     {
         $filters = [];
 
-        if (!empty($payload['keyword'])) {
-            $filters['title:|description:|slug:'] = '%'.(@$payload['keyword']).'%';
+        if ($payload->has('keyword')) {
+            $filters['title:|description:|slug:'] = '%'.$payload->get('keyword').'%';
         }
 
         return $filters;

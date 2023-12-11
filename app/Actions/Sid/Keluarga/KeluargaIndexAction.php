@@ -4,6 +4,7 @@ namespace App\Actions\Sid\Keluarga;
 
 use App\Abstractions\Action\IndexAction;
 use App\Repositories\Sid\SidKeluargaRepository;
+use Illuminate\Support\Collection;
 
 class KeluargaIndexAction extends IndexAction
 {
@@ -12,12 +13,12 @@ class KeluargaIndexAction extends IndexAction
         parent::__construct($repository);
     }
 
-    protected function filters(array $payload = []): array
+    protected function filters(Collection $payload): array
     {
         $filters = [];
 
-        if (!empty($validatedPayload['keyword'])) {
-            $filters['anggota.nama:|anggota.nik:|nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
+        if ($payload->has('keyword')) {
+            $filters['anggota.nama:|anggota.nik:|nomor_kartu_keluarga:'] = '%'.$payload->get('keyword').'%';
         }
 
         return $filters;

@@ -9,6 +9,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Pamong\SidPamong;
 use App\Models\Sid\SidPenduduk;
 use App\Repositories\Sid\Pamong\SidPamongRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**

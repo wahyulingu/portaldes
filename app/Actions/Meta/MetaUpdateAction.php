@@ -19,7 +19,7 @@ class MetaUpdateAction extends Action implements RuledActionContract
     {
     }
 
-    public function prepare(Meta $meta)
+    public function prepare(Meta $meta): self
     {
         return tap($this, fn (self $action) => $action->meta = $meta);
     }

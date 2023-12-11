@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Kelompok;
 use App\Abstractions\Action\IndexAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Repositories\Sid\Kelompok\SidKelompokRepository;
+use Illuminate\Support\Collection;
 
 class KelompokIndexAction extends IndexAction implements RuledActionContract
 {
@@ -13,12 +14,12 @@ class KelompokIndexAction extends IndexAction implements RuledActionContract
         parent::__construct($repository);
     }
 
-    protected function filters(array $payload = []): array
+    protected function filters(Collection $payload): array
     {
         $filters = [];
 
-        if (!empty($validatedPayload['keyword'])) {
-            $filters['nama:|nik:|nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
+        if ($payload->has('keyword')) {
+            $filters['nama:|nik:|nomor_kartu_keluarga:'] = '%'.$payload->get('keyword').'%';
         }
 
         return $filters;

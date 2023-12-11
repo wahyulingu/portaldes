@@ -16,10 +16,10 @@ class MetaIndexAction extends IndexAction
     {
         $filters = [];
 
-        if (!empty($validatedPayload['keyword'])) {
-            $filters['anggota.nama:|anggota.nik:|nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
+        if ($validatedPayload->has('keyword')) {
+            $filters['anggota.nama:|anggota.nik:|nomor_kartu_keluarga:'] = '%'.$validatedPayload->get('keyword').'%';
         }
 
-        return $this->repository->latest($filters)->paginate(@$validatedPayload['limit'] ?: 0);
+        return $this->repository->latest($filters)->paginate($validatedPayload->get('limit', 0));
     }
 }

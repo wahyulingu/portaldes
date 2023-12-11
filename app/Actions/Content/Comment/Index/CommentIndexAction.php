@@ -4,6 +4,7 @@ namespace App\Actions\Content\Comment\Index;
 
 use App\Abstractions\Action\Content\ContentIndexAction;
 use App\Repositories\Content\ContentCommentRepository;
+use Illuminate\Support\Collection;
 
 class CommentIndexAction extends ContentIndexAction
 {
@@ -12,10 +13,10 @@ class CommentIndexAction extends ContentIndexAction
         parent::__construct($repository);
     }
 
-    protected function filters(array $payload = []): array
+    protected function filters(Collection $payload): array
     {
-        if (!empty($payload['status'])) {
-            return collect($payload)->only('status');
+        if ($payload->has('status')) {
+            return $payload->only('status')->toArray();
         }
 
         return [];

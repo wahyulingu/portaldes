@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Kelompok;
 use App\Abstractions\Action\Action;
 use App\Models\Sid\Kelompok\SidKelompok;
 use App\Repositories\Sid\Kelompok\SidKelompokRepository;
+use Illuminate\Support\Collection;
 
 class KelompokDeleteAction extends Action
 {

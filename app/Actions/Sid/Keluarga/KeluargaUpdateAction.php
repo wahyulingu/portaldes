@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\SidKeluarga;
 use App\Repositories\Sid\SidKeluargaRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
