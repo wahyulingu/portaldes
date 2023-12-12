@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies\Sid\Peta;
+namespace App\Policies\Peta;
 
 use App\Models\Peta\PetaSimbol;
 use App\Models\User;
@@ -12,7 +12,7 @@ class SimbolPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('viewAny.sid.peta.simbol');
+        return $user->can('viewAny.peta.simbol');
     }
 
     /**
@@ -20,7 +20,7 @@ class SimbolPolicy
      */
     public function view(User $user, PetaSimbol $simbol): bool
     {
-        return $user->can('view.sid.peta.simbol');
+        return $user->can('view.peta.simbol');
     }
 
     /**
@@ -28,7 +28,7 @@ class SimbolPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create.sid.peta.simbol');
+        return $user->can('create.peta.simbol');
     }
 
     /**
@@ -36,7 +36,7 @@ class SimbolPolicy
      */
     public function update(User $user, PetaSimbol $simbol): bool
     {
-        return $user->can('update.sid.peta.simbol');
+        return $user->can('update.peta.simbol');
     }
 
     /**
@@ -44,7 +44,7 @@ class SimbolPolicy
      */
     public function delete(User $user, PetaSimbol $simbol): bool
     {
-        return $user->can('delete.sid.peta.simbol');
+        return $user->can('delete.peta.simbol');
     }
 
     /**
@@ -52,7 +52,7 @@ class SimbolPolicy
      */
     public function restore(User $user, PetaSimbol $simbol): bool
     {
-        return $user->can('restore.sid.peta.simbol');
+        return $user->can('restore.peta.simbol');
     }
 
     /**
@@ -60,6 +60,6 @@ class SimbolPolicy
      */
     public function forceDelete(User $user, PetaSimbol $simbol): bool
     {
-        return $user->can('forceDelete.sid.peta.simbol');
+        return $user->can('forceDelete.peta.simbol');
     }
 }

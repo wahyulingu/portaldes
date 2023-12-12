@@ -3,9 +3,11 @@
 namespace App\Actions\Peta\Gambar;
 
 use App\Abstractions\Action\Action;
+use App\Actions\Media\Picture\PictureDeleteAction;
 use App\Models\Peta\PetaGambar;
 use App\Repositories\Peta\PetaGambarRepository;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class GambarDeleteAction extends Action
 {
@@ -13,7 +15,7 @@ class GambarDeleteAction extends Action
 
     public function __construct(
         protected readonly PetaGambarRepository $petaGambarRepository,
-        protected readonly GambarDeleteAction $gambarDeleteAction,
+        protected readonly PictureDeleteAction $pictureDeleteAction,
     ) {
     }
 
@@ -26,13 +28,15 @@ class GambarDeleteAction extends Action
 
     protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
-        if ($this->gambar->gambar()->exists()) {
-            $this
-                ->gambarDeleteAction
-                ->prepare($this->gambar->gambar)
-                ->execute();
-        }
+        return DB::transaction(function () {
+            if ($this->gambar->picture()->exists()) {
+                $this
+                    ->pictureDeleteAction
+                    ->prepare($this->gambar->picture)
+                    ->execute();
+            }
 
-        return $this->petaGambarRepository->delete($this->gambar->getKey());
+            return $this->petaGambarRepository->delete($this->gambar->getKey());
+        });
     }
 }

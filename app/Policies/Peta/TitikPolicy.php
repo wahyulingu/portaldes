@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies\Sid\Peta;
+namespace App\Policies\Peta;
 
 use App\Models\Peta\PetaTitik;
 use App\Models\User;
@@ -12,7 +12,7 @@ class TitikPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('viewAny.sid.peta.titik');
+        return $user->can('viewAny.peta.titik');
     }
 
     /**
@@ -20,7 +20,7 @@ class TitikPolicy
      */
     public function view(User $user, PetaTitik $titik): bool
     {
-        return $user->can('view.sid.peta.titik');
+        return $user->can('view.peta.titik');
     }
 
     /**
@@ -28,7 +28,7 @@ class TitikPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create.sid.peta.titik');
+        return $user->can('create.peta.titik');
     }
 
     /**
@@ -36,7 +36,7 @@ class TitikPolicy
      */
     public function update(User $user, PetaTitik $titik): bool
     {
-        return $user->can('update.sid.peta.titik');
+        return $user->can('update.peta.titik');
     }
 
     /**
@@ -44,7 +44,7 @@ class TitikPolicy
      */
     public function delete(User $user, PetaTitik $titik): bool
     {
-        return $user->can('delete.sid.peta.titik');
+        return $user->can('delete.peta.titik');
     }
 
     /**
@@ -52,7 +52,7 @@ class TitikPolicy
      */
     public function restore(User $user, PetaTitik $titik): bool
     {
-        return $user->can('restore.sid.peta.titik');
+        return $user->can('restore.peta.titik');
     }
 
     /**
@@ -60,6 +60,6 @@ class TitikPolicy
      */
     public function forceDelete(User $user, PetaTitik $titik): bool
     {
-        return $user->can('forceDelete.sid.peta.titik');
+        return $user->can('forceDelete.peta.titik');
     }
 }

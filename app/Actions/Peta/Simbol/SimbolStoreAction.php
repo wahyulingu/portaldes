@@ -7,6 +7,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Peta\PetaSimbol;
 use App\Models\User;
 use App\Repositories\Peta\PetaSimbolRepository;
+use Illuminate\Support\Collection;
 
 /**
  * @extends Action<PetaSimbol>

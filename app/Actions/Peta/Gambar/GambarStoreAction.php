@@ -9,6 +9,7 @@ use App\Models\Media\MediaPicture;
 use App\Models\Peta\PetaGambar;
 use App\Models\User;
 use App\Repositories\Peta\PetaGambarRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -42,12 +43,12 @@ class GambarStoreAction extends Action implements RuledActionContract
              */
             $picture = $this->pictureStoreAction->skipAllRules()->execute([
                 'name' => sprintf('picture model for peta gambar %s', $validatedPayload['nama']),
-                'description' => sprintf('auto generated picture model for peta gambar %s', $validatedPayload['nama']),
-                'image' => $validatedPayload['gambar'],
-                'path' => @$validatedPayload['path'] ?: 'peta/gambar',
+                'description' => sprintf('auto generated picture model for peta gambar %s', $validatedPayload->get('nama')),
+                'image' => $validatedPayload->get('gambar'),
+                'path' => $validatedPayload->get('path', 'peta/gambar'),
             ]);
 
-            $petaGambarPayload = collect($validatedPayload)
+            $petaGambarPayload = $validatedPayload
 
                 ->except('gambar')
                 ->put('picture_id', $picture->getKey());

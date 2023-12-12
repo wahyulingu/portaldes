@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies\Sid\Peta;
+namespace App\Policies\Peta;
 
 use App\Models\Peta\PetaGambar;
 use App\Models\User;
@@ -12,7 +12,7 @@ class GambarPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('viewAny.sid.peta.gambar');
+        return $user->can('viewAny.peta.gambar');
     }
 
     /**
@@ -20,7 +20,7 @@ class GambarPolicy
      */
     public function view(User $user, PetaGambar $gambar): bool
     {
-        return $user->can('view.sid.peta.gambar');
+        return $user->can('view.peta.gambar');
     }
 
     /**
@@ -28,7 +28,7 @@ class GambarPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create.sid.peta.gambar');
+        return $user->can('create.peta.gambar');
     }
 
     /**
@@ -36,7 +36,7 @@ class GambarPolicy
      */
     public function update(User $user, PetaGambar $gambar): bool
     {
-        return $user->can('update.sid.peta.gambar');
+        return $user->can('update.peta.gambar');
     }
 
     /**
@@ -44,7 +44,7 @@ class GambarPolicy
      */
     public function delete(User $user, PetaGambar $gambar): bool
     {
-        return $user->can('delete.sid.peta.gambar');
+        return $user->can('delete.peta.gambar');
     }
 
     /**
@@ -52,7 +52,7 @@ class GambarPolicy
      */
     public function restore(User $user, PetaGambar $gambar): bool
     {
-        return $user->can('restore.sid.peta.gambar');
+        return $user->can('restore.peta.gambar');
     }
 
     /**
@@ -60,6 +60,6 @@ class GambarPolicy
      */
     public function forceDelete(User $user, PetaGambar $gambar): bool
     {
-        return $user->can('forceDelete.sid.peta.gambar');
+        return $user->can('forceDelete.peta.gambar');
     }
 }

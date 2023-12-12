@@ -11,5 +11,5 @@ class PetaGambar extends Model
     use HasFactory;
     use BelongsToPicture;
 
-    protected $table = 'peta_picture';
+    protected $table = 'peta_gambar';
 }

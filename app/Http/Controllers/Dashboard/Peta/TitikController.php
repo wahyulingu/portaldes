@@ -58,9 +58,10 @@ class TitikController extends Controller
          */
         $titik = $titikStoreAction->execute($request->all());
 
-        return Response::redirectTo(route('dashboard.sid.titik.show', $titik->getKey()), 201)
+        return Response::redirectTo(route('dashboard.peta.titik.index'))
 
-            ->banner(sprintf('Titik Created', $titik->nomor_kartu_titik));
+            ->with('flash', compact('titik'))
+            ->banner(sprintf('Article Created', $titik->nama));
     }
 
     /**
@@ -86,7 +87,7 @@ class TitikController extends Controller
     {
         $titikUpdateAction->prepare($titik)->execute($request->all());
 
-        return Response::see(route('dashboard.sid.titik.show', $titik->getKey()))
+        return Response::see(route('dashboard.peta.titik.show', $titik->getKey()))
 
             ->banner(sprintf('Updated titik "%s"', $titik->nomor_kartu_titik));
     }
@@ -98,9 +99,9 @@ class TitikController extends Controller
     {
         $titikDeleteAction->prepare($titik)->execute();
 
-        return Response::see(route('dashboard.sid.titik.index'))
+        return Response::see(route('dashboard.peta.titik.index'))
 
             ->with('flash', compact('titik'))
-            ->dangerBanner(sprintf('Destroyed titik "%s"', $titik->nomor_kartu_titik));
+            ->dangerBanner(sprintf('Destroyed titik "%s"', $titik->nama));
     }
 }

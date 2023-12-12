@@ -3,8 +3,10 @@
 namespace App\Actions\Peta\Kategori;
 
 use App\Abstractions\Action\Action;
+use App\Actions\Peta\Gambar\GambarDeleteAction;
 use App\Models\Peta\PetaKategori;
 use App\Repositories\Peta\PetaKategoriRepository;
+use Illuminate\Support\Collection;
 
 class KategoriDeleteAction extends Action
 {

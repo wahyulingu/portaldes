@@ -11,6 +11,7 @@ use App\Models\Content\ContentCategory;
 use App\Models\User;
 use App\Repositories\Content\ContentArticleRepository;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 /**
@@ -54,7 +55,7 @@ class ArticleStoreAction extends Action implements RuledActionContract
 
     protected function handler(Collection $validatedPayload, Collection $payload)
     {
-        return tap(
+        return DB::transaction(fn () => tap(
             $this->contentArticleRepository->store($validatedPayload),
             function (ContentArticle $content) use ($validatedPayload) {
                 if (isset($validatedPayload['thumbnail'])) {
@@ -66,6 +67,6 @@ class ArticleStoreAction extends Action implements RuledActionContract
                         ->execute($validatedPayload);
                 }
             }
-        );
+        ));
     }
 }

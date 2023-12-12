@@ -13,5 +13,6 @@ class PetaTitik extends Model
     use MorphToManyKategori;
     use MorphToOneGambar;
 
+    protected $fillable = ['nama', 'keterangan', 'lat', 'lng', 'kategori_id'];
     protected $table = 'peta_titik';
 }

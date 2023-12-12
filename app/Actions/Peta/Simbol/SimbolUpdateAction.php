@@ -11,6 +11,7 @@ use App\Models\Peta\PetaCategory;
 use App\Models\Peta\PetaSimbol;
 use App\Repositories\Peta\PetaSimbolRepository;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class SimbolUpdateAction extends Action implements RuledActionContract

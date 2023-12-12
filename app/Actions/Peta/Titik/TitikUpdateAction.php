@@ -6,11 +6,9 @@ use App\Abstractions\Action\Action;
 use App\Actions\Peta\Gambar\GambarStoreAction;
 use App\Actions\Peta\Gambar\GambarUpdateAction;
 use App\Contracts\Action\RuledActionContract;
-use App\Enumerations\Moderation;
-use App\Models\Peta\PetaCategory;
 use App\Models\Peta\PetaTitik;
 use App\Repositories\Peta\PetaTitikRepository;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class TitikUpdateAction extends Action implements RuledActionContract
@@ -32,45 +30,46 @@ class TitikUpdateAction extends Action implements RuledActionContract
     public function rules(Collection $payload): array
     {
         return [
-            'title' => ['sometimes', 'string', 'max:255'],
-            'body' => ['sometimes', 'string'],
-            'description' => ['sometimes', 'string', 'max:255'],
-            'category_id' => ['sometimes', Rule::exists(PetaCategory::class, 'id')],
-            'titik' => ['sometimes', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'gambar' => ['sometimes', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'status' => ['sometimes', Rule::in(Moderation::names())],
+            'nama' => ['sometimes', 'string', 'max:255'],
+            'keterangan' => ['sometimes', 'string', 'max:255'],
+            'lat' => ['sometimes', 'string'],
+            'lng' => ['sometimes', 'string'],
+
+            'kategori_id' => [
+                'sometimes',
+                Rule::exists(PetaKategori::class, 'id'),
+            ],
+
+            'gambar' => ['sometimes', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
     }
 
     protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
-        if (isset($validatedPayload['gambar'])) {
-            $this->updateGambar($validatedPayload['gambar']);
+        if ($validatedPayload->has('gambar')) {
+            if ($this->titik->gambar()->exists()) {
+                $this
 
-            unset($validatedPayload['gambar']);
+                    ->gambarUpdateAction
+                    ->prepare($this->titik->gambar)
+                    ->execute($validatedPayload->only('gambar'));
+            } else {
+                $gambar = $this->gambarStoreAction->skipAllRules()->execute([
+                    'nama' => $validatedPayload->get('nama', $this->titik->nama),
+                    'keterangan' => $validatedPayload->get('keterangan', $this->titik->keterangan),
+                    'gambar' => $validatedPayload->get('gambar'),
+                ]);
+
+                $this->titik->gambar()->save($gambar);
+            }
+
+            $validatedPayload->forget('gambar');
         }
 
-        if (empty($validatedPayload)) {
+        if ($validatedPayload->isEmpty()) {
             return true;
         }
 
         return $this->petaTitikRepository->update($this->titik->getKey(), $validatedPayload);
-    }
-
-    protected function updateGambar(UploadedFile $image)
-    {
-        if ($this->titik->gambar()->exists()) {
-            return $this
-
-                ->gambarUpdateAction
-                ->prepare($this->titik->gambar)
-                ->execute(compact('image'));
-        }
-
-        return $this
-
-            ->gambarStoreAction
-            ->prepare($this->titik)
-            ->execute(compact('image'));
     }
 }

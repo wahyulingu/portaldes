@@ -3,12 +3,14 @@
 namespace App\Actions\Peta\Titik;
 
 use App\Abstractions\Action\Action;
+use App\Actions\Peta\Gambar\GambarStoreAction;
 use App\Contracts\Action\RuledActionContract;
-use App\Enumerations\Moderation;
-use App\Models\Peta\PetaCategory;
+use App\Models\Peta\PetaKategori;
 use App\Models\Peta\PetaTitik;
 use App\Models\User;
 use App\Repositories\Peta\PetaTitikRepository;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 /**
@@ -20,29 +22,21 @@ class TitikStoreAction extends Action implements RuledActionContract
 
     public function __construct(
         protected PetaTitikRepository $petaTitikRepository,
+        protected GambarStoreAction $gambarStoreAction
     ) {
     }
 
     public function rules(Collection $payload): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'body' => ['required', 'string'],
-            'description' => ['required', 'string', 'max:255'],
+            'nama' => ['required', 'string', 'max:255'],
+            'keterangan' => ['required', 'string', 'max:255'],
+            'lat' => ['required', 'string'],
+            'lng' => ['required', 'string'],
 
-            'user_id' => [
+            'kategori_id' => [
                 'required',
-                Rule::exists(User::class, 'id'),
-            ],
-
-            'category_id' => [
-                'sometimes',
-                Rule::exists(PetaCategory::class, 'id'),
-            ],
-
-            'status' => [
-                'sometimes',
-                Rule::in(Moderation::names()),
+                Rule::exists(PetaKategori::class, 'id'),
             ],
 
             'gambar' => ['sometimes', 'mimes:jpg,jpeg,png', 'max:2048'],
@@ -51,18 +45,33 @@ class TitikStoreAction extends Action implements RuledActionContract
 
     protected function handler(Collection $validatedPayload, Collection $payload)
     {
-        return tap(
-            $this->petaTitikRepository->store($validatedPayload),
-            function (PetaTitik $peta) {
-                // if (isset($validatedPayload['gambar'])) {
-                //     $this
+        [
+            'nama' => ['required', 'string', 'max:255'],
+            'keterangan' => ['required', 'string', 'max:255'],
+            'gambar' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
+        ];
 
-                //         ->gambarStoreAction
-                //         ->prepare($peta)
-                //         ->skipAllRules()
-                //         ->execute($validatedPayload);
-                // }
+        return DB::transaction(fn () => tap(
+            $this->petaTitikRepository->store($validatedPayload),
+            function (PetaTitik $titik) use ($validatedPayload) {
+                if ($validatedPayload->has('gambar')) {
+                    $gambar = $this
+
+                        ->gambarStoreAction
+                        ->skipAllRules()
+                        ->execute(
+                            $validatedPayload->only(
+                                [
+                                    'nama',
+                                    'keterangan',
+                                    'gambar',
+                                ]
+                            )
+                        );
+
+                    $titik->gambar()->save($gambar);
+                }
             }
-        );
+        ));
     }
 }

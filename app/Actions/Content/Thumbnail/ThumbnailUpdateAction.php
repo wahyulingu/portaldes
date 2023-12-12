@@ -61,7 +61,7 @@ class ThumbnailUpdateAction extends Action implements RuledActionContract
             $validatedPayload->forget('image');
         }
 
-        if ($validatedPayload->empty()) {
+        if ($validatedPayload->isEmpty()) {
             return true;
         }
 

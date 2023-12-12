@@ -3,8 +3,10 @@
 namespace App\Actions\Peta\Garis;
 
 use App\Abstractions\Action\Action;
+use App\Actions\Peta\Gambar\GambarDeleteAction;
 use App\Models\Peta\PetaGaris;
 use App\Repositories\Peta\PetaGarisRepository;
+use Illuminate\Support\Collection;
 
 class GarisDeleteAction extends Action
 {

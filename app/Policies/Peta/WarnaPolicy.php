@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies\Sid\Peta;
+namespace App\Policies\Peta;
 
 use App\Models\Peta\PetaWarna;
 use App\Models\User;
@@ -12,7 +12,7 @@ class WarnaPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('viewAny.sid.peta.warna');
+        return $user->can('viewAny.peta.warna');
     }
 
     /**
@@ -20,7 +20,7 @@ class WarnaPolicy
      */
     public function view(User $user, PetaWarna $warna): bool
     {
-        return $user->can('view.sid.peta.warna');
+        return $user->can('view.peta.warna');
     }
 
     /**
@@ -28,7 +28,7 @@ class WarnaPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create.sid.peta.warna');
+        return $user->can('create.peta.warna');
     }
 
     /**
@@ -36,7 +36,7 @@ class WarnaPolicy
      */
     public function update(User $user, PetaWarna $warna): bool
     {
-        return $user->can('update.sid.peta.warna');
+        return $user->can('update.peta.warna');
     }
 
     /**
@@ -44,7 +44,7 @@ class WarnaPolicy
      */
     public function delete(User $user, PetaWarna $warna): bool
     {
-        return $user->can('delete.sid.peta.warna');
+        return $user->can('delete.peta.warna');
     }
 
     /**
@@ -52,7 +52,7 @@ class WarnaPolicy
      */
     public function restore(User $user, PetaWarna $warna): bool
     {
-        return $user->can('restore.sid.peta.warna');
+        return $user->can('restore.peta.warna');
     }
 
     /**
@@ -60,6 +60,6 @@ class WarnaPolicy
      */
     public function forceDelete(User $user, PetaWarna $warna): bool
     {
-        return $user->can('forceDelete.sid.peta.warna');
+        return $user->can('forceDelete.peta.warna');
     }
 }

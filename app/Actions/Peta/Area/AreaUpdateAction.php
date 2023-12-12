@@ -11,6 +11,7 @@ use App\Models\Peta\PetaArea;
 use App\Models\Peta\PetaCategory;
 use App\Repositories\Peta\PetaAreaRepository;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class AreaUpdateAction extends Action implements RuledActionContract
@@ -70,7 +71,6 @@ class AreaUpdateAction extends Action implements RuledActionContract
         return $this
 
             ->gambarStoreAction
-            ->prepare($this->area)
             ->execute(compact('image'));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies\Sid\Peta;
+namespace App\Policies\Peta;
 
 use App\Models\Peta\PetaGaris;
 use App\Models\User;
@@ -12,7 +12,7 @@ class GarisPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('viewAny.sid.peta.garis');
+        return $user->can('viewAny.peta.garis');
     }
 
     /**
@@ -20,7 +20,7 @@ class GarisPolicy
      */
     public function view(User $user, PetaGaris $garis): bool
     {
-        return $user->can('view.sid.peta.garis');
+        return $user->can('view.peta.garis');
     }
 
     /**
@@ -28,7 +28,7 @@ class GarisPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create.sid.peta.garis');
+        return $user->can('create.peta.garis');
     }
 
     /**
@@ -36,7 +36,7 @@ class GarisPolicy
      */
     public function update(User $user, PetaGaris $garis): bool
     {
-        return $user->can('update.sid.peta.garis');
+        return $user->can('update.peta.garis');
     }
 
     /**
@@ -44,7 +44,7 @@ class GarisPolicy
      */
     public function delete(User $user, PetaGaris $garis): bool
     {
-        return $user->can('delete.sid.peta.garis');
+        return $user->can('delete.peta.garis');
     }
 
     /**
@@ -52,7 +52,7 @@ class GarisPolicy
      */
     public function restore(User $user, PetaGaris $garis): bool
     {
-        return $user->can('restore.sid.peta.garis');
+        return $user->can('restore.peta.garis');
     }
 
     /**
@@ -60,6 +60,6 @@ class GarisPolicy
      */
     public function forceDelete(User $user, PetaGaris $garis): bool
     {
-        return $user->can('forceDelete.sid.peta.garis');
+        return $user->can('forceDelete.peta.garis');
     }
 }

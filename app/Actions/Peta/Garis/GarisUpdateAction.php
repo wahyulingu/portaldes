@@ -11,6 +11,7 @@ use App\Models\Peta\PetaCategory;
 use App\Models\Peta\PetaGaris;
 use App\Repositories\Peta\PetaGarisRepository;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class GarisUpdateAction extends Action implements RuledActionContract

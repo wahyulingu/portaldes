@@ -5,6 +5,7 @@ namespace App\Actions\Peta\Warna;
 use App\Abstractions\Action\Action;
 use App\Models\Peta\PetaWarna;
 use App\Repositories\Peta\PetaWarnaRepository;
+use Illuminate\Support\Collection;
 
 class WarnaDeleteAction extends Action
 {

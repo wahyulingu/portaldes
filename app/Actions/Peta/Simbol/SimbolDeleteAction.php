@@ -3,8 +3,10 @@
 namespace App\Actions\Peta\Simbol;
 
 use App\Abstractions\Action\Action;
+use App\Actions\Peta\Gambar\GambarDeleteAction;
 use App\Models\Peta\PetaSimbol;
 use App\Repositories\Peta\PetaSimbolRepository;
+use Illuminate\Support\Collection;
 
 class SimbolDeleteAction extends Action
 {

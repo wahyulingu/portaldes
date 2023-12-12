@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies\Sid\Peta;
+namespace App\Policies\Peta;
 
 use App\Models\Peta\PetaKategori;
 use App\Models\User;
@@ -12,7 +12,7 @@ class KategoriPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('viewAny.sid.peta.kategori');
+        return $user->can('viewAny.peta.kategori');
     }
 
     /**
@@ -20,7 +20,7 @@ class KategoriPolicy
      */
     public function view(User $user, PetaKategori $kategori): bool
     {
-        return $user->can('view.sid.peta.kategori');
+        return $user->can('view.peta.kategori');
     }
 
     /**
@@ -28,7 +28,7 @@ class KategoriPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create.sid.peta.kategori');
+        return $user->can('create.peta.kategori');
     }
 
     /**
@@ -36,7 +36,7 @@ class KategoriPolicy
      */
     public function update(User $user, PetaKategori $kategori): bool
     {
-        return $user->can('update.sid.peta.kategori');
+        return $user->can('update.peta.kategori');
     }
 
     /**
@@ -44,7 +44,7 @@ class KategoriPolicy
      */
     public function delete(User $user, PetaKategori $kategori): bool
     {
-        return $user->can('delete.sid.peta.kategori');
+        return $user->can('delete.peta.kategori');
     }
 
     /**
@@ -52,7 +52,7 @@ class KategoriPolicy
      */
     public function restore(User $user, PetaKategori $kategori): bool
     {
-        return $user->can('restore.sid.peta.kategori');
+        return $user->can('restore.peta.kategori');
     }
 
     /**
@@ -60,6 +60,6 @@ class KategoriPolicy
      */
     public function forceDelete(User $user, PetaKategori $kategori): bool
     {
-        return $user->can('forceDelete.sid.peta.kategori');
+        return $user->can('forceDelete.peta.kategori');
     }
 }

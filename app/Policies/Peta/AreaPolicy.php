@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies\Sid\Peta;
+namespace App\Policies\Peta;
 
 use App\Models\Peta\PetaArea;
 use App\Models\User;
@@ -12,7 +12,7 @@ class AreaPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('viewAny.sid.peta.area');
+        return $user->can('viewAny.peta.area');
     }
 
     /**
@@ -20,7 +20,7 @@ class AreaPolicy
      */
     public function view(User $user, PetaArea $area): bool
     {
-        return $user->can('view.sid.peta.area');
+        return $user->can('view.peta.area');
     }
 
     /**
@@ -28,7 +28,7 @@ class AreaPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create.sid.peta.area');
+        return $user->can('create.peta.area');
     }
 
     /**
@@ -36,7 +36,7 @@ class AreaPolicy
      */
     public function update(User $user, PetaArea $area): bool
     {
-        return $user->can('update.sid.peta.area');
+        return $user->can('update.peta.area');
     }
 
     /**
@@ -44,7 +44,7 @@ class AreaPolicy
      */
     public function delete(User $user, PetaArea $area): bool
     {
-        return $user->can('delete.sid.peta.area');
+        return $user->can('delete.peta.area');
     }
 
     /**
@@ -52,7 +52,7 @@ class AreaPolicy
      */
     public function restore(User $user, PetaArea $area): bool
     {
-        return $user->can('restore.sid.peta.area');
+        return $user->can('restore.peta.area');
     }
 
     /**
@@ -60,6 +60,6 @@ class AreaPolicy
      */
     public function forceDelete(User $user, PetaArea $area): bool
     {
-        return $user->can('forceDelete.sid.peta.area');
+        return $user->can('forceDelete.peta.area');
     }
 }

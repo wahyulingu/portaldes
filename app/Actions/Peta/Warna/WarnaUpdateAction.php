@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Peta\PetaWarna;
 use App\Repositories\Peta\PetaWarnaRepository;
+use Illuminate\Support\Collection;
 
 class WarnaUpdateAction extends Action implements RuledActionContract
 {

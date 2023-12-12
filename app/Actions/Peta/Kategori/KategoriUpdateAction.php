@@ -11,6 +11,7 @@ use App\Models\Peta\PetaCategory;
 use App\Models\Peta\PetaKategori;
 use App\Repositories\Peta\PetaKategoriRepository;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class KategoriUpdateAction extends Action implements RuledActionContract

@@ -7,6 +7,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Peta\PetaWarna;
 use App\Models\User;
 use App\Repositories\Peta\PetaWarnaRepository;
+use Illuminate\Support\Collection;
 
 /**
  * @extends Action<PetaWarna>

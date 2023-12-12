@@ -10,6 +10,7 @@ use App\Models\Peta\PetaCategory;
 use App\Models\Peta\PetaKategori;
 use App\Models\User;
 use App\Repositories\Peta\PetaKategoriRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**

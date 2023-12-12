@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\Dashboard\Content;
+use App\Http\Controllers\Dashboard\Peta;
 use App\Http\Controllers\Dashboard\Sid;
 use App\Http\Controllers\Dashboard\Sid\Surat;
-use App\Models\Peta;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -39,13 +39,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         });
 
         Route::name('peta.')->prefix('peta')->group(function () {
-            Route::resource('warna', Peta\PetaWarna::class);
-            Route::resource('simbol', Peta\PetaSimbol::class);
-            Route::resource('kategori', Peta\PetaKategori::class);
-            Route::resource('gambar', Peta\PetaGambar::class);
-            Route::resource('titik', Peta\PetaTitik::class);
-            Route::resource('garis', Peta\PetaGaris::class);
-            Route::resource('area', Peta\PetaArea::class);
+            Route::resource('warna', Peta\WarnaController::class);
+            Route::resource('simbol', Peta\SimbolController::class);
+            Route::resource('kategori', Peta\KategoriController::class);
+            Route::resource('gambar', Peta\GambarController::class);
+            Route::resource('titik', Peta\TitikController::class);
+            Route::resource('garis', Peta\GarisController::class);
+            Route::resource('area', Peta\AreaController::class);
         });
 
         Route::name('sid.')->prefix('sid')->group(function () {
