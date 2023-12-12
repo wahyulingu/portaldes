@@ -18,7 +18,7 @@ class SuratIndexAction extends IndexAction
         $filters = [];
 
         if ($payload->has('keyword')) {
-            $filters['pamong.nama:|pamong.nik:|pamong.nomor_kartu_keluarga:|surat.penduduk.nama:|surat.penduduk.nik:|surat.penduduk.nomor_kartu_keluarga:'] = '%'.$payload->get('keyword').'%';
+            $filters['like']['pamong.nama|pamong.nik|pamong.nomor_kartu_keluarga|surat.penduduk.nama|surat.penduduk.nik|surat.penduduk.nomor_kartu_keluarga'] = '%'.$payload->get('keyword').'%';
         }
 
         return $filters;

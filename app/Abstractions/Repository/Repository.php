@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection as SupportCollection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
@@ -353,7 +354,7 @@ abstract class Repository
         });
     }
 
-    protected function filterSolver(SupportCollection $filters, Builder $builder = null)
+    protected function filterSolver(SupportCollection $filters, Builder $builder = null): Builder
     {
         if (empty($builder)) {
             return $this->model(
@@ -393,11 +394,17 @@ abstract class Repository
                     return $builder->where($key, '=', $value);
                 }
             });
+
+            return $builder;
         }
     }
 
     public function filter(array $filters = [])
     {
-        return $this->builder = $this->filterSolver(collect($filters));
+        $this->builder = $this->filterSolver(collect($filters));
+
+        Log::debug('Query', [$this->builder->toSql()]);
+
+        return $this->builder;
     }
 }

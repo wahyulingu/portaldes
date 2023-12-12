@@ -19,7 +19,7 @@ class KategoriIndexAction extends IndexAction implements RuledActionContract
         $filters = [];
 
         if ($payload->has('keyword')) {
-            $filters['nama:|nik:|nomor_kartu_keluarga:'] = '%'.$payload->get('keyword').'%';
+            $filters['like'] = ['nama|keterangan' => '%'.$payload->get('keyword').'%'];
         }
 
         return $filters;

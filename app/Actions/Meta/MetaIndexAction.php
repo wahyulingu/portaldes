@@ -17,7 +17,7 @@ class MetaIndexAction extends IndexAction
         $filters = [];
 
         if ($validatedPayload->has('keyword')) {
-            $filters['anggota.nama:|anggota.nik:|nomor_kartu_keluarga:'] = '%'.$validatedPayload->get('keyword').'%';
+            $filters['like']['anggota.nama|anggota.nik|nomor_kartu_keluarga'] = '%'.$validatedPayload->get('keyword').'%';
         }
 
         return $this->repository->latest($filters)->paginate($validatedPayload->get('limit', 0));

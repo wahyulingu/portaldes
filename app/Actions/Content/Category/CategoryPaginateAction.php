@@ -19,7 +19,7 @@ class CategoryPaginateAction extends ContentIndexAction implements PaginatedInde
         $filters = [];
 
         if ($payload->has('keyword')) {
-            $filters['title:|description:|slug:'] = '%'.$payload->get('keyword').'%';
+            $filters['like']['title|description|slug'] = '%'.$payload->get('keyword').'%';
         }
 
         return $filters;

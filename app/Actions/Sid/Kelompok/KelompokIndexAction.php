@@ -19,7 +19,11 @@ class KelompokIndexAction extends IndexAction implements RuledActionContract
         $filters = [];
 
         if ($payload->has('keyword')) {
-            $filters['nama:|nik:|nomor_kartu_keluarga:'] = '%'.$payload->get('keyword').'%';
+            $filters['or'] = [
+                ['like' => ['nama|keterangan' => '%'.$payload->get('keyword').'%']],
+                ['has' => ['penduduk' => ['like' => ['nama|nik' => '%'.$payload->get('keyword').'%']]]],
+                ['has' => ['ketua' => ['like' => ['nama|nik' => '%'.$payload->get('keyword').'%']]]],
+            ];
         }
 
         return $filters;

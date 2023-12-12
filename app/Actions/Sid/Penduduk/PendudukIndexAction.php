@@ -18,7 +18,7 @@ class PendudukIndexAction extends IndexAction
         $filters = [];
 
         if ($payload->has('keyword')) {
-            $filters['nama:|nik:|nomor_kartu_keluarga:'] = '%'.$payload->get('keyword').'%';
+            $filters['like']['nama|nik|nomor_kartu_keluarga'] = '%'.$payload->get('keyword').'%';
         }
 
         return $filters;

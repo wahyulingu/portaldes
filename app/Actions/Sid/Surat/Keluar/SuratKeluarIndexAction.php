@@ -18,7 +18,7 @@ class SuratKeluarIndexAction extends IndexAction
         $filters = [];
 
         if ($payload->has('keyword')) {
-            $filters['klasifikasi.nama|tujuan|short_desc|penduduk.nama:|penduduk.nik:|penduduk.nomor_kartu_keluarga:'] = '%'.$payload->get('keyword', '').'%';
+            $filters['like']['klasifikasi.nama|tujuan|short_desc|penduduk.nama|penduduk.nik|penduduk.nomor_kartu_keluarga'] = '%'.$payload->get('keyword', '').'%';
         }
 
         return $filters;

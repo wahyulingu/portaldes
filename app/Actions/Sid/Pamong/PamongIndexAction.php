@@ -18,7 +18,7 @@ class PamongIndexAction extends IndexAction
         $filters = [];
 
         if ($payload->has('keyword')) {
-            $filters['anggota.nama:|anggota.nik:|nomor_kartu_keluarga:'] = '%'.$payload->get('keyword').'%';
+            $filters['like']['anggota.nama|anggota.nik|nomor_kartu_keluarga'] = '%'.$payload->get('keyword').'%';
         }
 
         return $filters;

@@ -18,7 +18,20 @@ class BantuanIndexAction extends IndexAction
         $filters = [];
 
         if ($payload->has('keyword')) {
-            $filters['penduduk.nama:|penduduk.nik:|ketua.nama:'] = '%'.$payload->get('keyword').'%';
+            $filters['or'] = [
+                ['like' => ['nama|keterangan' => '%'.$payload->get('keyword').'%']],
+
+                ['has' => ['penduduk' => ['like' => ['nama|nik' => '%'.$payload->get('keyword').'%']]]],
+
+                ['has' => [
+                    'kelompok' => [
+                        'or' => [
+                            ['has' => ['ketua' => ['like' => ['nama|nik' => '%'.$payload->get('keyword').'%']]]],
+                            ['has' => ['penduduk' => ['like' => ['nama|nik' => '%'.$payload->get('keyword').'%']]]],
+                        ],
+                    ],
+                ]],
+            ];
         }
 
         return $filters;

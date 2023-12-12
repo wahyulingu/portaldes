@@ -18,7 +18,7 @@ class RukunTetanggaIndexAction extends IndexAction
         $filters = [];
 
         if ($payload->has('keyword')) {
-            $filters['nama:'] = '%'.$payload->get('keyword').'%';
+            $filters['like']['nama'] = '%'.$payload->get('keyword').'%';
         }
 
         return $filters;
