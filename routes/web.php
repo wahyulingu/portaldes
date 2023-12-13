@@ -5,7 +5,6 @@ use App\Http\Controllers\Dashboard\Peta;
 use App\Http\Controllers\Dashboard\Sid;
 use App\Http\Controllers\Dashboard\Sid\Surat;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +22,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
-    Route::get('dashboard', fn () => Inertia::render('Dashboard'))->name('dashboard');
+    Route::get('dashboard', fn () => view('dashboard'))->name('dashboard');
 
     Route::name('dashboard.')->prefix('dashboard')->group(function () {
         Route::name('content.')->prefix('content')->group(function () {
@@ -78,14 +77,4 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             });
         });
     });
-});
-
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
 });
