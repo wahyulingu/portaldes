@@ -34,7 +34,7 @@ class TitikStoreAction extends Action implements RuledActionContract
             'keterangan' => ['required', 'string', 'max:255'],
             'lat' => ['required', 'string'],
             'lng' => ['required', 'string'],
-            'gambar' => ['required', 'file', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'gambar' => ['required', 'file', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
     }
 

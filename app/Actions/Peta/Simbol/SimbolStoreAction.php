@@ -29,7 +29,7 @@ class SimbolStoreAction extends Action implements RuledActionContract
         return [
             'nama' => ['required', 'string', 'max:255'],
             'keterangan' => ['required', 'string', 'max:255'],
-            'gambar' => ['required', 'file', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'gambar' => ['required', 'file', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
     }
 

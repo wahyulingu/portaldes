@@ -31,7 +31,7 @@ class SimbolUpdateAction extends Action implements RuledActionContract
         return [
             'nama' => ['sometimes', 'string', 'max:255'],
             'keterangan' => ['sometimes', 'string', 'max:255'],
-            'gambar' => ['sometimes', 'file', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'gambar' => ['sometimes', 'file', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
     }
 

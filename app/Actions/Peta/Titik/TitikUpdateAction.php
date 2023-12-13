@@ -35,7 +35,7 @@ class TitikUpdateAction extends Action implements RuledActionContract
             'keterangan' => ['sometimes', 'string', 'max:255'],
             'lat' => ['sometimes', 'string'],
             'lng' => ['sometimes', 'string'],
-            'gambar' => ['sometimes', 'file', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'gambar' => ['sometimes', 'file', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
     }
 

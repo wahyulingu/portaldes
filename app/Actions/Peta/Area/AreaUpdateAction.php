@@ -35,7 +35,7 @@ class AreaUpdateAction extends Action implements RuledActionContract
             'nama' => ['sometimes', 'string', 'max:255'],
             'keterangan' => ['sometimes', 'string', 'max:255'],
             'path' => ['sometimes', 'array'],
-            'gambar' => ['sometimes', 'file', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'gambar' => ['sometimes', 'file', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
     }
 

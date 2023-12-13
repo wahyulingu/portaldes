@@ -33,7 +33,7 @@ class GarisStoreAction extends Action implements RuledActionContract
             'nama' => ['required', 'string', 'max:255'],
             'keterangan' => ['required', 'string', 'max:255'],
             'path' => ['required', 'array'],
-            'gambar' => ['required', 'file', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'gambar' => ['required', 'file', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
     }
 
