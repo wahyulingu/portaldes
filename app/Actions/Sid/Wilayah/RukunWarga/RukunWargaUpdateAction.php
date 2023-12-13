@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Wilayah\SidWilayahRukunWarga;
 use App\Models\Sid\WilayahRukunWarga;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -20,7 +21,7 @@ class RukunWargaUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->rukunWarga = $rukunWarga);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'lingkungan_id' => ['sometimes', 'integer', Rule::exists(SidWilayahLingkungan::class, 'id')],
@@ -29,8 +30,8 @@ class RukunWargaUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
-        return $this->rukunWarga->update($validatedPayload);
+        return $this->rukunWarga->update($validatedPayload->toArray());
     }
 }

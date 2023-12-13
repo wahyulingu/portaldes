@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\Content;
+use App\Http\Controllers\Dashboard\Peta;
 use App\Http\Controllers\Dashboard\Sid;
 use App\Http\Controllers\Dashboard\Sid\Surat;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,16 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
             Route::resource('category', Content\Category\CategoryController::class);
             Route::resource('category.subcategory', Content\Category\SubcategoryController::class)->only('create', 'store');
+        });
+
+        Route::name('peta.')->prefix('peta')->group(function () {
+            Route::resource('warna', Peta\WarnaController::class);
+            Route::resource('simbol', Peta\SimbolController::class);
+            Route::resource('kategori', Peta\KategoriController::class);
+            Route::resource('gambar', Peta\GambarController::class);
+            Route::resource('titik', Peta\TitikController::class);
+            Route::resource('garis', Peta\GarisController::class)->parameter('garis', 'garis');
+            Route::resource('area', Peta\AreaController::class);
         });
 
         Route::name('sid.')->prefix('sid')->group(function () {

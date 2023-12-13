@@ -9,6 +9,7 @@ use App\Enumerations\Pendidikan\Pendidikan;
 use App\Enumerations\Penduduk\Agama;
 use App\Models\Sid\Pamong\SidPamongProfile;
 use App\Repositories\Sid\Pamong\SidPamongProfileRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -21,7 +22,7 @@ class ProfileStoreAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'nik' => ['required', 'string', 'regex:/^[0-9]{16}$/'],
@@ -39,7 +40,7 @@ class ProfileStoreAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->sidPamongProfileRepository->store($validatedPayload);
     }

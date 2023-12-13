@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Actions\File\FileDeleteAction;
 use App\Models\Media\MediaPicture;
 use App\Repositories\Media\MediaPictureRepository;
+use Illuminate\Support\Collection;
 
 class PictureDeleteAction extends Action
 {
@@ -24,7 +25,7 @@ class PictureDeleteAction extends Action
         return $this;
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         if ($this->picture->file()->exists()) {
             $this

@@ -6,6 +6,13 @@ use App\Models\Content\ContentArticle;
 use App\Models\Content\ContentCategory;
 use App\Models\Content\ContentComment;
 use App\Models\Content\ContentPage;
+use App\Models\Peta\PetaArea;
+use App\Models\Peta\PetaGambar;
+use App\Models\Peta\PetaGaris;
+use App\Models\Peta\PetaKategori;
+use App\Models\Peta\PetaSimbol;
+use App\Models\Peta\PetaTitik;
+use App\Models\Peta\PetaWarna;
 use App\Models\Sid\Kelompok\SidKelompok;
 use App\Models\Sid\Kelompok\SidKelompokKategori;
 use App\Models\Sid\Pamong\SidPamong;
@@ -23,6 +30,13 @@ use App\Policies\Content\ArticlePolicy;
 use App\Policies\Content\CategoryPolicy;
 use App\Policies\Content\CommentPolicy;
 use App\Policies\Content\PagePolicy;
+use App\Policies\Peta\AreaPolicy;
+use App\Policies\Peta\GambarPolicy;
+use App\Policies\Peta\GarisPolicy;
+use App\Policies\Peta\KategoriPolicy as PetaKategoriPolicy;
+use App\Policies\Peta\SimbolPolicy;
+use App\Policies\Peta\TitikPolicy;
+use App\Policies\Peta\WarnaPolicy;
 use App\Policies\Sid\BantuanPolicy;
 use App\Policies\Sid\Kelompok\KategoriPolicy;
 use App\Policies\Sid\Kelompok\KelompokPolicy;
@@ -66,6 +80,14 @@ class AuthServiceProvider extends ServiceProvider
         SidWilayahLingkungan::class => LingkunganPolicy::class,
         SidWilayahRukunWarga::class => RukunWargaPolicy::class,
         SidWilayahRukunTetangga::class => RukunTetanggaPolicy::class,
+
+        PetaArea::class => AreaPolicy::class,
+        PetaGaris::class => GarisPolicy::class,
+        PetaTitik::class => TitikPolicy::class,
+        PetaSimbol::class => SimbolPolicy::class,
+        PetaWarna::class => WarnaPolicy::class,
+        PetaKategori::class => PetaKategoriPolicy::class,
+        PetaGambar::class => GambarPolicy::class,
     ];
 
     /**

@@ -5,6 +5,7 @@ namespace App\Abstractions\Action;
 use App\Abstractions\Repository\Repository;
 use App\Contracts\Action\PaginatedIndexContract;
 use App\Contracts\Action\RuledActionContract;
+use Illuminate\Support\Collection;
 
 abstract class IndexAction extends Action implements RuledActionContract
 {
@@ -12,7 +13,7 @@ abstract class IndexAction extends Action implements RuledActionContract
     {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         $rules = [
             'keyword' => 'nullable|string',
@@ -29,12 +30,12 @@ abstract class IndexAction extends Action implements RuledActionContract
         return [...$rules, 'offset' => 'nullable|numeric'];
     }
 
-    protected function filters(array $payload = []): array
+    protected function filters(Collection $payload): array
     {
         return [];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         $this
 

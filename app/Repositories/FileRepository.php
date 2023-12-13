@@ -6,6 +6,7 @@ use App\Abstractions\Repository\Repository;
 use App\Models\File;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -40,11 +41,15 @@ class FileRepository extends Repository
     /**
      * Creates a file and returns it.
      */
-    public function create(array $attributes): ?File
+    public function create(Collection|array $attributes): ?File
     {
-        if (@$attributes['file'] instanceof UploadedFile) {
-            $attributes['path'] = $this->upload($attributes['file'], $attributes['path'] ?? 'files');
-            $attributes['original_name'] = $attributes['file']->getClientOriginalName();
+        /**
+         * @var UploadedFile $file
+         */
+        if ($attributes->has('file') && ($file = $attributes->get('file')) instanceof UploadedFile) {
+            $attributes
+                ->put('path', $this->upload($file, $attributes->get('path', 'files')))
+                ->put('original_name', $file->getClientOriginalName());
 
             return $this->store($attributes);
         }
@@ -53,12 +58,17 @@ class FileRepository extends Repository
     /**
      * Updates a file and returns a boolean indicating success.
      */
-    public function update($key, array $attributes): bool
+    public function update($key, Collection|array $attributes): bool
     {
+        $attributes = collect($attributes);
+
         return DB::transaction(function () use ($attributes, $key) {
-            if (@$attributes['file'] instanceof UploadedFile) {
-                $attributes['path'] = $this->upload($attributes['file'], $attributes['path'] ?? 'files');
-                $attributes['original_name'] = $attributes['file']->getClientOriginalName();
+            /**
+             * @var UploadedFile $file
+             */
+            if ($attributes->has('file') && ($file = $attributes->get('file')) instanceof UploadedFile) {
+                $attributes['path'] = $this->upload($file, $attributes->get('path', 'files'));
+                $attributes['original_name'] = $file->getClientOriginalName();
 
                 $oldFile = $this->find($key, 'path')->path;
             }

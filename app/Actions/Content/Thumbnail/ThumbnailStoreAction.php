@@ -9,6 +9,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Content\ContentThumbnail;
 use App\Models\Media\MediaPicture;
 use App\Repositories\Content\ContentThumbnailRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -29,12 +30,12 @@ class ThumbnailStoreAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->content = $content);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return ['thumbnail' => ['required', 'mimes:jpg,jpeg,png', 'max:2048']];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return DB::transaction(
             function () use ($validatedPayload) {
@@ -45,8 +46,8 @@ class ThumbnailStoreAction extends Action implements RuledActionContract
 
                 ->skipAllRules()
                 ->execute([
-                        'image' => $validatedPayload['thumbnail'],
-                        'name' => $validatedPayload['thumbnail']->getClientOriginalName(),
+                        'image' => $validatedPayload->get('thumbnail'),
+                        'name' => $validatedPayload->get('thumbnail')->getClientOriginalName(),
                         'path' => 'content/thumbnails',
                         'description' => 'auto-generated model for media thumbnail picture',
                     ]);

@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Actions\Media\Picture\PictureDeleteAction;
 use App\Models\Content\ContentThumbnail;
 use App\Repositories\Content\ContentThumbnailRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class ThumbnailDeleteAction extends Action
@@ -25,7 +26,7 @@ class ThumbnailDeleteAction extends Action
         return $this;
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return DB::transaction(function () {
             if ($this->thumbnail->picture()->exists()) {

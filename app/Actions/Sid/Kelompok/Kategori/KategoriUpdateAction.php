@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Kelompok\Kategori;
 use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Kelompok\SidKelompokKategori;
+use Illuminate\Support\Collection;
 
 /**
  * @extends Action<SidKelompokKategori>
@@ -18,7 +19,7 @@ class KategoriUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->kategori = $kategori);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'nama' => 'sometimes|string',
@@ -26,8 +27,8 @@ class KategoriUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
-        return $this->kategori->update($validatedPayload);
+        return $this->kategori->update($validatedPayload->toArray());
     }
 }

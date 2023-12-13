@@ -4,6 +4,7 @@ namespace App\Actions\Sid\Wilayah\RukunWarga;
 
 use App\Abstractions\Action\IndexAction;
 use App\Repositories\Sid\Wilayah\SidWilayahRukunWargaRepository;
+use Illuminate\Support\Collection;
 
 class RukunWargaIndexAction extends IndexAction
 {
@@ -12,12 +13,12 @@ class RukunWargaIndexAction extends IndexAction
         parent::__construct($repository);
     }
 
-    protected function filters(array $payload = []): array
+    protected function filters(Collection $payload): array
     {
         $filters = [];
 
-        if (!empty($validatedPayload['keyword'])) {
-            $filters['nama:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
+        if ($payload->has('keyword')) {
+            $filters['like']['nama'] = '%'.$payload->get('keyword').'%';
         }
 
         return $filters;

@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Actions\Content\Thumbnail\ThumbnailDeleteAction;
 use App\Models\Content\ContentArticle;
 use App\Repositories\Content\ContentArticleRepository;
+use Illuminate\Support\Collection;
 
 class ArticleDeleteAction extends Action
 {
@@ -24,7 +25,7 @@ class ArticleDeleteAction extends Action
         return $this;
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         if ($this->article->thumbnail()->exists()) {
             $this

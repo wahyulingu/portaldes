@@ -10,12 +10,12 @@ return new class() extends Migration {
      */
     public function up(): void
     {
-        Schema::create('peta_picture', function (Blueprint $table) {
+        Schema::create('sid_photo', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->foreignId('picture_id');
-            $table->string('nama');
-            $table->string('keterangan');
+            $table->foreignId('sid_id');
+            $table->string('sid_type');
         });
     }
 
@@ -24,6 +24,6 @@ return new class() extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('peta_picture');
+        Schema::dropIfExists('sid_photo');
     }
 };

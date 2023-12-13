@@ -2,7 +2,6 @@
 
 namespace Database\Factories\Peta;
 
-use App\Models\Peta\PetaPicture;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +18,7 @@ class PetaSimbolFactory extends Factory
     {
         return [
             'nama' => $this->faker->word,
-            'picture_id' => PetaPicture::factory(),
+            'keterangan' => $this->faker->paragraph,
         ];
     }
 }

@@ -7,6 +7,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Enumerations\SasaranBantuan;
 use App\Models\Sid\SidBantuan;
 use App\Repositories\Sid\SidBantuanRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -18,7 +19,7 @@ class BantuanStoreAction extends Action implements RuledActionContract
     {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'awal' => 'required|date',
@@ -29,7 +30,7 @@ class BantuanStoreAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->sidBantuanRepository->store($validatedPayload);
     }

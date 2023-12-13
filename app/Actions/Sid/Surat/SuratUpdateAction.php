@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Surat\SidSurat;
 use App\Repositories\Sid\Surat\SidSuratRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -25,7 +26,7 @@ class SuratUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->surat = $surat);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'nomor_surat' => [
@@ -42,7 +43,7 @@ class SuratUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->sidSuratRepository->update($this->surat->getKey(), $validatedPayload);
     }

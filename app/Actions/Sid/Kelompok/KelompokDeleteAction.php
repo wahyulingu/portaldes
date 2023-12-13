@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Kelompok;
 use App\Abstractions\Action\Action;
 use App\Models\Sid\Kelompok\SidKelompok;
 use App\Repositories\Sid\Kelompok\SidKelompokRepository;
+use Illuminate\Support\Collection;
 
 class KelompokDeleteAction extends Action
 {
@@ -19,7 +20,7 @@ class KelompokDeleteAction extends Action
         return tap($this, fn (self $action) => $action->kelompok = $kelompok);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return $this->sidKelompokRepository->delete($this->kelompok->getKey());
     }

@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Pamong\SidPamongProfile;
 use App\Repositories\Sid\Pamong\SidPamongProfileRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -24,7 +25,7 @@ class ProfileUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->pamong = $pamong);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'nik' => ['sometimes', 'string', 'regex:/^[0-9]{16}$/'],
@@ -42,7 +43,7 @@ class ProfileUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->sidPamongRepository->update($this->pamong->getKey(), $validatedPayload);
     }

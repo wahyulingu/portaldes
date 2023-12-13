@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Wilayah\Lingkungan;
 use App\Abstractions\Action\Action;
 use App\Models\Sid\Wilayah\SidWilayahLingkungan;
 use App\Repositories\Sid\Wilayah\SidWilayahLingkunganRepository;
+use Illuminate\Support\Collection;
 
 class LingkunganDeleteAction extends Action
 {
@@ -19,7 +20,7 @@ class LingkunganDeleteAction extends Action
         return tap($this, fn (self $action) => $action->lingkungan = $lingkungan);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return $this->sidWilayahLingkunganRepository->delete($this->lingkungan->getKey());
     }

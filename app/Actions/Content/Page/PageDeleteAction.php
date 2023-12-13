@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Actions\Content\Thumbnail\ThumbnailDeleteAction;
 use App\Models\Content\ContentPage;
 use App\Repositories\Content\ContentPageRepository;
+use Illuminate\Support\Collection;
 
 class PageDeleteAction extends Action
 {
@@ -24,7 +25,7 @@ class PageDeleteAction extends Action
         return $this;
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         if ($this->page->thumbnail()->exists()) {
             $this

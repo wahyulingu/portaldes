@@ -9,6 +9,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Pamong\SidPamong;
 use App\Models\Sid\SidPenduduk;
 use App\Repositories\Sid\Pamong\SidPamongRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -30,7 +31,7 @@ class PamongUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->pamong = $pamong);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'nik' => ['sometimes', 'string', 'regex:/^[0-9]{16}$/'],
@@ -42,7 +43,7 @@ class PamongUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return DB::transaction(function () use ($validatedPayload, $payload) {
             if ($this->pamong->profile instanceof SidPenduduk) {

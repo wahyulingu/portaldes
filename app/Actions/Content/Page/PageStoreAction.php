@@ -10,6 +10,7 @@ use App\Models\Content\ContentCategory;
 use App\Models\Content\ContentPage;
 use App\Models\User;
 use App\Repositories\Content\ContentPageRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -25,7 +26,7 @@ class PageStoreAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'title' => ['required', 'string', 'max:255'],
@@ -51,12 +52,12 @@ class PageStoreAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return tap(
             $this->contentPageRepository->store($validatedPayload),
             function (ContentPage $content) use ($validatedPayload) {
-                if (isset($validatedPayload['thumbnail'])) {
+                if ($validatedPayload->has('thumbnail')) {
                     $this
 
                         ->thumbnailStoreAction

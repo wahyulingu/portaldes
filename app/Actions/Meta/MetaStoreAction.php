@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Meta;
 use App\Repositories\MetaRepository;
+use Illuminate\Support\Collection;
 
 /**
  * @extends Action<Meta>
@@ -16,7 +17,7 @@ class MetaStoreAction extends Action implements RuledActionContract
     {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'name' => ['required', 'string'],
@@ -24,7 +25,7 @@ class MetaStoreAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->metaRepository->store($validatedPayload);
     }

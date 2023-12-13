@@ -8,6 +8,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Str;
 
 /**
@@ -190,13 +191,21 @@ abstract class Repository
     /**
      * @return TModel
      */
-    public function store(array $attributes)
+    public function store(SupportCollection|array $attributes)
     {
+        if ($attributes instanceof SupportCollection) {
+            return $this->model()::create($attributes->toArray());
+        }
+
         return $this->model()::create($attributes);
     }
 
-    public function update($key, array $attributes): bool
+    public function update($key, SupportCollection|array $attributes): bool
     {
+        if ($attributes instanceof SupportCollection) {
+            return $this->model()::find($key)->update($attributes->toArray());
+        }
+
         return $this->model()::find($key)->update($attributes);
     }
 
@@ -275,50 +284,122 @@ abstract class Repository
             ->paginate($limit, $columns, $pageName, $page);
     }
 
-    public function filter(array $filters = []): self
+    protected function filterHasSolver($filter, Builder $builder)
     {
-        return tap(
-            $this,
-            fn () => $this->builder = $this->model(
-                fn ($model) => $model::where(
-                    fn (Builder $builder) => collect($filters)->each(
-                        function (string|Model|callable $filterValue, string $filterKey) use ($builder) {
-                            if (is_string($filterValue)) {
-                                return collect(explode('|', $filterKey))->each(
-                                    function (string|Model $keyValue, string $keyIndex) use ($builder, $filterValue) {
-                                        if (!empty($keyValue)) {
-                                            if (':' == substr($keyValue, -1)) {
-                                                $key = substr($keyValue, 0, -1);
+        if (is_string($filter)) {
+            if (($explodedFilter = collect(explode('.', $filter)))->count() > 1) {
+                return $builder->whereHas(
+                    $explodedFilter->shift(),
+                    fn (Builder $builder) => $this->filterHasSolver($explodedFilter->implode('.'), $builder)
+                );
+            }
 
-                                                if (0 == $keyIndex) {
-                                                    return $builder->where($key, 'LIKE', $filterValue);
-                                                }
+            return $builder->whereHas($filter);
+        }
 
-                                                return $builder->orWhere($key, 'LIKE', $filterValue);
-                                            }
+        collect($filter)->each(
+            function ($value, string $key) use ($builder) {
+                if (intval($key) == $key) {
+                    return $this->filterHasSolver($value, $builder);
+                }
 
-                                            if (0 == $keyIndex) {
-                                                return $builder->where($keyValue, $filterValue);
-                                            }
+                if (($explodedKey = collect(explode('.', $key)))->count() > 1) {
+                    return $builder->whereHas(
+                        $explodedKey->shift(),
+                        fn (Builder $builder) => $this->filterHasSolver([$explodedKey->implode('.') => $value], $builder),
 
-                                            $builder->orWhere($keyValue, $filterValue);
-                                        }
-                                    }
-                                );
-                            }
+                        $builder
+                    );
+                }
 
-                            if ($filterValue instanceof Model) {
-                                $filterValue = fn ($builder) => $builder->where(
-                                    $filterValue->getKeyName(),
-                                    $filterValue->getKey()
-                                );
-                            }
-
-                            $builder->whereHas($filterKey, $filterValue);
-                        }
-                    )
-                )
-            )
+                if (is_array($value)) {
+                    return $builder->whereHas($key, fn (Builder $builder) => $this->filterSolver(collect($value), $builder));
+                }
+            }
         );
+    }
+
+    protected function filterOrSolver($filter, Builder $builder)
+    {
+        collect($filter)->each(function ($value, string $key) use ($builder) {
+            if (is_string($value)) {
+                return $builder->orWhere($key, $value);
+            }
+
+            return $builder->orWhere(fn (Builder $builder) => $this->filterSolver(collect([$key => $value]), $builder));
+        });
+    }
+
+    protected function filterModelSolver(string $key, Model $model, Builder $builder)
+    {
+        $builder->whereHas($key, fn ($builder) => $builder->where(
+            $model->getKeyName(),
+            $model->getKey()
+        ));
+
+        return $this;
+    }
+
+    protected function filterLikeSolver($filter, Builder $builder)
+    {
+        return collect($filter)->each(function ($value, string $key) use ($builder) {
+            if (($explodedKey = collect(explode('|', $key)))->count() > 1) {
+                return $this->filterOrSolver($explodedKey->map(fn ($key) => ['like' => [$key => $value]]),
+                    $builder
+                );
+            }
+
+            $builder->where($key, 'LIKE', $value);
+        });
+    }
+
+    protected function filterSolver(SupportCollection $filters, Builder $builder = null): Builder
+    {
+        if (empty($builder)) {
+            return $this->model(
+                fn (string $model) => $model::where(
+                    fn (Builder $builder) => $this->filterSolver($filters, $builder)
+                )
+            );
+        } else {
+            $solver = collect([
+                'has' => fn ($value, Builder $builder) => $this->filterHasSolver($value, $builder),
+                'or' => fn ($value, Builder $builder) => $this->filterOrSolver($value, $builder),
+                'like' => fn ($value, Builder $builder) => $this->filterLikeSolver($value, $builder),
+            ]);
+
+            $filters->each(function ($value, string $key) use ($builder, $solver) {
+                if (intval($key) == $key) {
+                    return $this->filterSolver(collect($value), $builder);
+                }
+
+                if ($solver->has($key)) {
+                    return call_user_func($solver->get($key), $value, $builder);
+                }
+
+                if (($explodedKey = collect(explode('|', $key)))->count() > 1) {
+                    return $this->filterOrSolver($explodedKey->map(fn ($key) => [$key => $value]), $builder);
+                }
+
+                if ($value instanceof Model) {
+                    return $this->filterModelSolver($key, $value, $builder);
+                }
+
+                if (is_array($value)) {
+                    return $this->filterSolver(collect(['has' => [$key => $value]]), $builder);
+                }
+
+                if (is_string($value)) {
+                    return $builder->where($key, '=', $value);
+                }
+            });
+
+            return $builder;
+        }
+    }
+
+    public function filter(array $filters = [])
+    {
+        return $this->builder = $this->filterSolver(collect($filters));
     }
 }

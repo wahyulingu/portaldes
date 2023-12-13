@@ -4,6 +4,7 @@ namespace App\Actions\Sid\Bantuan;
 
 use App\Abstractions\Action\IndexAction;
 use App\Repositories\Sid\SidBantuanRepository;
+use Illuminate\Support\Collection;
 
 class BantuanIndexAction extends IndexAction
 {
@@ -12,12 +13,25 @@ class BantuanIndexAction extends IndexAction
         parent::__construct($repository);
     }
 
-    protected function filters(array $payload = []): array
+    protected function filters(Collection $payload): array
     {
         $filters = [];
 
-        if (!empty($validatedPayload['keyword'])) {
-            $filters['anggota.nama:|anggota.nik:|nomor_kartu_bantuan:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
+        if ($payload->has('keyword')) {
+            $filters['or'] = [
+                ['like' => ['nama|keterangan' => '%'.$payload->get('keyword').'%']],
+
+                ['has' => ['penduduk' => ['like' => ['nama|nik' => '%'.$payload->get('keyword').'%']]]],
+
+                ['has' => [
+                    'kelompok' => [
+                        'or' => [
+                            ['has' => ['ketua' => ['like' => ['nama|nik' => '%'.$payload->get('keyword').'%']]]],
+                            ['has' => ['penduduk' => ['like' => ['nama|nik' => '%'.$payload->get('keyword').'%']]]],
+                        ],
+                    ],
+                ]],
+            ];
         }
 
         return $filters;

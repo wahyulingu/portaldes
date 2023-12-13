@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\File;
 use App\Repositories\FileRepository;
+use Illuminate\Support\Collection;
 
 class FileUpdateAction extends Action implements RuledActionContract
 {
@@ -22,7 +23,7 @@ class FileUpdateAction extends Action implements RuledActionContract
         return $this;
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'file' => ['sometimes', 'file'],
@@ -32,7 +33,7 @@ class FileUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return $this->fileRepository->update($this->file->getKey(), $validatedPayload);
     }

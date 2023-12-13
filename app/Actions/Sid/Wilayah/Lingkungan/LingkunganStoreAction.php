@@ -7,6 +7,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\SidPenduduk;
 use App\Models\Sid\WilayahLingkungan;
 use App\Repositories\Sid\Wilayah\SidWilayahLingkunganRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -18,7 +19,7 @@ class LingkunganStoreAction extends Action implements RuledActionContract
     {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'ketua_id' => ['required', 'integer', Rule::exists(SidPenduduk::class, 'id')],
@@ -26,7 +27,7 @@ class LingkunganStoreAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->sidWilayahLingkunganRepository->store($validatedPayload);
     }

@@ -8,6 +8,7 @@ use App\Models\Sid\SidPenduduk;
 use App\Models\Sid\Wilayah\SidWilayahLingkungan;
 use App\Models\Sid\WilayahRukunWarga;
 use App\Repositories\Sid\Wilayah\SidWilayahRukunWargaRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -19,7 +20,7 @@ class RukunWargaStoreAction extends Action implements RuledActionContract
     {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'lingkungan_id' => ['required', 'integer', Rule::exists(SidWilayahLingkungan::class, 'id')],
@@ -28,7 +29,7 @@ class RukunWargaStoreAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->sidWilayahRukunWargaRepository->store($validatedPayload);
     }

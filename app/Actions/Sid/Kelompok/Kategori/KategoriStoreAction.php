@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Kelompok\SidKelompokKategori;
 use App\Repositories\Sid\Kelompok\SidKelompokKategoriRepository;
+use Illuminate\Support\Collection;
 
 /**
  * @extends Action<SidKelompokKategori>
@@ -16,7 +17,7 @@ class KategoriStoreAction extends Action implements RuledActionContract
     {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'nama' => 'required|string',
@@ -24,7 +25,7 @@ class KategoriStoreAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->sidKelompokKategoriRepository->store($validatedPayload);
     }

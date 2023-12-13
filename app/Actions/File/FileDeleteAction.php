@@ -5,6 +5,7 @@ namespace App\Actions\File;
 use App\Abstractions\Action\Action;
 use App\Models\File;
 use App\Repositories\FileRepository;
+use Illuminate\Support\Collection;
 
 class FileDeleteAction extends Action
 {
@@ -21,7 +22,7 @@ class FileDeleteAction extends Action
         return $this;
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return tap(
             $this->fileRepository->delete($this->file->getKey()),

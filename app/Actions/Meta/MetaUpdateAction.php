@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Meta;
 use App\Repositories\MetaRepository;
+use Illuminate\Support\Collection;
 
 /**
  * @extends Action<Meta>
@@ -18,12 +19,12 @@ class MetaUpdateAction extends Action implements RuledActionContract
     {
     }
 
-    public function prepare(Meta $meta)
+    public function prepare(Meta $meta): self
     {
         return tap($this, fn (self $action) => $action->meta = $meta);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'name' => ['sometimes', 'string'],
@@ -31,7 +32,7 @@ class MetaUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->metaRepository->update($this->meta->getKey(), $validatedPayload);
     }

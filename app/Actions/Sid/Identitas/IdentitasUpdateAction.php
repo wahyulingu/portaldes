@@ -11,8 +11,8 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\SidIdentitas;
 use App\Repositories\Media\MediaPictureRepository;
 use App\Repositories\MetaRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 /**
  * @extends Action<SidIdentitas>
@@ -29,10 +29,8 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
-        Log::debug('asu', $payload);
-
         return [
             'nama_desa' => 'required|string',
             'alamat' => 'required|string',
@@ -58,7 +56,7 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return DB::transaction(function () use ($validatedPayload) {
             $meta = $this->metaRepository->findBySlug('sid-identitas');
@@ -72,33 +70,33 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
                 if (
                     !empty($meta->value['logo'])
                     && !empty($logoModel = $this->mediaPictureRepository->find($meta->value['logo']))
-                    && isset($validatedPayload['logo'])
+                    && $validatedPayload->has('logo')
                 ) {
                     $this
                         ->pictureUpdateAction
                         ->prepare($logoModel)
                         ->execute([
-                            'image' => $validatedPayload['logo'],
+                            'image' => $validatedPayload->get('logo'),
                             'path' => 'media/picture/sid',
                         ]);
 
-                    unset($validatedPayload['logo']);
+                    $validatedPayload->forget('logo');
                 }
 
                 if (
                     !empty($meta->value['stamp'])
                     && !empty($stampModel = $this->mediaPictureRepository->find($meta->value['stamp']))
-                    && isset($validatedPayload['logo'])
+                    && $validatedPayload->has('stamp')
                 ) {
                     $this
                         ->pictureUpdateAction
                         ->prepare($stampModel)
                         ->execute([
-                            'image' => $validatedPayload['stamp'],
+                            'image' => $validatedPayload->get('stamp'),
                             'path' => 'media/picture/sid',
                         ]);
 
-                    unset($validatedPayload['stamp']);
+                    $validatedPayload->forget('stamp');
                 }
             }
 
@@ -108,32 +106,36 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
              * dengan ID model
              */
 
-            if (isset($validatedPayload['logo'])) {
-                $validatedPayload['logo'] = $this
+            if ($validatedPayload->has('logo')) {
+                $validatedPayload->put(
+                    'logo',
+                    $this
 
-                    ->pictureStoreAction
-                    ->execute([
-                        'name' => 'Logo Desa',
-                        'description' => 'Picture Model untuk Logo Desa',
-                        'image' => $validatedPayload['logo'],
-                        'path' => 'media/picture/sid',
-                    ])
-
-                    ->getKey();
+                        ->pictureStoreAction
+                        ->execute([
+                            'name' => 'Logo Desa',
+                            'description' => 'Picture Model untuk Logo Desa',
+                            'image' => $validatedPayload['logo'],
+                            'path' => 'media/picture/sid',
+                        ])
+                        ->getKey()
+                );
             }
 
-            if (isset($validatedPayload['stamp'])) {
-                $validatedPayload['stamp'] = $this
+            if ($validatedPayload->has('stamp')) {
+                $validatedPayload->put(
+                    'stamp',
+                    $this
 
-                    ->pictureStoreAction
-                    ->execute([
-                        'name' => 'Logo Desa',
-                        'description' => 'Picture Model untuk Logo Desa',
-                        'image' => $validatedPayload['stamp'],
-                        'path' => 'media/picture/sid',
-                    ])
-
-                    ->getKey();
+                        ->pictureStoreAction
+                        ->execute([
+                            'name' => 'Logo Desa',
+                            'description' => 'Picture Model untuk Logo Desa',
+                            'image' => $validatedPayload['stamp'],
+                            'path' => 'media/picture/sid',
+                        ])
+                        ->getKey()
+                );
             }
 
             if (!empty($meta)) {
@@ -145,7 +147,7 @@ class IdentitasUpdateAction extends Action implements RuledActionContract
                     ->execute([
                         'value' => [
                             ...$meta->value,
-                            ...$validatedPayload,
+                            ...$validatedPayload->toArray(),
                         ],
                     ]);
             }

@@ -10,6 +10,7 @@ use App\Enumerations\Moderation;
 use App\Models\Content\ContentComment;
 use App\Models\User;
 use App\Repositories\Content\ContentCommentRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -27,7 +28,7 @@ class CommentStoreAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'body' => ['required', 'string'],
@@ -49,7 +50,7 @@ class CommentStoreAction extends Action implements RuledActionContract
         });
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->contentCommentRepository->store([
             ...$validatedPayload,

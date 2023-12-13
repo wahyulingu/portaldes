@@ -9,6 +9,7 @@ use App\Models\Sid\Surat\SidSurat;
 use App\Models\Sid\Surat\SidSuratKeluar;
 use App\Models\Sid\Surat\SidSuratKlasifikasi;
 use App\Repositories\Sid\Surat\SidSuratKeluarRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -29,7 +30,7 @@ class SuratKeluarUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->suratKeluar = $surat);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'klasifikasi_id' => [
@@ -44,7 +45,7 @@ class SuratKeluarUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         $this
 

@@ -2,7 +2,9 @@
 
 namespace App\Contracts\Action;
 
+use Illuminate\Support\Collection;
+
 interface RuledActionContract
 {
-    public function rules(array $payload): array;
+    public function rules(Collection $payload): array;
 }

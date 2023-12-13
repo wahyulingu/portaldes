@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Identitas;
 use App\Abstractions\Action\Action;
 use App\Repositories\Media\MediaPictureRepository;
 use App\Repositories\MetaRepository;
+use Illuminate\Support\Collection;
 
 class IdentitasFetchAction extends Action
 {
@@ -14,7 +15,7 @@ class IdentitasFetchAction extends Action
     ) {
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         $identitas = [
             'nama_desa' => '',

@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Models\Peta;
+namespace App\Abstractions\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PetaPicture extends Model
+abstract class PetaModel extends Model
 {
     use HasFactory;
-
-    protected $table = 'peta_picture';
 }

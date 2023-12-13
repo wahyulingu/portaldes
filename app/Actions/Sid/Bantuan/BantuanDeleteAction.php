@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Bantuan;
 use App\Abstractions\Action\Action;
 use App\Models\Sid\SidBantuan;
 use App\Repositories\Sid\SidBantuanRepository;
+use Illuminate\Support\Collection;
 
 class BantuanDeleteAction extends Action
 {
@@ -19,7 +20,7 @@ class BantuanDeleteAction extends Action
         return tap($this, fn (self $action) => $action->bantuan = $bantuan);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return $this->sidBantuanRepository->delete($this->bantuan->getKey());
     }

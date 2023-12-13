@@ -25,7 +25,7 @@ class PhotoDeleteAction extends Action
         return $this;
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return DB::transaction(function () {
             if ($this->thumbnail->picture()->exists()) {

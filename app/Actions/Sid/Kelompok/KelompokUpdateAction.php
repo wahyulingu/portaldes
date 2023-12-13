@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Kelompok;
 use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\Kelompok\SidKelompok;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -19,7 +20,7 @@ class KelompokUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->kelompok = $kelompok);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'kategori_id' => ['sometimes', 'integer', Rule::exists(SidKelompokKategori::class, 'id')],
@@ -30,8 +31,8 @@ class KelompokUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
-        return $this->kelompok->update($validatedPayload);
+        return $this->kelompok->update($validatedPayload->toArray());
     }
 }

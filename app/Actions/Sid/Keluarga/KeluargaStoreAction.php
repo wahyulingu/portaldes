@@ -12,6 +12,7 @@ use App\Models\Sid\SidKeluarga;
 use App\Models\Sid\Wilayah\SidWilayahRukunTetangga;
 use App\Repositories\Sid\SidKeluargaRepository;
 use App\Repositories\Sid\SidPendudukRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
@@ -28,7 +29,7 @@ class KeluargaStoreAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'rukun_tetangga_id' => ['required', 'integer', Rule::exists(SidWilayahRukunTetangga::class, 'id')],
@@ -39,12 +40,12 @@ class KeluargaStoreAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return DB::transaction(function () use ($validatedPayload, $payload) {
-            if ($kepalaKeluarga = $this->sidPendudukRepository->findByNik($validatedPayload['nik'])) {
+            if ($kepalaKeluarga = $this->sidPendudukRepository->findByNik($validatedPayload->get('nik'))) {
                 $this->pendudukUpdateAction->prepare($kepalaKeluarga)->execute([
-                    'nomor_kartu_keluarga' => $validatedPayload['nomor_kartu_keluarga'],
+                    'nomor_kartu_keluarga' => $validatedPayload->get('nomor_kartu_keluarga'),
                     'hubungan_keluarga' => HubunganKeluarga::kepala->value,
                 ]);
             } else {
@@ -53,7 +54,7 @@ class KeluargaStoreAction extends Action implements RuledActionContract
                 ]);
             }
 
-            unset($validatedPayload['nik']);
+            $validatedPayload->forget('nik');
 
             return $this->sidKeluargaRepository->store($validatedPayload);
         });

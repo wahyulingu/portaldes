@@ -23,7 +23,7 @@ class SuratMasukStoreAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'klasifikasi_id' => [
@@ -42,7 +42,7 @@ class SuratMasukStoreAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return DB::transaction(
             fn () => tap(

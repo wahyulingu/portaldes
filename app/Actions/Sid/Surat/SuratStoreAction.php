@@ -10,6 +10,7 @@ use App\Models\Sid\Surat\SidSuratKeluar;
 use App\Models\Sid\Surat\SidSuratMasuk;
 use App\Models\Sid\Surat\SidSuratWarga;
 use App\Repositories\Sid\Surat\SidSuratRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -22,7 +23,7 @@ class SuratStoreAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         $suratTypes = [
             SidSuratMasuk::class,
@@ -69,7 +70,7 @@ class SuratStoreAction extends Action implements RuledActionContract
         return $rules;
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->sidSuratRepository->store($validatedPayload);
     }

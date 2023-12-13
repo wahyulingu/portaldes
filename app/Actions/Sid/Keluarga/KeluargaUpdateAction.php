@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Sid\SidKeluarga;
 use App\Repositories\Sid\SidKeluargaRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 /**
@@ -24,7 +25,7 @@ class KeluargaUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->keluarga = $keluarga);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'rukun_tetangga_id' => ['sometimes', 'integer', Rule::exists(SidWilayahRukunTetangga::class, 'id')],
@@ -35,7 +36,7 @@ class KeluargaUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return $this->sidKeluargaRepository->update($this->keluarga->getKey(), $validatedPayload);
     }

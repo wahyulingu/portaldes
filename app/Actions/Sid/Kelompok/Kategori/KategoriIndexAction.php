@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Kelompok\Kategori;
 use App\Abstractions\Action\IndexAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Repositories\Sid\Kelompok\SidKelompokKategoriRepository;
+use Illuminate\Support\Collection;
 
 class KategoriIndexAction extends IndexAction implements RuledActionContract
 {
@@ -13,12 +14,12 @@ class KategoriIndexAction extends IndexAction implements RuledActionContract
         parent::__construct($repository);
     }
 
-    protected function filters(array $payload = []): array
+    protected function filters(Collection $payload): array
     {
         $filters = [];
 
-        if (!empty($validatedPayload['keyword'])) {
-            $filters['nama:|nik:|nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
+        if ($payload->has('keyword')) {
+            $filters['like'] = ['nama|keterangan' => '%'.$payload->get('keyword').'%'];
         }
 
         return $filters;

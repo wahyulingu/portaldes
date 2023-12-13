@@ -10,6 +10,7 @@ use App\Models\Sid\Pamong\SidPamongProfile;
 use App\Models\Sid\SidPenduduk;
 use App\Repositories\Sid\Pamong\SidPamongRepository;
 use App\Repositories\Sid\SidPendudukRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -24,7 +25,7 @@ class PamongStoreAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'nik' => ['required', 'string', 'regex:/^[0-9]{16}$/'],
@@ -36,10 +37,10 @@ class PamongStoreAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return DB::transaction(function () use ($validatedPayload, $payload) {
-            if (!$this->sidPendudukRepository->findByNik($validatedPayload['nik'])) {
+            if (!$this->sidPendudukRepository->findByNik($validatedPayload->get('nik'))) {
                 $this->profileStoreAction->execute($payload);
 
                 return $this->sidPamongRepository->store([

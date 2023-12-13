@@ -5,6 +5,7 @@ namespace App\Actions\Sid\Surat;
 use App\Abstractions\Action\Action;
 use App\Models\Sid\Surat\SidSurat;
 use App\Repositories\Sid\Surat\SidSuratRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class SuratDeleteAction extends Action
@@ -20,7 +21,7 @@ class SuratDeleteAction extends Action
         return tap($this, fn (self $action) => $action->surat = $surat);
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
         return DB::transaction(
             fn () => tap(

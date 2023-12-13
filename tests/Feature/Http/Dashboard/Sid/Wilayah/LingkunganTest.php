@@ -52,7 +52,7 @@ class LingkunganTest extends TestCase
 
         $lingkungan = [
             'ketua_id' => $penduduk->getKey(),
-            'nama' => $this->faker->streetName,
+            'nama' => trim($this->faker->streetName),
         ];
 
         $this

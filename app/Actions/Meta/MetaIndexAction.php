@@ -4,6 +4,7 @@ namespace App\Actions\Meta;
 
 use App\Abstractions\Action\IndexAction;
 use App\Repositories\MetaRepository;
+use Illuminate\Support\Collection;
 
 class MetaIndexAction extends IndexAction
 {
@@ -11,14 +12,14 @@ class MetaIndexAction extends IndexAction
     {
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         $filters = [];
 
-        if (!empty($validatedPayload['keyword'])) {
-            $filters['anggota.nama:|anggota.nik:|nomor_kartu_keluarga:'] = '%'.(@$validatedPayload['keyword'] ?: '').'%';
+        if ($validatedPayload->has('keyword')) {
+            $filters['like']['anggota.nama|anggota.nik|nomor_kartu_keluarga'] = '%'.$validatedPayload->get('keyword').'%';
         }
 
-        return $this->repository->latest($filters)->paginate(@$validatedPayload['limit'] ?: 0);
+        return $this->repository->latest($filters)->paginate($validatedPayload->get('limit', 0));
     }
 }

@@ -11,6 +11,7 @@ use App\Models\Content\ContentCategory;
 use App\Models\Content\ContentPage;
 use App\Repositories\Content\ContentPageRepository;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class PageUpdateAction extends Action implements RuledActionContract
@@ -29,7 +30,7 @@ class PageUpdateAction extends Action implements RuledActionContract
         return tap($this, fn (self $action) => $action->page = $page);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'title' => ['sometimes', 'string', 'max:255'],
@@ -42,12 +43,12 @@ class PageUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = []): bool
+    protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
-        if (isset($validatedPayload['thumbnail'])) {
-            $this->updateThumbnail($validatedPayload['thumbnail']);
+        if ($validatedPayload->has('thumbnail')) {
+            $this->updateThumbnail($validatedPayload->get('thumbnail'));
 
-            unset($validatedPayload['thumbnail']);
+            $validatedPayload->forget('thumbnail');
         }
 
         if (empty($validatedPayload)) {

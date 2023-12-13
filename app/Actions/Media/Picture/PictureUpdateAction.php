@@ -9,6 +9,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Media\MediaPicture;
 use App\Repositories\Media\MediaPictureRepository;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 
 /**
  * @extends Action<MediaPicture>
@@ -24,12 +25,12 @@ class PictureUpdateAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function prepare(MediaPicture $picture)
+    public function prepare(MediaPicture $picture): self
     {
         return tap($this, fn (self $action) => $action->picture = $picture);
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'name' => ['sometimes', 'string', 'max:255'],
@@ -39,10 +40,10 @@ class PictureUpdateAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
-        if (isset($validatedPayload['image'])) {
-            $this->updateFile($validatedPayload['image'], @$validatedPayload['path'] ?: 'media/pictures');
+        if ($validatedPayload->has('image')) {
+            $this->updateFile($validatedPayload->get('image'), $validatedPayload->get('path', 'media/pictures'));
         }
 
         return $this->mediaPictureRepository->update($this->picture->getKey(), $validatedPayload);

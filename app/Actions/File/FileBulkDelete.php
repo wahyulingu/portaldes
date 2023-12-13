@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Models\File;
 use App\Repositories\FileRepository;
 use App\Traits\Action\SetCollection;
+use Illuminate\Support\Collection;
 
 class FileBulkDelete extends Action
 {
@@ -15,7 +16,7 @@ class FileBulkDelete extends Action
     {
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return tap(
             File::whereIn('id', $this->collection->map(

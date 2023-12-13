@@ -10,6 +10,7 @@ use App\Abstractions\Action\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\File;
 use App\Repositories\FileRepository;
+use Illuminate\Support\Collection;
 
 /**
  * Summary of Upload.
@@ -23,7 +24,7 @@ class FileUploadAction extends Action implements RuledActionContract
     /**
      * Summary of rules.
      */
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'file' => ['required', 'file'],
@@ -36,7 +37,7 @@ class FileUploadAction extends Action implements RuledActionContract
     /**
      * Summary of handler.
      */
-    protected function handler(array $validatedPayload = [], array $payload = []): File
+    protected function handler(Collection $validatedPayload, Collection $payload): File
     {
         return $this->fileRepository->create($validatedPayload);
     }

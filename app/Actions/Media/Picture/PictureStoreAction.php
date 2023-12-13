@@ -7,6 +7,7 @@ use App\Actions\File\FileUploadAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Media\MediaPicture;
 use App\Repositories\Media\MediaPictureRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -20,7 +21,7 @@ class PictureStoreAction extends Action implements RuledActionContract
     ) {
     }
 
-    public function rules(array $payload): array
+    public function rules(Collection $payload): array
     {
         return [
             'name' => ['required', 'string', 'max:255'],
@@ -30,7 +31,7 @@ class PictureStoreAction extends Action implements RuledActionContract
         ];
     }
 
-    protected function handler(array $validatedPayload = [], array $payload = [])
+    protected function handler(Collection $validatedPayload, Collection $payload)
     {
         return DB::transaction(
             fn () => tap(
@@ -38,11 +39,11 @@ class PictureStoreAction extends Action implements RuledActionContract
 
                 function (MediaPicture $picture) use ($validatedPayload) {
                     $fileData = [
-                        'file' => $validatedPayload['image'],
+                        'file' => $validatedPayload->get('image'),
                         'fileable_id' => $picture->getKey(),
                         'fileable_type' => $picture::class,
                         'name' => sprintf('model %s[%s] file', $picture::class, $picture->getKey()),
-                        'path' => $validatedPayload['path'] ?: 'media/pictures',
+                        'path' => $validatedPayload->get('path', 'media/pictures'),
                         'description' => 'auto-generated model for media picture file',
                     ];
 
