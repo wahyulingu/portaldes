@@ -7,6 +7,7 @@ use App\Actions\Peta\Gambar\GambarDeleteAction;
 use App\Models\Peta\PetaArea;
 use App\Repositories\Peta\PetaAreaRepository;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class AreaDeleteAction extends Action
 {
@@ -27,13 +28,15 @@ class AreaDeleteAction extends Action
 
     protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
-        if ($this->area->gambar()->exists()) {
-            $this
-                ->gambarDeleteAction
-                ->prepare($this->area->gambar)
-                ->execute();
-        }
+        return DB::transaction(function () {
+            if ($this->area->gambar()->exists()) {
+                $this
+                    ->gambarDeleteAction
+                    ->prepare($this->area->gambar)
+                    ->execute();
+            }
 
-        return $this->petaAreaRepository->delete($this->area->getKey());
+            return $this->petaAreaRepository->delete($this->area->getKey());
+        });
     }
 }

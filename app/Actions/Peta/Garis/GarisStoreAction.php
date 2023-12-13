@@ -44,29 +44,17 @@ class GarisStoreAction extends Action implements RuledActionContract
 
     protected function handler(Collection $validatedPayload, Collection $payload)
     {
-        [
-            'nama' => ['required', 'string', 'max:255'],
-            'keterangan' => ['required', 'string', 'max:255'],
-            'gambar' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],
-        ];
-
         return DB::transaction(fn () => tap(
             $this->petaGarisRepository->store($validatedPayload),
             function (PetaGaris $garis) use ($validatedPayload) {
                 if ($validatedPayload->has('gambar')) {
-                    $gambar = $this
-
-                        ->gambarStoreAction
-                        ->skipAllRules()
-                        ->execute(
-                            $validatedPayload->only(
-                                [
-                                    'nama',
-                                    'keterangan',
-                                    'gambar',
-                                ]
-                            )
-                        );
+                    $gambar = $this->gambarStoreAction->skipAllRules()->execute($validatedPayload->only(
+                        [
+                            'nama',
+                            'keterangan',
+                            'gambar',
+                        ]
+                    ));
 
                     $garis->gambar()->save($gambar);
                 }

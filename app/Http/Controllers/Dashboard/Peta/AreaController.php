@@ -58,9 +58,9 @@ class AreaController extends Controller
          */
         $area = $areaStoreAction->execute($request->all());
 
-        return Response::redirectTo(route('dashboard.sid.area.show', $area->getKey()), 201)
+        return Response::redirectTo(route('dashboard.peta.area.index'), 201)
 
-            ->banner(sprintf('Area Created', $area->nomor_kartu_area));
+            ->banner(sprintf('Area Created', $area->nama));
     }
 
     /**
@@ -86,7 +86,7 @@ class AreaController extends Controller
     {
         $areaUpdateAction->prepare($area)->execute($request->all());
 
-        return Response::see(route('dashboard.sid.area.show', $area->getKey()))
+        return Response::see(route('dashboard.peta.area.show', $area->getKey()))
 
             ->banner(sprintf('Updated area "%s"', $area->nomor_kartu_area));
     }
@@ -98,7 +98,7 @@ class AreaController extends Controller
     {
         $areaDeleteAction->prepare($area)->execute();
 
-        return Response::see(route('dashboard.sid.area.index'))
+        return Response::see(route('dashboard.peta.area.index'))
 
             ->with('flash', compact('area'))
             ->dangerBanner(sprintf('Destroyed area "%s"', $area->nomor_kartu_area));

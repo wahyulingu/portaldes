@@ -60,7 +60,7 @@ class GarisController extends Controller
          */
         $garis = $garisStoreAction->execute($request->all());
 
-        return Response::redirectTo(route('dashboard.peta.garis.show', $garis->getKey()), 201)
+        return Response::redirectTo(route('dashboard.peta.garis.index'), 201)
 
             ->banner(sprintf('Garis Created', $garis->nomor_kartu_garis));
     }

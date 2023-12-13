@@ -46,20 +46,22 @@ class GarisTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('create.peta.garis'));
 
-        $garis = [
+        $garis = collect([
             'kategori_id' => PetaKategori::factory()->garis()->create()->getKey(),
             'nama' => $this->faker->words(3, true),
             'keterangan' => $this->faker->words(8, true),
             'path' => [[]],
-        ];
+        ]);
 
         $this
 
             ->actingAs($user)
-            ->post('/dashboard/peta/garis', $garis)
+            ->post('/dashboard/peta/garis', $garis->toArray())
             ->assertRedirectToRoute('dashboard.peta.garis.index');
 
-        $this->assertDatabaseHas(PetaGaris::class, $garis);
+        $garis->put('path', json_encode($garis->get('path')));
+
+        $this->assertDatabaseHas(PetaGaris::class, $garis->toArray());
     }
 
     public function testOnlyAuthorizedUserCanStoreNewGaris(): void

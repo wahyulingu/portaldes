@@ -15,5 +15,7 @@ class PetaArea extends Model
 
     protected $casts = ['path' => 'array'];
 
+    protected $fillable = ['nama', 'keterangan', 'path', 'kategori_id', 'path'];
+
     protected $table = 'peta_area';
 }

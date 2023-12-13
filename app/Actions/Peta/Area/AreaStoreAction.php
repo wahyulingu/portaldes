@@ -3,13 +3,14 @@
 namespace App\Actions\Peta\Area;
 
 use App\Abstractions\Action\Action;
+use App\Actions\Peta\Gambar\GambarStoreAction;
 use App\Contracts\Action\RuledActionContract;
-use App\Enumerations\Moderation;
 use App\Models\Peta\PetaArea;
-use App\Models\Peta\PetaCategory;
+use App\Models\Peta\PetaKategori;
 use App\Models\User;
 use App\Repositories\Peta\PetaAreaRepository;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 /**
@@ -21,29 +22,20 @@ class AreaStoreAction extends Action implements RuledActionContract
 
     public function __construct(
         protected PetaAreaRepository $petaAreaRepository,
+        protected GambarStoreAction $gambarStoreAction
     ) {
     }
 
     public function rules(Collection $payload): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'body' => ['required', 'string'],
-            'description' => ['required', 'string', 'max:255'],
+            'nama' => ['required', 'string', 'max:255'],
+            'keterangan' => ['required', 'string', 'max:255'],
+            'path' => ['required', 'array'],
 
-            'user_id' => [
+            'kategori_id' => [
                 'required',
-                Rule::exists(User::class, 'id'),
-            ],
-
-            'category_id' => [
-                'sometimes',
-                Rule::exists(PetaCategory::class, 'id'),
-            ],
-
-            'status' => [
-                'sometimes',
-                Rule::in(Moderation::names()),
+                Rule::exists(PetaKategori::class, 'id'),
             ],
 
             'gambar' => ['sometimes', 'mimes:jpg,jpeg,png', 'max:2048'],
@@ -52,18 +44,21 @@ class AreaStoreAction extends Action implements RuledActionContract
 
     protected function handler(Collection $validatedPayload, Collection $payload)
     {
-        return tap(
+        return DB::transaction(fn () => tap(
             $this->petaAreaRepository->store($validatedPayload),
-            function (PetaArea $peta) {
-                // if (isset($validatedPayload['gambar'])) {
-                //     $this
+            function (PetaArea $area) use ($validatedPayload) {
+                if ($validatedPayload->has('gambar')) {
+                    $gambar = $this->gambarStoreAction->skipAllRules()->execute($validatedPayload->only(
+                        [
+                            'nama',
+                            'keterangan',
+                            'gambar',
+                        ]
+                    ));
 
-                //         ->gambarStoreAction
-                //         ->prepare($peta)
-                //         ->skipAllRules()
-                //         ->execute($validatedPayload);
-                // }
+                    $area->gambar()->save($gambar);
+                }
             }
-        );
+        ));
     }
 }
