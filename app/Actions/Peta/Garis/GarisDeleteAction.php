@@ -7,6 +7,7 @@ use App\Actions\Peta\Gambar\GambarDeleteAction;
 use App\Models\Peta\PetaGaris;
 use App\Repositories\Peta\PetaGarisRepository;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class GarisDeleteAction extends Action
 {
@@ -27,13 +28,15 @@ class GarisDeleteAction extends Action
 
     protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
-        if ($this->garis->gambar()->exists()) {
-            $this
-                ->gambarDeleteAction
-                ->prepare($this->garis->gambar)
-                ->execute();
-        }
+        return DB::transaction(function () {
+            if ($this->garis->gambar()->exists()) {
+                $this
+                    ->gambarDeleteAction
+                    ->prepare($this->garis->gambar)
+                    ->execute();
+            }
 
-        return $this->petaGarisRepository->delete($this->garis->getKey());
+            return $this->petaGarisRepository->delete($this->garis->getKey());
+        });
     }
 }

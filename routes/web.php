@@ -43,8 +43,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             Route::resource('simbol', Peta\SimbolController::class);
             Route::resource('kategori', Peta\KategoriController::class);
             Route::resource('gambar', Peta\GambarController::class);
-            Route::resource('titik', Peta\TitikController::class);
-            Route::resource('garis', Peta\GarisController::class);
+            Route::resource('garis', Peta\GarisController::class)->parameter('garis', 'garis');
             Route::resource('area', Peta\AreaController::class);
         });
 

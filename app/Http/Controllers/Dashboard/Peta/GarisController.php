@@ -15,6 +15,8 @@ use Inertia\Inertia;
 
 class GarisController extends Controller
 {
+    protected $plural = false;
+
     public function __construct()
     {
         $this->authorizeResource(PetaGaris::class, 'garis');
@@ -58,7 +60,7 @@ class GarisController extends Controller
          */
         $garis = $garisStoreAction->execute($request->all());
 
-        return Response::redirectTo(route('dashboard.sid.garis.show', $garis->getKey()), 201)
+        return Response::redirectTo(route('dashboard.peta.garis.show', $garis->getKey()), 201)
 
             ->banner(sprintf('Garis Created', $garis->nomor_kartu_garis));
     }
@@ -86,7 +88,7 @@ class GarisController extends Controller
     {
         $garisUpdateAction->prepare($garis)->execute($request->all());
 
-        return Response::see(route('dashboard.sid.garis.show', $garis->getKey()))
+        return Response::see(route('dashboard.peta.garis.show', $garis->getKey()))
 
             ->banner(sprintf('Updated garis "%s"', $garis->nomor_kartu_garis));
     }
@@ -98,7 +100,7 @@ class GarisController extends Controller
     {
         $garisDeleteAction->prepare($garis)->execute();
 
-        return Response::see(route('dashboard.sid.garis.index'))
+        return Response::see(route('dashboard.peta.garis.index'))
 
             ->with('flash', compact('garis'))
             ->dangerBanner(sprintf('Destroyed garis "%s"', $garis->nomor_kartu_garis));
