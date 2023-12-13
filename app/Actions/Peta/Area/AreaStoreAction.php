@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Repositories\Peta\PetaAreaRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 /**
  * @extends Action<PetaArea>
@@ -27,8 +28,10 @@ class AreaStoreAction extends Action implements RuledActionContract
     public function rules(Collection $payload): array
     {
         return [
+            'kategori_id' => ['required', 'integer', Rule::exists(PetaKategori::class, 'id')],
             'nama' => ['required', 'string', 'max:255'],
             'keterangan' => ['required', 'string', 'max:255'],
+            'path' => ['required', 'array'],
             'gambar' => ['required', 'file', 'mimes:jpg,jpeg,png', 'max:1024'],
         ];
     }

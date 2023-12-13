@@ -9,6 +9,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Peta\PetaArea;
 use App\Repositories\Peta\PetaAreaRepository;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 
 class AreaUpdateAction extends Action implements RuledActionContract
 {
@@ -29,8 +30,10 @@ class AreaUpdateAction extends Action implements RuledActionContract
     public function rules(Collection $payload): array
     {
         return [
+            'kategori_id' => ['sometimes', 'integer', Rule::exists(PetaKategori::class, 'id')],
             'nama' => ['sometimes', 'string', 'max:255'],
             'keterangan' => ['sometimes', 'string', 'max:255'],
+            'path' => ['sometimes', 'array'],
             'gambar' => ['sometimes', 'file', 'mimes:jpg,jpeg,png', 'max:1024'],
         ];
     }

@@ -5,8 +5,11 @@ namespace Tests\Feature\Http\Dashboard\Peta\Titik;
 use App\Models\Peta\PetaKategori;
 use App\Models\Peta\PetaTitik;
 use App\Models\User;
+use App\Repositories\FileRepository;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Inertia\Testing\AssertableInertia;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
@@ -46,8 +49,13 @@ class TitikTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('create.peta.titik'));
 
+        /** @var FilesystemAdapter */
+        $fakeStorage = app(FileRepository::class)->fake();
+
+        $gambar = UploadedFile::fake()->image('simbol.png');
+
         $titik = [
-            'kategori_id' => PetaKategori::factory()->garis()->create()->getKey(),
+            'kategori_id' => PetaKategori::factory()->titik()->create()->getKey(),
             'nama' => $this->faker->words(3, true),
             'keterangan' => $this->faker->words(8, true),
             'lat' => '0',
@@ -57,8 +65,10 @@ class TitikTest extends TestCase
         $this
 
             ->actingAs($user)
-            ->post('/dashboard/peta/titik', $titik)
+            ->post('/dashboard/peta/titik', [...$titik, ...compact('gambar')])
             ->assertRedirectToRoute('dashboard.peta.titik.index');
+
+        $fakeStorage->assertExists($gambar->hashName('peta/gambar'));
 
         $this->assertDatabaseHas(PetaTitik::class, $titik);
     }

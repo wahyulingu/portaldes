@@ -9,6 +9,7 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Peta\PetaTitik;
 use App\Repositories\Peta\PetaTitikRepository;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 
 class TitikUpdateAction extends Action implements RuledActionContract
 {
@@ -29,6 +30,7 @@ class TitikUpdateAction extends Action implements RuledActionContract
     public function rules(Collection $payload): array
     {
         return [
+            'kategori_id' => ['sometimes', 'integer', Rule::exists(PetaKategori::class, 'id')],
             'nama' => ['sometimes', 'string', 'max:255'],
             'keterangan' => ['sometimes', 'string', 'max:255'],
             'gambar' => ['sometimes', 'file', 'mimes:jpg,jpeg,png', 'max:1024'],
