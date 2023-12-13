@@ -4,6 +4,7 @@ namespace App\Actions\Jetstream;
 
 use App\Models\Team;
 use App\Models\User;
+use Closure;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Jetstream\Contracts\AddsTeamMembers;
@@ -59,7 +60,7 @@ class AddTeamMember implements AddsTeamMembers
         return array_filter([
             'email' => ['required', 'email', 'exists:users'],
             'role' => Jetstream::hasRoles()
-                            ? ['required', 'string', new Role()]
+                            ? ['required', 'string', new Role]
                             : null,
         ]);
     }
@@ -67,7 +68,7 @@ class AddTeamMember implements AddsTeamMembers
     /**
      * Ensure that the user is not already on the team.
      */
-    protected function ensureUserIsNotAlreadyOnTeam(Team $team, string $email): \Closure
+    protected function ensureUserIsNotAlreadyOnTeam(Team $team, string $email): Closure
     {
         return function ($validator) use ($team, $email) {
             $validator->errors()->addIf(

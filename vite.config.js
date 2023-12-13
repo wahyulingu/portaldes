@@ -1,26 +1,18 @@
 import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
-import vue from '@vitejs/plugin-vue';
+import laravel, { refreshPaths } from 'laravel-vite-plugin';
 
 export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/ts/app.ts'
+                'resources/css/app.css',
+                'resources/ts/app.ts',
             ],
-
-            ssr: 'resources/ts/ssr.ts',
-            refresh: true,
+            refresh: [
+                ...refreshPaths,
+                'app/Http/Livewire/**',
+            ],
         }),
-
-        vue({
-            template: {
-                transformAssetUrls: {
-                    base: null,
-                    includeAbsolute: false,
-                },
-            },
-        })
     ],
 
     resolve: {
