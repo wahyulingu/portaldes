@@ -53,7 +53,6 @@ class GarisUpdateAction extends Action implements RuledActionContract
                         ->only('nama', 'keterangan', 'gambar')
                         ->put('peta_type', $this->garis::class)
                         ->put('peta_id', $this->garis->getKey())
-                        ->put('path', 'peta/garis')
                 );
             }
 

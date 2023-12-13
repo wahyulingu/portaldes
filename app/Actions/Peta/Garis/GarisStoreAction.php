@@ -50,7 +50,6 @@ class GarisStoreAction extends Action implements RuledActionContract
                             ->only('nama', 'keterangan', 'gambar')
                             ->put('peta_type', $garis::class)
                             ->put('peta_id', $garis->getKey())
-                            ->put('path', 'peta/garis')
                     );
             }
         ));

@@ -53,7 +53,6 @@ class AreaUpdateAction extends Action implements RuledActionContract
                         ->only('nama', 'keterangan', 'gambar')
                         ->put('peta_type', $this->area::class)
                         ->put('peta_id', $this->area->getKey())
-                        ->put('path', 'peta/area')
                 );
             }
 

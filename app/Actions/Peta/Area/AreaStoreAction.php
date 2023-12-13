@@ -50,7 +50,6 @@ class AreaStoreAction extends Action implements RuledActionContract
                             ->only('nama', 'keterangan', 'gambar')
                             ->put('peta_type', $area::class)
                             ->put('peta_id', $area->getKey())
-                            ->put('path', 'peta/area')
                     );
             }
         ));

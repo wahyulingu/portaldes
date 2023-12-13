@@ -58,8 +58,8 @@ class TitikTest extends TestCase
             'kategori_id' => PetaKategori::factory()->titik()->create()->getKey(),
             'nama' => $this->faker->words(3, true),
             'keterangan' => $this->faker->words(8, true),
-            'lat' => '0',
-            'lng' => '0',
+            'lat' => '1',
+            'lng' => '1',
         ];
 
         $this

@@ -33,6 +33,8 @@ class TitikUpdateAction extends Action implements RuledActionContract
             'kategori_id' => ['sometimes', 'integer', Rule::exists(PetaKategori::class, 'id')],
             'nama' => ['sometimes', 'string', 'max:255'],
             'keterangan' => ['sometimes', 'string', 'max:255'],
+            'lat' => ['sometimes', 'string'],
+            'lng' => ['sometimes', 'string'],
             'gambar' => ['sometimes', 'file', 'mimes:jpg,jpeg,png', 'max:1024'],
         ];
     }
@@ -52,7 +54,6 @@ class TitikUpdateAction extends Action implements RuledActionContract
                         ->only('nama', 'keterangan', 'gambar')
                         ->put('peta_type', $this->titik::class)
                         ->put('peta_id', $this->titik->getKey())
-                        ->put('path', 'peta/titik')
                 );
             }
 
