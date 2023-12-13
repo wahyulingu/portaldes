@@ -6,6 +6,7 @@ use App\Abstractions\Action\Action;
 use App\Actions\Peta\Gambar\GambarStoreAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Peta\PetaArea;
+use App\Models\Peta\PetaKategori;
 use App\Models\User;
 use App\Repositories\Peta\PetaAreaRepository;
 use Illuminate\Support\Collection;

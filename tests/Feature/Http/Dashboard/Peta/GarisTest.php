@@ -5,8 +5,11 @@ namespace Tests\Feature\Http\Dashboard\Peta\Garis;
 use App\Models\Peta\PetaGaris;
 use App\Models\Peta\PetaKategori;
 use App\Models\User;
+use App\Repositories\FileRepository;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Inertia\Testing\AssertableInertia;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
@@ -46,22 +49,29 @@ class GarisTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('create.peta.garis'));
 
-        $garis = collect([
+        /** @var FilesystemAdapter */
+        $fakeStorage = app(FileRepository::class)->fake();
+
+        $gambar = UploadedFile::fake()->image('titik.png');
+
+        $garis = [
             'kategori_id' => PetaKategori::factory()->garis()->create()->getKey(),
             'nama' => $this->faker->words(3, true),
             'keterangan' => $this->faker->words(8, true),
             'path' => [[]],
-        ]);
+        ];
 
         $this
 
             ->actingAs($user)
-            ->post('/dashboard/peta/garis', $garis->toArray())
+            ->post('/dashboard/peta/garis', [...$garis, ...compact('gambar')])
             ->assertRedirectToRoute('dashboard.peta.garis.index');
 
-        $garis->put('path', json_encode($garis->get('path')));
+        $fakeStorage->assertExists($gambar->hashName('peta/gambar'));
 
-        $this->assertDatabaseHas(PetaGaris::class, $garis->toArray());
+        $garis['path'] = json_encode($garis['path']);
+
+        $this->assertDatabaseHas(PetaGaris::class, $garis);
     }
 
     public function testOnlyAuthorizedUserCanStoreNewGaris(): void

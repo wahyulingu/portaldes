@@ -5,8 +5,11 @@ namespace Tests\Feature\Http\Dashboard\Peta\Area;
 use App\Models\Peta\PetaArea;
 use App\Models\Peta\PetaKategori;
 use App\Models\User;
+use App\Repositories\FileRepository;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Inertia\Testing\AssertableInertia;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
@@ -46,22 +49,29 @@ class AreaTest extends TestCase
 
         $user->givePermissionTo(Permission::findOrCreate('create.peta.area'));
 
-        $area = collect([
+        /** @var FilesystemAdapter */
+        $fakeStorage = app(FileRepository::class)->fake();
+
+        $gambar = UploadedFile::fake()->image('area.png');
+
+        $area = [
             'kategori_id' => PetaKategori::factory()->area()->create()->getKey(),
             'nama' => $this->faker->words(3, true),
             'keterangan' => $this->faker->words(8, true),
             'path' => [[[]]],
-        ]);
+        ];
 
         $this
 
             ->actingAs($user)
-            ->post('/dashboard/peta/area', $area->toArray())
+            ->post('/dashboard/peta/area', [...$area, ...compact('gambar')])
             ->assertRedirectToRoute('dashboard.peta.area.index');
 
-        $area->put('path', json_encode($area->get('path')));
+        $fakeStorage->assertExists($gambar->hashName('peta/gambar'));
 
-        $this->assertDatabaseHas(PetaArea::class, $area->toArray());
+        $area['path'] = json_encode($area['path']);
+
+        $this->assertDatabaseHas(PetaArea::class, $area);
     }
 
     public function testOnlyAuthorizedUserCanStoreNewArea(): void

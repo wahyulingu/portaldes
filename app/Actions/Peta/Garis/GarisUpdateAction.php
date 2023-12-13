@@ -7,6 +7,7 @@ use App\Actions\Peta\Gambar\GambarStoreAction;
 use App\Actions\Peta\Gambar\GambarUpdateAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Peta\PetaGaris;
+use App\Models\Peta\PetaKategori;
 use App\Repositories\Peta\PetaGarisRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
