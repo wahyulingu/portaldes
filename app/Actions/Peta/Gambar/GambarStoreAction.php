@@ -5,12 +5,14 @@ namespace App\Actions\Peta\Gambar;
 use App\Abstractions\Action\Action;
 use App\Actions\Media\Picture\PictureStoreAction;
 use App\Contracts\Action\RuledActionContract;
+use App\Enumerations\TipePeta;
 use App\Models\Media\MediaPicture;
 use App\Models\Peta\PetaGambar;
 use App\Models\User;
 use App\Repositories\Peta\PetaGambarRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 /**
  * @extends Action<PetaGambar>
@@ -28,6 +30,8 @@ class GambarStoreAction extends Action implements RuledActionContract
     public function rules(Collection $payload): array
     {
         return [
+            'peta_type' => ['required', 'string', Rule::enum(TipePeta::class)],
+            'peta_id' => ['required', 'string', Rule::exists($payload->get('peta_type'), 'id')],
             'nama' => ['required', 'string', 'max:255'],
             'keterangan' => ['required', 'string', 'max:255'],
             'gambar' => ['required', 'mimes:jpg,jpeg,png', 'max:2048'],

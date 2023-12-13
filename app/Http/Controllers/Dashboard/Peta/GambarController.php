@@ -58,7 +58,7 @@ class GambarController extends Controller
          */
         $gambar = $gambarStoreAction->execute($request->all());
 
-        return Response::redirectTo(route('dashboard.sid.gambar.show', $gambar->getKey()), 201)
+        return Response::redirectTo(route('dashboard.peta.gambar.show', $gambar->getKey()), 201)
 
             ->banner(sprintf('Gambar Created', $gambar->nomor_kartu_gambar));
     }
@@ -86,7 +86,7 @@ class GambarController extends Controller
     {
         $gambarUpdateAction->prepare($gambar)->execute($request->all());
 
-        return Response::see(route('dashboard.sid.gambar.show', $gambar->getKey()))
+        return Response::see(route('dashboard.peta.gambar.show', $gambar->getKey()))
 
             ->banner(sprintf('Updated gambar "%s"', $gambar->nomor_kartu_gambar));
     }
@@ -98,7 +98,7 @@ class GambarController extends Controller
     {
         $gambarDeleteAction->prepare($gambar)->execute();
 
-        return Response::see(route('dashboard.sid.gambar.index'))
+        return Response::see(route('dashboard.peta.gambar.index'))
 
             ->with('flash', compact('gambar'))
             ->dangerBanner(sprintf('Destroyed gambar "%s"', $gambar->nomor_kartu_gambar));

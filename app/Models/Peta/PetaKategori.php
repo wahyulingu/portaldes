@@ -14,6 +14,8 @@ class PetaKategori extends Model
 
     protected $casts = ['tipe' => TipePeta::class];
 
+    protected $fillable = ['nama', 'keterangan', 'tipe', 'simbol_id', 'warna_id'];
+
     protected $table = 'peta_kategori';
 
     protected function warna(): BelongsTo

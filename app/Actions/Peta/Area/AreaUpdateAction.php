@@ -9,7 +9,6 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Peta\PetaArea;
 use App\Repositories\Peta\PetaAreaRepository;
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
 
 class AreaUpdateAction extends Action implements RuledActionContract
 {
@@ -32,15 +31,7 @@ class AreaUpdateAction extends Action implements RuledActionContract
         return [
             'nama' => ['sometimes', 'string', 'max:255'],
             'keterangan' => ['sometimes', 'string', 'max:255'],
-            'lat' => ['sometimes', 'string'],
-            'lng' => ['sometimes', 'string'],
-
-            'kategori_id' => [
-                'sometimes',
-                Rule::exists(PetaKategori::class, 'id'),
-            ],
-
-            'gambar' => ['sometimes', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'gambar' => ['sometimes', 'file', 'mimes:jpg,jpeg,png', 'max:1024'],
         ];
     }
 
@@ -54,13 +45,13 @@ class AreaUpdateAction extends Action implements RuledActionContract
                     ->prepare($this->area->gambar)
                     ->execute($validatedPayload->only('gambar'));
             } else {
-                $gambar = $this->gambarStoreAction->skipAllRules()->execute([
-                    'nama' => $validatedPayload->get('nama', $this->area->nama),
-                    'keterangan' => $validatedPayload->get('keterangan', $this->area->keterangan),
-                    'gambar' => $validatedPayload->get('gambar'),
-                ]);
-
-                $this->area->gambar()->save($gambar);
+                $this->gambarStoreAction->skipAllRules()->execute(
+                    $validatedPayload
+                        ->only('nama', 'keterangan', 'gambar')
+                        ->put('peta_type', $this->area::class)
+                        ->put('peta_id', $this->area->getKey())
+                        ->put('path', 'peta/area')
+                );
             }
 
             $validatedPayload->forget('gambar');

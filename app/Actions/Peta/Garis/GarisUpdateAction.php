@@ -9,7 +9,6 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Peta\PetaGaris;
 use App\Repositories\Peta\PetaGarisRepository;
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
 
 class GarisUpdateAction extends Action implements RuledActionContract
 {
@@ -32,15 +31,7 @@ class GarisUpdateAction extends Action implements RuledActionContract
         return [
             'nama' => ['sometimes', 'string', 'max:255'],
             'keterangan' => ['sometimes', 'string', 'max:255'],
-            'lat' => ['sometimes', 'string'],
-            'lng' => ['sometimes', 'string'],
-
-            'kategori_id' => [
-                'sometimes',
-                Rule::exists(PetaKategori::class, 'id'),
-            ],
-
-            'gambar' => ['sometimes', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'gambar' => ['sometimes', 'file', 'mimes:jpg,jpeg,png', 'max:1024'],
         ];
     }
 
@@ -54,13 +45,13 @@ class GarisUpdateAction extends Action implements RuledActionContract
                     ->prepare($this->garis->gambar)
                     ->execute($validatedPayload->only('gambar'));
             } else {
-                $gambar = $this->gambarStoreAction->skipAllRules()->execute([
-                    'nama' => $validatedPayload->get('nama', $this->garis->nama),
-                    'keterangan' => $validatedPayload->get('keterangan', $this->garis->keterangan),
-                    'gambar' => $validatedPayload->get('gambar'),
-                ]);
-
-                $this->garis->gambar()->save($gambar);
+                $this->gambarStoreAction->skipAllRules()->execute(
+                    $validatedPayload
+                        ->only('nama', 'keterangan', 'gambar')
+                        ->put('peta_type', $this->garis::class)
+                        ->put('peta_id', $this->garis->getKey())
+                        ->put('path', 'peta/garis')
+                );
             }
 
             $validatedPayload->forget('gambar');

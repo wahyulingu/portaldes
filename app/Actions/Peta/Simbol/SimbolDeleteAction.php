@@ -20,9 +20,7 @@ class SimbolDeleteAction extends Action
 
     public function prepare(PetaSimbol $simbol)
     {
-        $this->simbol = $simbol;
-
-        return $this;
+        return tap($this, fn (self $action) => $action->simbol = $simbol);
     }
 
     protected function handler(Collection $validatedPayload, Collection $payload): bool

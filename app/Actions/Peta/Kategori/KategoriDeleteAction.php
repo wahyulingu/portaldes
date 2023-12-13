@@ -3,7 +3,6 @@
 namespace App\Actions\Peta\Kategori;
 
 use App\Abstractions\Action\Action;
-use App\Actions\Peta\Gambar\GambarDeleteAction;
 use App\Models\Peta\PetaKategori;
 use App\Repositories\Peta\PetaKategoriRepository;
 use Illuminate\Support\Collection;
@@ -14,26 +13,16 @@ class KategoriDeleteAction extends Action
 
     public function __construct(
         protected readonly PetaKategoriRepository $petaKategoriRepository,
-        protected readonly GambarDeleteAction $gambarDeleteAction,
     ) {
     }
 
     public function prepare(PetaKategori $kategori)
     {
-        $this->kategori = $kategori;
-
-        return $this;
+        return tap($this, fn (self $action) => $action->kategori = $kategori);
     }
 
     protected function handler(Collection $validatedPayload, Collection $payload): bool
     {
-        if ($this->kategori->gambar()->exists()) {
-            $this
-                ->gambarDeleteAction
-                ->prepare($this->kategori->gambar)
-                ->execute();
-        }
-
         return $this->petaKategoriRepository->delete($this->kategori->getKey());
     }
 }

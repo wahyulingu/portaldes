@@ -58,9 +58,9 @@ class WarnaController extends Controller
          */
         $warna = $warnaStoreAction->execute($request->all());
 
-        return Response::redirectTo(route('dashboard.sid.warna.show', $warna->getKey()), 201)
+        return Response::redirectTo(route('dashboard.peta.warna.index'), 201)
 
-            ->banner(sprintf('Warna Created', $warna->nomor_kartu_warna));
+            ->banner(sprintf('Warna Created', $warna->nama));
     }
 
     /**
@@ -86,7 +86,7 @@ class WarnaController extends Controller
     {
         $warnaUpdateAction->prepare($warna)->execute($request->all());
 
-        return Response::see(route('dashboard.sid.warna.show', $warna->getKey()))
+        return Response::see(route('dashboard.peta.warna.show', $warna->getKey()))
 
             ->banner(sprintf('Updated warna "%s"', $warna->nomor_kartu_warna));
     }
@@ -98,7 +98,7 @@ class WarnaController extends Controller
     {
         $warnaDeleteAction->prepare($warna)->execute();
 
-        return Response::see(route('dashboard.sid.warna.index'))
+        return Response::see(route('dashboard.peta.warna.index'))
 
             ->with('flash', compact('warna'))
             ->dangerBanner(sprintf('Destroyed warna "%s"', $warna->nomor_kartu_warna));

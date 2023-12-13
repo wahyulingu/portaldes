@@ -26,6 +26,7 @@ class WarnaUpdateAction extends Action implements RuledActionContract
     {
         return [
             'nama' => ['sometimes', 'string', 'max:255'],
+            'keterangan' => ['sometimes', 'string', 'max:255'],
             'kode' => ['sometimes', 'string'],
         ];
     }

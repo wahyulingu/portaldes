@@ -58,9 +58,9 @@ class SimbolController extends Controller
          */
         $simbol = $simbolStoreAction->execute($request->all());
 
-        return Response::redirectTo(route('dashboard.sid.simbol.show', $simbol->getKey()), 201)
+        return Response::redirectTo(route('dashboard.peta.simbol.index'), 201)
 
-            ->banner(sprintf('Simbol Created', $simbol->nomor_kartu_simbol));
+            ->banner(sprintf('Simbol Created', $simbol->nama));
     }
 
     /**
@@ -86,7 +86,7 @@ class SimbolController extends Controller
     {
         $simbolUpdateAction->prepare($simbol)->execute($request->all());
 
-        return Response::see(route('dashboard.sid.simbol.show', $simbol->getKey()))
+        return Response::see(route('dashboard.peta.simbol.show', $simbol->getKey()))
 
             ->banner(sprintf('Updated simbol "%s"', $simbol->nomor_kartu_simbol));
     }
@@ -98,7 +98,7 @@ class SimbolController extends Controller
     {
         $simbolDeleteAction->prepare($simbol)->execute();
 
-        return Response::see(route('dashboard.sid.simbol.index'))
+        return Response::see(route('dashboard.peta.simbol.index'))
 
             ->with('flash', compact('simbol'))
             ->dangerBanner(sprintf('Destroyed simbol "%s"', $simbol->nomor_kartu_simbol));

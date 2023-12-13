@@ -9,5 +9,7 @@ class PetaWarna extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['nama', 'keterangan', 'kode'];
+
     protected $table = 'peta_warna';
 }

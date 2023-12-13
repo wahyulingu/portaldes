@@ -6,12 +6,10 @@ use App\Abstractions\Action\Action;
 use App\Actions\Peta\Gambar\GambarStoreAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Peta\PetaArea;
-use App\Models\Peta\PetaKategori;
 use App\Models\User;
 use App\Repositories\Peta\PetaAreaRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 
 /**
  * @extends Action<PetaArea>
@@ -21,8 +19,8 @@ class AreaStoreAction extends Action implements RuledActionContract
     protected User $user;
 
     public function __construct(
-        protected PetaAreaRepository $petaAreaRepository,
-        protected GambarStoreAction $gambarStoreAction
+        readonly protected PetaAreaRepository $petaAreaRepository,
+        readonly protected GambarStoreAction $gambarStoreAction
     ) {
     }
 
@@ -31,14 +29,7 @@ class AreaStoreAction extends Action implements RuledActionContract
         return [
             'nama' => ['required', 'string', 'max:255'],
             'keterangan' => ['required', 'string', 'max:255'],
-            'path' => ['required', 'array'],
-
-            'kategori_id' => [
-                'required',
-                Rule::exists(PetaKategori::class, 'id'),
-            ],
-
-            'gambar' => ['sometimes', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'gambar' => ['required', 'file', 'mimes:jpg,jpeg,png', 'max:1024'],
         ];
     }
 
@@ -47,17 +38,17 @@ class AreaStoreAction extends Action implements RuledActionContract
         return DB::transaction(fn () => tap(
             $this->petaAreaRepository->store($validatedPayload),
             function (PetaArea $area) use ($validatedPayload) {
-                if ($validatedPayload->has('gambar')) {
-                    $gambar = $this->gambarStoreAction->skipAllRules()->execute($validatedPayload->only(
-                        [
-                            'nama',
-                            'keterangan',
-                            'gambar',
-                        ]
-                    ));
+                $this
 
-                    $area->gambar()->save($gambar);
-                }
+                    ->gambarStoreAction
+                    ->skipAllRules()
+                    ->execute(
+                        $validatedPayload
+                            ->only('nama', 'keterangan', 'gambar')
+                            ->put('peta_type', $area::class)
+                            ->put('peta_id', $area->getKey())
+                            ->put('path', 'peta/area')
+                    );
             }
         ));
     }

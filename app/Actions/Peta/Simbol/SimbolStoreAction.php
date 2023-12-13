@@ -3,11 +3,13 @@
 namespace App\Actions\Peta\Simbol;
 
 use App\Abstractions\Action\Action;
+use App\Actions\Peta\Gambar\GambarStoreAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Peta\PetaSimbol;
 use App\Models\User;
 use App\Repositories\Peta\PetaSimbolRepository;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @extends Action<PetaSimbol>
@@ -17,7 +19,8 @@ class SimbolStoreAction extends Action implements RuledActionContract
     protected User $user;
 
     public function __construct(
-        protected PetaSimbolRepository $petaSimbolRepository,
+        readonly protected PetaSimbolRepository $petaSimbolRepository,
+        readonly protected GambarStoreAction $gambarStoreAction
     ) {
     }
 
@@ -32,18 +35,21 @@ class SimbolStoreAction extends Action implements RuledActionContract
 
     protected function handler(Collection $validatedPayload, Collection $payload)
     {
-        return tap(
+        return DB::transaction(fn () => tap(
             $this->petaSimbolRepository->store($validatedPayload),
-            function (PetaSimbol $peta) {
-                // if (isset($validatedPayload['gambar'])) {
-                //     $this
+            function (PetaSimbol $simbol) use ($validatedPayload) {
+                $this
 
-                //         ->gambarStoreAction
-                //         ->prepare($peta)
-                //         ->skipAllRules()
-                //         ->execute($validatedPayload);
-                // }
+                    ->gambarStoreAction
+                    ->skipAllRules()
+                    ->execute(
+                        $validatedPayload
+                            ->only('nama', 'keterangan', 'gambar')
+                            ->put('peta_type', $simbol::class)
+                            ->put('peta_id', $simbol->getKey())
+                            ->put('path', 'peta/simbol')
+                    );
             }
-        );
+        ));
     }
 }

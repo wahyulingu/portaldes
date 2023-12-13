@@ -9,7 +9,6 @@ use App\Contracts\Action\RuledActionContract;
 use App\Models\Peta\PetaTitik;
 use App\Repositories\Peta\PetaTitikRepository;
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
 
 class TitikUpdateAction extends Action implements RuledActionContract
 {
@@ -32,15 +31,7 @@ class TitikUpdateAction extends Action implements RuledActionContract
         return [
             'nama' => ['sometimes', 'string', 'max:255'],
             'keterangan' => ['sometimes', 'string', 'max:255'],
-            'lat' => ['sometimes', 'string'],
-            'lng' => ['sometimes', 'string'],
-
-            'kategori_id' => [
-                'sometimes',
-                Rule::exists(PetaKategori::class, 'id'),
-            ],
-
-            'gambar' => ['sometimes', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'gambar' => ['sometimes', 'file', 'mimes:jpg,jpeg,png', 'max:1024'],
         ];
     }
 
@@ -54,13 +45,13 @@ class TitikUpdateAction extends Action implements RuledActionContract
                     ->prepare($this->titik->gambar)
                     ->execute($validatedPayload->only('gambar'));
             } else {
-                $gambar = $this->gambarStoreAction->skipAllRules()->execute([
-                    'nama' => $validatedPayload->get('nama', $this->titik->nama),
-                    'keterangan' => $validatedPayload->get('keterangan', $this->titik->keterangan),
-                    'gambar' => $validatedPayload->get('gambar'),
-                ]);
-
-                $this->titik->gambar()->save($gambar);
+                $this->gambarStoreAction->skipAllRules()->execute(
+                    $validatedPayload
+                        ->only('nama', 'keterangan', 'gambar')
+                        ->put('peta_type', $this->titik::class)
+                        ->put('peta_id', $this->titik->getKey())
+                        ->put('path', 'peta/titik')
+                );
             }
 
             $validatedPayload->forget('gambar');

@@ -58,9 +58,9 @@ class KategoriController extends Controller
          */
         $kategori = $kategoriStoreAction->execute($request->all());
 
-        return Response::redirectTo(route('dashboard.sid.kategori.show', $kategori->getKey()), 201)
+        return Response::redirectTo(route('dashboard.peta.kategori.index'), 201)
 
-            ->banner(sprintf('Kategori Created', $kategori->nomor_kartu_kategori));
+            ->banner(sprintf('Kategori Created', $kategori->nama));
     }
 
     /**
@@ -86,7 +86,7 @@ class KategoriController extends Controller
     {
         $kategoriUpdateAction->prepare($kategori)->execute($request->all());
 
-        return Response::see(route('dashboard.sid.kategori.show', $kategori->getKey()))
+        return Response::see(route('dashboard.peta.kategori.show', $kategori->getKey()))
 
             ->banner(sprintf('Updated kategori "%s"', $kategori->nomor_kartu_kategori));
     }
@@ -98,7 +98,7 @@ class KategoriController extends Controller
     {
         $kategoriDeleteAction->prepare($kategori)->execute();
 
-        return Response::see(route('dashboard.sid.kategori.index'))
+        return Response::see(route('dashboard.peta.kategori.index'))
 
             ->with('flash', compact('kategori'))
             ->dangerBanner(sprintf('Destroyed kategori "%s"', $kategori->nomor_kartu_kategori));
