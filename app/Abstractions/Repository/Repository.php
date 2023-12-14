@@ -344,9 +344,7 @@ abstract class Repository
     {
         return collect($filter)->each(function ($value, string $key) use ($builder) {
             if (($explodedKey = collect(explode('|', $key)))->count() > 1) {
-                return $this->filterOrSolver($explodedKey->map(fn ($key) => ['like' => [$key => $value]]),
-                    $builder
-                );
+                return $this->filterOrSolver($explodedKey->map(fn ($key) => ['like' => [$key => $value]]), $builder);
             }
 
             $builder->where($key, 'LIKE', $value);
