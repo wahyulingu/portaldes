@@ -4,21 +4,14 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Jetstream\Features;
 use Tests\TestCase;
 
 class LeaveTeamTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testUsersCanLeaveTeams(): void
+    public function test_users_can_leave_teams(): void
     {
-        if (!Features::hasTeamFeatures()) {
-            $this->markTestSkipped('Team feature is not enabled.');
-
-            return;
-        }
-
         $user = User::factory()->withPersonalTeam()->create();
 
         $user->currentTeam->users()->attach(
@@ -32,14 +25,8 @@ class LeaveTeamTest extends TestCase
         $this->assertCount(0, $user->currentTeam->fresh()->users);
     }
 
-    public function testTeamOwnersCantLeaveTheirOwnTeam(): void
+    public function test_team_owners_cant_leave_their_own_team(): void
     {
-        if (!Features::hasTeamFeatures()) {
-            $this->markTestSkipped('Team feature is not enabled.');
-
-            return;
-        }
-
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
         $response = $this->delete('/teams/'.$user->currentTeam->id.'/members/'.$user->id);

@@ -12,9 +12,9 @@ class ApiTokenPermissionsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testApiTokenPermissionsCanBeUpdated(): void
+    public function test_api_token_permissions_can_be_updated(): void
     {
-        if (!Features::hasApiFeatures()) {
+        if (! Features::hasApiFeatures()) {
             $this->markTestSkipped('API support is not enabled.');
 
             return;

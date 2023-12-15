@@ -4,21 +4,14 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Jetstream\Features;
 use Tests\TestCase;
 
 class RemoveTeamMemberTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testTeamMembersCanBeRemovedFromTeams(): void
+    public function test_team_members_can_be_removed_from_teams(): void
     {
-        if (!Features::hasTeamFeatures()) {
-            $this->markTestSkipped('Team feature is not enabled.');
-
-            return;
-        }
-
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
         $user->currentTeam->users()->attach(
@@ -30,14 +23,8 @@ class RemoveTeamMemberTest extends TestCase
         $this->assertCount(0, $user->currentTeam->fresh()->users);
     }
 
-    public function testOnlyTeamOwnerCanRemoveTeamMembers(): void
+    public function test_only_team_owner_can_remove_team_members(): void
     {
-        if (!Features::hasTeamFeatures()) {
-            $this->markTestSkipped('Team feature is not enabled.');
-
-            return;
-        }
-
         $user = User::factory()->withPersonalTeam()->create();
 
         $user->currentTeam->users()->attach(
