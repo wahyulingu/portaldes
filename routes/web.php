@@ -51,11 +51,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::name('sid.')->prefix('sid')->group(function () {
             Route::name('identitas.')->group(function () {
                 Route::get('identitas', [Sid\IdentitasController::class, 'show'])->name('show');
+                Route::get('identitas/edit', [Sid\IdentitasController::class, 'edit'])->name('edit');
                 Route::patch('identitas', [Sid\IdentitasController::class, 'update'])->name('update');
-
-                Route::prefix('identitas')->group(function () {
-                    Route::get('edit', [Sid\IdentitasController::class, 'edit'])->name('edit');
-                });
             });
 
             Route::name('surat.')->prefix('surat')->group(function () {
