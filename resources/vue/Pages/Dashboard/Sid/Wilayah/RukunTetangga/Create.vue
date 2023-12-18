@@ -1,13 +1,13 @@
 <script setup>
 import JetBarContainer from '@/resources/vue/Components/JetBar/JetBarContainer.vue';
-import JetBarLayout from '@res/vue/Layouts/JetBarLayout.vue';
+import AppLayout from '@res/vue/Layouts/AppLayout.vue';
 import CreateCategoryForm from './Partials/CreateCategoryForm.vue'
 </script>
 
 <template>
-    <JetBarLayout title="Create Category">
+    <AppLayout title="Create Category">
         <JetBarContainer>
             <CreateCategoryForm />
         </JetBarContainer>
-    </JetBarLayout>
+    </AppLayout>
 </template>

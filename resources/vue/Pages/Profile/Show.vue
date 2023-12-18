@@ -1,5 +1,5 @@
 <script setup>
-import JetBarLayout from '@res/vue/Layouts/JetBarLayout.vue';
+import AppLayout from '@res/vue/Layouts/AppLayout.vue';
 import DeleteUserForm from '@res/vue/Pages/Profile/Partials/DeleteUserForm.vue';
 import LogoutOtherBrowserSessionsForm from '@res/vue/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue';
 import SectionBorder from '@res/vue/Components/SectionBorder.vue';
@@ -14,7 +14,7 @@ defineProps({
 </script>
 
 <template>
-    <JetBarLayout title="Profile">
+    <AppLayout title="Profile">
         <template #header>
             <h2 class="text-white text-sm uppercase hidden lg:inline-block font-semibold">
                 Profile
@@ -51,5 +51,5 @@ defineProps({
                 </template>
             </div>
         </div>
-    </JetBarLayout>
+    </AppLayout>
 </template>

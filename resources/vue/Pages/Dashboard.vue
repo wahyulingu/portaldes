@@ -1,5 +1,5 @@
 <template>
-    <JetBarLayout title="Dashboard">
+    <AppLayout title="Dashboard">
         <JetBarContainer>
             <JetBarStatsContainer>
                 <JetBarStatCard title="Total clients" number="6389" type="warning">
@@ -51,12 +51,12 @@
 
         </JetBarContainer>
 
-    </JetBarLayout>
+    </AppLayout>
 </template>
 
 <script setup>
 import { Link } from '@inertiajs/vue3';
-import JetBarLayout from '@res/vue/Layouts/JetBarLayout.vue'
+import AppLayout from '@res/vue/Layouts/AppLayout.vue'
 import JetBarContainer from '@res/vue/Components/JetBar/JetBarContainer.vue';
 import JetBarStatsContainer from '@res/vue/Components/JetBar/JetBarStatsContainer.vue';
 import JetBarStatCard from '@res/vue/Components/JetBar/JetBarStatCard.vue';

@@ -1,5 +1,5 @@
 <template>
-    <JetBarLayout title="Content Category">
+    <AppLayout title="Content Category">
         <JetBarContainer>
             <JetBarTable>
                 <template #pagination>
@@ -41,12 +41,12 @@
                 </template>
             </JetBarTable>
         </JetBarContainer>
-    </JetBarLayout>
+    </AppLayout>
 </template>
 
 <script setup lang="ts">
 import { Link, router } from "@inertiajs/vue3";
-import JetBarLayout from "@res/vue/Layouts/JetBarLayout.vue";
+import AppLayout from "@res/vue/Layouts/AppLayout.vue";
 import JetBarContainer from "@res/vue/Components/JetBar/JetBarContainer.vue";
 import JetBarTable from "@res/vue/Components/JetBar/JetBarTable.vue";
 import JetBarTableData from "@res/vue/Components/JetBar/JetBarTableData.vue";

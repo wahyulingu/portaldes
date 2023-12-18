@@ -1,6 +1,6 @@
 <script setup>
 import ApiTokenManager from '@res/vue/Pages/API/Partials/ApiTokenManager.vue';
-import JetBarLayout from '@res/vue/Layouts/JetBarLayout.vue';
+import AppLayout from '@res/vue/Layouts/AppLayout.vue';
 
 defineProps({
     tokens: Array,
@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-    <JetBarLayout title="API Tokens">
+    <AppLayout title="API Tokens">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 API Tokens
@@ -23,5 +23,5 @@ defineProps({
                     :default-permissions="defaultPermissions" />
             </div>
         </div>
-    </JetBarLayout>
+    </AppLayout>
 </template>

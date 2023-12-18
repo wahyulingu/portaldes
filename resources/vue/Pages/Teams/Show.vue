@@ -1,5 +1,5 @@
 <script setup>
-import JetBarLayout from '@res/vue/Layouts/JetBarLayout.vue';
+import AppLayout from '@res/vue/Layouts/AppLayout.vue';
 import DeleteTeamForm from '@res/vue/Pages/Teams/Partials/DeleteTeamForm.vue';
 import SectionBorder from '@res/vue/Components/SectionBorder.vue';
 import TeamMemberManager from '@res/vue/Pages/Teams/Partials/TeamMemberManager.vue';
@@ -13,7 +13,7 @@ defineProps({
 </script>
 
 <template>
-    <JetBarLayout title="Team Settings">
+    <AppLayout title="Team Settings">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 Team Settings
@@ -34,5 +34,5 @@ defineProps({
                 </template>
             </div>
         </div>
-    </JetBarLayout>
+    </AppLayout>
 </template>

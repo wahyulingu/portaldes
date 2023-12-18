@@ -1,5 +1,5 @@
 <template>
-    <JetBarLayout title="Dashboard">
+    <AppLayout title="Dashboard">
         <div class="flex flex-wrap">
             <div class="w-full lg:w-8/12 px-4">
                 <div
@@ -213,10 +213,10 @@
             </div>
         </div>
 
-    </JetBarLayout>
+    </AppLayout>
 </template>
 
 <script setup>
-import JetBarLayout from '@res/vue/Layouts/JetBarLayout.vue'
+import AppLayout from '@res/vue/Layouts/AppLayout.vue'
 import CardSocialTraffic from '@res/vue/Components/Notus/Cards/CardSocialTraffic.vue';
 </script>

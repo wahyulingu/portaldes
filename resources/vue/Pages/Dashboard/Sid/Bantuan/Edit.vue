@@ -1,5 +1,5 @@
 <template>
-    <JetBarLayout title="Dashboard">
+    <AppLayout title="Dashboard">
         <template #header>
             <h2 class="text-white text-sm uppercase hidden lg:inline-block font-semibold">
                 Dashboard
@@ -23,10 +23,10 @@
                 </div>
             </div>
         </div>
-    </JetBarLayout>
+    </AppLayout>
 </template>
 
 <script setup>
-import JetBarLayout from '@res/vue/Layouts/JetBarLayout.vue'
+import AppLayout from '@res/vue/Layouts/AppLayout.vue'
 import CardSocialTraffic from '@res/vue/Components/Notus/Cards/CardSocialTraffic.vue';
 </script>
