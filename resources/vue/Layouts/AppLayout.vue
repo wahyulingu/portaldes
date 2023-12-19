@@ -3,9 +3,9 @@ import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import ApplicationMark from '@res/vue/Components/ApplicationMark.vue';
 import Banner from '@res/vue/Components/Banner.vue';
+import NavDropdown from '@res/vue/Components/NavDropdown.vue';
 import Dropdown from '@res/vue/Components/Dropdown.vue';
 import DropdownLink from '@res/vue/Components/DropdownLink.vue';
-import RouteNavLink from '@res/vue/Components/RouteNavLink.vue';
 import ResponsiveNavLink from '@res/vue/Components/ResponsiveNavLink.vue';
 
 defineProps({
@@ -49,9 +49,98 @@ const logout = () => {
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <RouteNavLink :name="'dashboard'">
-                                    Dashboard
-                                </RouteNavLink>
+                                <NavDropdown prefix="dashboard.content">
+                                    Content
+                                    <template #content>
+                                        <div class="block px-4 py-2 text-xs text-gray-400">
+                                            Manage Content
+                                        </div>
+
+                                        <div class="border-t border-gray-200 dark:border-gray-600" />
+
+                                        <DropdownLink :href="route('dashboard.content.category.index')">
+                                            <span class="inline-flex rounded-md">
+                                                <span type="button" class="inline-flex items-center">
+                                                    Category
+                                                </span>
+                                            </span>
+                                        </DropdownLink>
+
+                                        <DropdownLink :href="route('dashboard.content.article.index')">
+                                            Article
+                                        </DropdownLink>
+
+                                        <DropdownLink :href="route('dashboard.content.page.index')">
+                                            Page
+                                        </DropdownLink>
+
+                                        <DropdownLink :href="route('dashboard.content.comment.index')">
+                                            Comment
+                                        </DropdownLink>
+
+                                    </template>
+                                </NavDropdown>
+                                <NavDropdown prefix="dashboard.peta">
+                                    Media
+                                    <template #content>
+                                        <div class="block px-4 py-2 text-xs text-gray-400">
+                                            Manage Peta
+                                        </div>
+
+                                        <div class="border-t border-gray-200 dark:border-gray-600" />
+
+                                        <DropdownLink :href="route('profile.show')">
+                                            Titik
+                                        </DropdownLink>
+
+                                    </template>
+                                </NavDropdown>
+                                <NavDropdown prefix="dashboard.peta">
+                                    Peta
+                                    <template #content>
+                                        <div class="block px-4 py-2 text-xs text-gray-400">
+                                            Manage Peta
+                                        </div>
+
+                                        <div class="border-t border-gray-200 dark:border-gray-600" />
+
+                                        <DropdownLink :href="route('profile.show')">
+                                            Titik
+                                        </DropdownLink>
+
+                                    </template>
+                                </NavDropdown>
+                                <NavDropdown prefix="dashboard.peta">
+                                    Sid
+                                    <template #content>
+                                        <div class="block px-4 py-2 text-xs text-gray-400">
+                                            Manage Peta
+                                        </div>
+
+                                        <div class="border-t border-gray-200 dark:border-gray-600" />
+
+                                        <DropdownLink :href="route('profile.show')">
+                                            Titik
+                                        </DropdownLink>
+
+                                    </template>
+                                </NavDropdown>
+                                <NavDropdown prefix="dashboard.peta">
+                                    System
+                                    <template #content>
+                                        <div class="block px-4 py-2 text-xs text-gray-400">
+                                            Manage System
+                                        </div>
+
+                                        <div class="border-t border-gray-200 dark:border-gray-600" />
+
+                                        <DropdownLink :href="route('profile.show')">
+                                            Titik
+                                        </DropdownLink>
+
+                                    </template>
+                                </NavDropdown>
+
                             </div>
                         </div>
 

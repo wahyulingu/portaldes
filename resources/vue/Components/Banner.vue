@@ -14,10 +14,10 @@ watch(message, async () => {
 <template>
     <div>
         <div v-if="show && message" :class="{ 'bg-indigo-500': style == 'success', 'bg-red-700': style == 'danger' }">
-            <div class="py-2 px-3 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between flex-wrap">
                     <div class="w-0 flex-1 flex items-center min-w-0">
-                        <span class="flex p-2 rounded-lg"
+                        <span class="flex p-1 rounded-lg"
                             :class="{ 'bg-indigo-600': style == 'success', 'bg-red-600': style == 'danger' }">
                             <svg v-if="style == 'success'" class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -32,7 +32,7 @@ watch(message, async () => {
                             </svg>
                         </span>
 
-                        <p class="ml-3 font-medium text-sm text-white truncate">
+                        <p class="ml-2 font-medium text-sm text-white truncate">
                             {{ message }}
                         </p>
                     </div>

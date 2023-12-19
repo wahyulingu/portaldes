@@ -2,10 +2,11 @@
 import { computed } from 'vue';
 import NavLink from './NavLink.vue';
 
-const { name } = defineProps({ name: String });
+const props = defineProps({ name: String, prefix: String });
 
-const isActive = computed(() => route().current(name));
-const link = computed(() => route(name));
+const isPrefixed = computed(() => typeof props.prefix == 'string' && props.prefix.length > 0)
+const isActive = computed(() => route().current(isPrefixed.value ? props.prefix + '*' : props.name));
+const link = computed(() => route(isPrefixed.value ? props.prefix + '.' + props.name : props.name));
 </script>
 
 <template>
