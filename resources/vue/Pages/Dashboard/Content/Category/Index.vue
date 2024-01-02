@@ -6,14 +6,7 @@
                     <JetBarSimplePagination :items="categories" />
                 </template>
                 <template #head>
-                    <JetBarTableHead :headers="['Name', 'Description', 'Status', '']">
-                        <template #button>
-                            <Link :href="route('dashboard.content.category.create')"
-                                class="text-blue-500 hover:text-blue-600 uppercase">
-                            + Baru
-                            </Link>
-                        </template>
-                    </JetBarTableHead>
+                    <JetBarTableHead :headers="['Name', 'Description', 'Status', '']" />
                 </template>
                 <template v-for="category in categories.data">
                     <tr class="hover:bg-gray-50">
@@ -45,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { Link, router } from "@inertiajs/vue3";
+import { Link } from "@inertiajs/vue3";
 import AppLayout from "@res/vue/Layouts/AppLayout.vue";
 import JetBarContainer from "@res/vue/Components/JetBar/JetBarContainer.vue";
 import JetBarTable from "@res/vue/Components/JetBar/JetBarTable.vue";

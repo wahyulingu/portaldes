@@ -1,5 +1,5 @@
 <template>
-    <NotusLayout title="Category">
+    <AppLayout title="Category">
         <template #rightButton>
             <Link :href="route('dashboard.content.category.create')"
                 class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold p-1 rounded outline-none focus:outline-none ease-linear transition-all duration-150"
@@ -76,13 +76,13 @@
                 </DangerButton>
             </template>
         </ConfirmationModal>
-    </NotusLayout>
+    </AppLayout>
 </template>
 
 <script setup lang="ts">
 import route from "ziggy-js";
 import { Link, useForm } from "@inertiajs/vue3";
-import NotusLayout from "@res/vue/Layouts/NotusLayout.vue";
+import AppLayout from "@res/vue/Layouts/AppLayout.vue";
 import JetBarContainer from "@res/vue/Components/JetBar/JetBarContainer.vue";
 import { Category } from "@/resources/ts/types/data/category";
 import { limit, statusType } from "@res/ts/helpers/string";

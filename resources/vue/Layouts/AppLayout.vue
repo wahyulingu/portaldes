@@ -7,6 +7,7 @@ import NavDropdown from '@res/vue/Components/NavDropdown.vue';
 import Dropdown from '@res/vue/Components/Dropdown.vue';
 import DropdownLink from '@res/vue/Components/DropdownLink.vue';
 import ResponsiveNavLink from '@res/vue/Components/ResponsiveNavLink.vue';
+import RouteNavLink from '../Components/RouteNavLink.vue';
 
 defineProps({
     title: String,
@@ -140,7 +141,6 @@ const logout = () => {
 
                                     </template>
                                 </NavDropdown>
-
                             </div>
                         </div>
 
