@@ -6,6 +6,9 @@ use App\Http\Controllers\Dashboard\Sid;
 use App\Http\Controllers\Dashboard\Sid\Surat;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Laravel\Jetstream\Http\Controllers\Inertia\ApiTokenController;
+use Laravel\Jetstream\Http\Controllers\Inertia\UserProfileController;
+use Laravel\Jetstream\Jetstream;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +32,17 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('dashboard', fn () => Inertia::render('Dashboard'))->name('dashboard');
 
     Route::name('dashboard.')->prefix('dashboard')->group(function () {
+        Route::name('user.')->prefix('user')->group(function () {
+            Route::get('profile', [UserProfileController::class, 'show'])->name('profile.show');
+
+            if (Jetstream::hasApiFeatures()) {
+                Route::get('api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
+                Route::post('api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');
+                Route::put('api-tokens/{token}', [ApiTokenController::class, 'update'])->name('api-tokens.update');
+                Route::delete('api-tokens/{token}', [ApiTokenController::class, 'destroy'])->name('api-tokens.destroy');
+            }
+        });
+
         Route::name('content.')->prefix('content')->group(function () {
             Route::resource('article', Content\ArticleController::class);
             Route::resource('comment', Content\CommentController::class);

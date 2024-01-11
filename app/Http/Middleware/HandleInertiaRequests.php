@@ -38,14 +38,15 @@ class HandleInertiaRequests extends Middleware
                 ->load('permissions', 'roles', 'roles.permissions');
         }
 
-        return array_merge(parent::share($request), [
+        return [
+            ...parent::share($request),
+
             'laravelVersion' => Application::VERSION,
             'phpVersion' => PHP_VERSION,
-            'ziggy' => function () use ($request) {
-                return array_merge((new Ziggy())->toArray(), [
-                    'location' => $request->url(),
-                ]);
-            },
-        ]);
+
+            'ziggy' => fn () => [...(new Ziggy())->toArray(), 'location' => $request->url()],
+
+            'query' => fn () => $request->query(),
+        ];
     }
 }
